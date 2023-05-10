@@ -1,4 +1,4 @@
-package com.marshal
+package com.marshal.baseview
 
 import android.os.Bundle
 import android.view.View

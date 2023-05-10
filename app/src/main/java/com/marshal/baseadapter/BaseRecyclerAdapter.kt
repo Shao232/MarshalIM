@@ -1,9 +1,9 @@
-package com.marshal
+package com.marshal.baseadapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerAdapter<T:BaseRecyclerViewHolder,E>: RecyclerView.Adapter<T>() {
+abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Adapter<T>() {
 
     val itemList:ArrayList<E> = arrayListOf()
 

@@ -1,9 +1,11 @@
 package com.marshal
 
 import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
+import com.marshal.baseview.BaseViewFragment
 import com.marshal.databinding.FragmentHomeBinding
 
-class HomeFragment:BaseViewFragment<FragmentHomeBinding>() {
+class HomeFragment: BaseViewFragment<FragmentHomeBinding>() {
     override fun getResLayoutId(): Int = R.layout.fragment_home
 
     override fun getResLayoutBinding(): View? {
@@ -12,6 +14,11 @@ class HomeFragment:BaseViewFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
+
+        binding?.tvChat?.setOnClickListener {
+            ARouter.getInstance().build(IMPath.CHAT_PATH).navigation()
+
+        }
 
     }
 

@@ -1,10 +1,10 @@
 package com.marshal
 
 import android.view.View
-import com.marshal.databinding.FragmentHomeBinding
+import com.marshal.baseview.BaseViewFragment
 import com.marshal.databinding.FragmentMineBinding
 
-class MineFragment:BaseViewFragment<FragmentMineBinding>() {
+class MineFragment: BaseViewFragment<FragmentMineBinding>() {
 
     override fun getResLayoutId(): Int = R.layout.fragment_mine
 
