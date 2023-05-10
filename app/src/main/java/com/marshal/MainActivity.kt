@@ -1,11 +1,55 @@
 package com.marshal
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.tabs.TabLayoutMediator
+import com.marshal.databinding.ActivityMainBinding
+import com.marshal.mainadapter.MainFragmentAdapter
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : BaseViewActivity<ActivityMainBinding>() {
+
+    private var fm: FragmentManager? = null
+    private var ft: FragmentTransaction? = null
+
+    private var mainAdapter: MainFragmentAdapter? = null
+    private var mainFragmentArray:ArrayList<Fragment> = arrayListOf()
+    private val mainArray: Array<String> = arrayOf("首页", "我的")
+
+    private var homeFragment:HomeFragment? = null
+    private var mineFragment:MineFragment? = null
+
+    override fun getResLayoutBinding(): View? {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        return binding?.root
     }
+
+    override fun initView() {
+
+        fm = supportFragmentManager
+        ft = fm?.beginTransaction()
+
+        homeFragment = HomeFragment()
+        mineFragment = MineFragment()
+
+        mainFragmentArray.add(homeFragment?:return)
+        mainFragmentArray.add(mineFragment?:return)
+
+
+        mainAdapter = MainFragmentAdapter(this)
+
+        mainAdapter?.itemList?.add(mainFragmentArray[0])
+        mainAdapter?.itemList?.add(mainFragmentArray[1])
+
+        binding?.viewPager2?.adapter = mainAdapter
+
+        TabLayoutMediator(binding?.tabLayout?:return,binding?.viewPager2?:return)
+        { tab, position ->
+        tab.text =   mainArray[position]
+        }.attach()
+
+    }
+
+
 }
