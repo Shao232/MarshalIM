@@ -8,6 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityMainBinding
 import com.marshal.mainadapter.MainFragmentAdapter
+import com.marshal.mine.MineFragment
 
 class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
@@ -19,7 +20,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     private val mainArray: Array<String> = arrayOf("首页", "我的")
 
     private var homeFragment:HomeFragment? = null
-    private var mineFragment:MineFragment? = null
+    private var mineFragment: MineFragment? = null
 
     override fun getResLayoutBinding(): View? {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,6 +28,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
+
 
         initAny()
 

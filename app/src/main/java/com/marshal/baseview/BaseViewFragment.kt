@@ -1,5 +1,6 @@
 package com.marshal.baseview
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,17 +15,20 @@ abstract class BaseViewFragment<T: ViewBinding>:Fragment() {
      */
     var binding:T? = null
 
+    var mContext:Context? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.mContext = context
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view:View? = getResLayoutBinding()
-        if(view != null) {
-            return inflater.inflate(getResLayoutId(), view as? ViewGroup,true)
-        }
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return getResLayoutBinding()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

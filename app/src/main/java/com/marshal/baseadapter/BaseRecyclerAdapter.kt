@@ -13,14 +13,18 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
 
     protected var mContext: Context? = null
 
+    var itemOnClickListener:ItemOnClickListener<E>? = null
+
     init {
         mContext = MApplication.getInstance().applicationContext
     }
 
+    fun setItemOnClickListener(clickListener:ItemOnClickListener<E>){
+        itemOnClickListener = clickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
 
-       /* val view = LayoutInflater.from(mContext).inflate(getItemLayoutResId(),parent)*/
         return onViewHolder(parent, viewType)
     }
 
@@ -29,6 +33,12 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: T, position: Int) {
+        val bean = itemList[position]
+        holder.itemView.setOnClickListener{
+            if(itemOnClickListener !=null) {
+                itemOnClickListener?.onClick(it,bean)
+            }
+        }
         bindViewHolderData(holder,position)
     }
 
