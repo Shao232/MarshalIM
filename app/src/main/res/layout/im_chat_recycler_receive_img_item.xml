@@ -8,13 +8,13 @@
     android:paddingBottom="10dp">
 
         <ImageView
-            android:id="@+id/sdvAvatar"
+            android:id="@+id/oppo_side_profile"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/icon_default_female" />
+            tools:src="@drawable/img_default_profile" />
 
         <ImageView
             android:id="@+id/sdvImg"
@@ -33,7 +33,7 @@
             android:layout_height="140dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/message_rounded_rect_line_bg"
-            app:layout_constraintStart_toEndOf="@+id/sdvAvatar"
+            app:layout_constraintStart_toEndOf="@+id/oppo_side_profile"
             app:layout_constraintTop_toTopOf="parent">
 
         </FrameLayout>
@@ -47,12 +47,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/sdvImg"
             app:layout_constraintStart_toEndOf="@+id/viewPeripheral"
             app:layout_constraintTop_toTopOf="@+id/viewPeripheral"
-            tools:visibility="visible" />
+            tools:visibility="gone"
+            android:visibility="gone"/>
 
         <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            tools:visibility="gone"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/sdvImg"
             app:layout_constraintEnd_toEndOf="@+id/sdvImg"
             app:layout_constraintStart_toStartOf="@+id/sdvImg"

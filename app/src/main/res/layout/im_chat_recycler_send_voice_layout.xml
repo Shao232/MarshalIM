@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/im_chat_content_spacing_horizontal">
+    android:paddingBottom="12dp">
 
     <ImageView
-        android:id="@+id/sdvAvatar"
+        android:id="@+id/one_self_profile"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        tools:src="@drawable/img_default_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +33,7 @@
         android:textColor="@color/white"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/sdvAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/one_self_profile"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="60''" />
 
@@ -44,22 +45,21 @@
         android:layout_marginEnd="50dp"
         android:src="@drawable/icon_chat_right"
         app:layout_constraintBottom_toBottomOf="@+id/tvVoiceView"
-        app:layout_constraintEnd_toStartOf="@id/sdvAvatar"
+        app:layout_constraintEnd_toStartOf="@id/one_self_profile"
         app:layout_constraintTop_toTopOf="@+id/tvVoiceView" />
-    <!--        android:src="@drawable/message_icon_voice_white"-->
-    <!-- app:visible="@{item.sendStatus == 0}" -->
+
     <ImageView
         android:id="@+id/ivSendMessage"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginEnd="@dimen/im_chat_half_spacing_horizontal"
         android:src="@drawable/message_icon_send_message_fail"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tvVoiceView"
         app:layout_constraintEnd_toStartOf="@+id/tvVoiceView"
         app:layout_constraintTop_toTopOf="@+id/tvVoiceView"
+        android:visibility="gone"
         tools:visibility="visible" />
-    <!--   app:visible="@{item.sendStatus == 100}" -->
+
     <ProgressBar
         android:id="@+id/ivSendMessagePb"
         style="?android:attr/progressBarStyle"
@@ -70,8 +70,8 @@
         app:layout_constraintBottom_toBottomOf="@id/tvVoiceView"
         app:layout_constraintEnd_toStartOf="@+id/tvVoiceView"
         app:layout_constraintTop_toTopOf="@+id/tvVoiceView"
-        tools:visibility="visible" />
-    <!--app:imStatus="@{item.downLoadStatus}"-->
+        tools:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyle"
@@ -83,14 +83,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvVoiceView"
         app:layout_constraintEnd_toStartOf="@+id/tvVoiceView"
         app:layout_constraintTop_toTopOf="@+id/tvVoiceView"
-        tools:visibility="visible" />
-    <!-- app:imStatus="@{item.downLoadStatus}"-->
+        tools:visibility="gone" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="5dp"
         android:layout_height="5dp"
         android:layout_marginEnd="8dp"
         android:tag="4"
+        tools:visibility="visible"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/tvVoiceView"
         app:layout_constraintEnd_toStartOf="@+id/tvVoiceView"

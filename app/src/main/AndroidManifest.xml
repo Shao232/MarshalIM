@@ -18,7 +18,7 @@
         android:theme="@style/Theme.MarshalIM"
         tools:targetApi="31">
         <activity
-            android:name=".ChatActivity"
+            android:name=".chat.ChatActivity"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:exported="false" />
         <activity
