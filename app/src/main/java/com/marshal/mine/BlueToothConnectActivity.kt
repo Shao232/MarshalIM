@@ -1,10 +1,11 @@
 package com.marshal.mine
 
 import android.Manifest
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
-import android.bluetooth.BluetoothSocket
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -69,10 +70,19 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
                 super.onClick(view, bean)
                 Log.d("TAG", "连接蓝牙")
                 Thread {
-                    var bluetoothSocket:BluetoothSocket? = null
+                    //var bluetoothSocket:BluetoothSocket? = null
                     try {
 
                         if (ActivityCompat.checkSelfPermission(
+                                context?:return@Thread,
+                                Manifest.permission.BLUETOOTH_CONNECT
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                        }
+                        blueToothAdapter?.listenUsingRfcommWithServiceRecord("",UUID.
+                        fromString("00001101-0000-1000-8000-00805F9B34FB"))
+
+                        /*if (ActivityCompat.checkSelfPermission(
                                 context?:return@Thread,
                                 Manifest.permission.BLUETOOTH_CONNECT
                             ) != PackageManager.PERMISSION_GRANTED
@@ -82,12 +92,22 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
                         fromString("00001101-0000-1000-8000-00805F9B34FB"))
 
                         if(bluetoothSocket !=null && !bluetoothSocket.isConnected) {
+                            Log.d("TAG","name ${mainLooper.thread.name}")
+                            Log.d("TAG","bluetoothSocket ${bluetoothSocket.isConnected}")
+
                             bluetoothSocket.connect()
                         }
+
+                        if(bluetoothSocket !=null && bluetoothSocket.isConnected) {
+                            Log.d("TAG","连接成功!!")
+                        }*/
+
                     }catch (ex:IOException) {
+                        Log.d("TAG","连接超时，失败!!")
+
                         ex.printStackTrace()
                     }finally {
-                        bluetoothSocket?.close()
+                       // bluetoothSocket?.close()
                     }
 
 
@@ -104,17 +124,9 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
     private fun enableBlueTooth() {
         if (blueToothAdapter?.isEnabled == false) {
 
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             //请求用户开启
-
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_SCAN
-                ) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_ADVERTISE
-                ) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
+           if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
@@ -123,6 +135,7 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
 
                 ActivityCompat.requestPermissions(this, requestPermissionsArr, 12)
             }
+            startActivityForResult(enableBtIntent, 22)
 
 
         } else {
@@ -154,16 +167,24 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 12) {
             val dataResults = grantResults.filter { it == PackageManager.PERMISSION_GRANTED }
-            Log.d("TAG", "permissions: ${permissions}")
+            Log.d("TAG", "permissions: ${permissions.forEach {Log.d("TAG",it) }}")
             if (dataResults.isNotEmpty()) {
                 Log.d("TAG", "蓝牙权限请求成功!!!!!")
-
-
             } else {
-                showToast("蓝牙没有开启!!，请打开蓝牙")
-
+                Log.d("TAG", "dataResults is empty ")
             }
 
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 22) {
+            if(resultCode == Activity.RESULT_OK) {
+                Log.d("TAG","请求成功 ")
+            }else {
+                Log.d("TAG","请求失败 ")
+            }
         }
     }
 
