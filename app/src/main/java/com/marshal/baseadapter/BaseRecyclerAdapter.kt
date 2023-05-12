@@ -13,13 +13,13 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
 
     protected var mContext: Context? = null
 
-    var itemOnClickListener:ItemOnClickListener<E>? = null
+    var itemOnClickListener:AdapterItemOnClickListener<E>? = null
 
     init {
         mContext = MApplication.getInstance().applicationContext
     }
 
-    fun setItemOnClickListener(clickListener:ItemOnClickListener<E>){
+    fun setAdapterItemOnClickListener(clickListener:AdapterItemOnClickListener<E>){
         itemOnClickListener = clickListener
     }
 

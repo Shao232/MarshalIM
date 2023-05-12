@@ -5,31 +5,19 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import android.view.View
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.MINE_TO_BLUE_TOOTH
-import com.marshal.baseadapter.ItemOnClickListener
+import com.marshal.baseadapter.AdapterItemOnClickListener
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityBlueToothConnectBinding
 import com.marshal.mine.adapter.BlueToothCustomAdapter
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.Subject
 import java.io.IOException
 import java.util.UUID
 
@@ -76,7 +64,7 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
 
 
 
-        adapter?.setItemOnClickListener(object : ItemOnClickListener<BluetoothDevice> {
+        adapter?.setAdapterItemOnClickListener(object : AdapterItemOnClickListener<BluetoothDevice> {
             override fun onClick(view: View, bean: BluetoothDevice) {
                 super.onClick(view, bean)
                 Log.d("TAG", "连接蓝牙")
@@ -96,9 +84,6 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
                         if(bluetoothSocket !=null && !bluetoothSocket.isConnected) {
                             bluetoothSocket.connect()
                         }
-
-                        
-
                     }catch (ex:IOException) {
                         ex.printStackTrace()
                     }finally {
