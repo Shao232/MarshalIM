@@ -26,4 +26,9 @@
     <color name="im_chat_input_border_color">#B2B2B2</color>
     <color name="im_chat_input_hint_color">#B2B2B2</color>
 
+    <color name="gray_line">#c3c3c3</color>
+
+    <color name="text_color_black">#FF000000</color>
+
+
 </resources>

@@ -55,6 +55,21 @@
             android:paddingStart="30dp"
             android:paddingEnd="0dp"/>
 
+        <TextView
+            android:id="@+id/btn_to_upd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="UDP连接"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="start|center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/iv_user_profile"
+            app:layout_constraintStart_toStartOf="@id/iv_user_profile"
+            android:layout_marginTop="40dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="0dp"/>
 
     </LinearLayout>
 

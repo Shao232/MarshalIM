@@ -8,4 +8,7 @@ object IMPath {
     //连接蓝牙页
     const val MINE_TO_BLUE_TOOTH = "/mine/bluetooth"
 
+    //连接upd页
+    const val MINE_TO_CONNECT_UDP = "/mine/connectUdp"
+
 }

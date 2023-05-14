@@ -19,13 +19,14 @@ class MineFragment: BaseViewFragment<FragmentMineBinding>() {
 
     override fun initView() {
 
-        binding?.btnToBlueTooth?.setOnClickListener(object :View.OnClickListener{
-            override fun onClick(v: View?) {
+        binding?.btnToBlueTooth?.setOnClickListener {
+            ARouter.getInstance().build(IMPath.MINE_TO_BLUE_TOOTH).navigation(mContext)
+        }
 
-                ARouter.getInstance().build(IMPath.MINE_TO_BLUE_TOOTH).navigation(mContext)
-            }
+        binding?.btnToUpd?.setOnClickListener {
+            ARouter.getInstance().build(IMPath.MINE_TO_CONNECT_UDP).navigation(mContext)
+        }
 
-        })
     }
 
 

@@ -5,6 +5,8 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothServerSocket
+import android.bluetooth.BluetoothSocket
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -20,6 +22,8 @@ import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityBlueToothConnectBinding
 import com.marshal.mine.adapter.BlueToothCustomAdapter
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.UUID
 
 
@@ -34,8 +38,14 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
     private var requestPermissionsArr: Array<String> = arrayOf(
         Manifest.permission.BLUETOOTH_SCAN,
         Manifest.permission.BLUETOOTH_ADVERTISE,
-        Manifest.permission.BLUETOOTH_CONNECT
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
     )
+
+    // Unique UUID for this application
+    private val MY_UUID_FIRST = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+    private val MY_UUID_SECOND = UUID.fromString("0be27c05-cf42-4367-85ff-00f05f566536")
 
 
     override fun getResLayoutBinding(): View? {
@@ -63,14 +73,31 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
             enableBlueTooth()
         }
 
-
+        if(blueToothAdapter!=null && blueToothAdapter?.isEnabled == true) {
+            val scanner = blueToothAdapter?.bluetoothLeScanner
+            if(scanner !=null ) {
+                Log.d("TAG", "此设备支持ble")
+            }else{
+                Log.d("TAG", "此设备不支持ble")
+            }
+        }
 
         adapter?.setAdapterItemOnClickListener(object : AdapterItemOnClickListener<BluetoothDevice> {
             override fun onClick(view: View, bean: BluetoothDevice) {
                 super.onClick(view, bean)
                 Log.d("TAG", "连接蓝牙")
+                if(blueToothAdapter?.isEnabled == false) {
+
+                    return
+                }
+
                 Thread {
-                    //var bluetoothSocket:BluetoothSocket? = null
+                    var blueServerSocket: BluetoothSocket? = null
+                    var blueSocket: BluetoothSocket ? = null
+
+                    var tmpIn: InputStream? = null
+                    var tmpOut: OutputStream? = null
+
                     try {
 
                         if (ActivityCompat.checkSelfPermission(
@@ -79,8 +106,50 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
                             ) != PackageManager.PERMISSION_GRANTED
                         ) {
                         }
-                        blueToothAdapter?.listenUsingRfcommWithServiceRecord("",UUID.
-                        fromString("00001101-0000-1000-8000-00805F9B34FB"))
+
+                        Log.d("TAG","连接的设备 ${bean.name}")
+                        blueServerSocket = bean.createRfcommSocketToServiceRecord(MY_UUID_SECOND)
+
+                        try {
+                            // This is a blocking call and will only return on a
+                            // successful connection or an exception
+                            blueServerSocket.connect()
+                        } catch (e: IOException) {
+                            Log.e("TAG","error: connect() failed  ${e.message}")
+
+                            blueServerSocket.close()
+                        }
+
+                        if(blueServerSocket.isConnected) {
+                            tmpIn = blueServerSocket?.inputStream
+                            tmpOut = blueServerSocket?.outputStream
+
+                            val outString = "hello,i'm outputStream"
+                            val outByteData:ByteArray = outString.toByteArray()
+                            tmpOut?.write(outByteData)
+
+                            val buffer = ByteArray(1024)
+                            var bytes: Int = 0
+
+                            try {
+                                // Read from the InputStream
+                                bytes = tmpIn?.read(buffer) ?: 0
+                                if(bytes != 0) {
+                                    val data =  String(buffer)
+                                    Log.d("TAG","输出: ${data}")
+                                }
+
+                                // Send the obtained bytes to the UI Activity
+
+                            } catch (e: IOException) {
+                                Log.e("TAG","读取失败")
+                            }
+                        }else {
+                            Log.e("TAG","connect失败 ")
+                        }
+
+
+
 
                         /*if (ActivityCompat.checkSelfPermission(
                                 context?:return@Thread,
@@ -125,37 +194,47 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
         if (blueToothAdapter?.isEnabled == false) {
 
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            //请求用户开启
-           if (ActivityCompat.checkSelfPermission(
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.BLUETOOTH_CONNECT
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.d("TAG", "请求蓝牙")
+
+                    ActivityCompat.requestPermissions(this, requestPermissionsArr, 12)
+                }
+            }else {
+                //请求用户开启
+
+                startActivityForResult(enableBtIntent, 22)
+            }
+
+
+        }
+
+        getBlueToothDevices()
+
+    }
+
+    private fun getBlueToothDevices() {
+        if (blueToothAdapter != null) {
+            if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                Log.d("TAG", "请求蓝牙")
-
-                ActivityCompat.requestPermissions(this, requestPermissionsArr, 12)
             }
-            startActivityForResult(enableBtIntent, 22)
+            val setDevices = blueToothAdapter?.bondedDevices
+            if (setDevices?.isNotEmpty() == true) {
+                for (item in setDevices) {
 
+                    adapter?.itemList?.add(item)
 
-        } else {
-            if (blueToothAdapter != null) {
-                val setDevices = blueToothAdapter?.bondedDevices
-                if (setDevices?.isNotEmpty() == true) {
-                    for (item in setDevices) {
-
-                        adapter?.itemList?.add(item)
-
-                    }
                 }
-
-                adapter?.notifyDataSetChanged()
-
-
             }
-
+            adapter?.notifyDataSetChanged()
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -173,7 +252,6 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
             } else {
                 Log.d("TAG", "dataResults is empty ")
             }
-
         }
     }
 
@@ -182,8 +260,10 @@ class BlueToothConnectActivity : BaseViewActivity<ActivityBlueToothConnectBindin
         if(requestCode == 22) {
             if(resultCode == Activity.RESULT_OK) {
                 Log.d("TAG","请求成功 ")
+                getBlueToothDevices()
             }else {
                 Log.d("TAG","请求失败 ")
+                showToast("请打开蓝牙")
             }
         }
     }

@@ -5,28 +5,18 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <!-- 静态声明+动态申请存储权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 静态声明+动态申请存储权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- 使用蓝牙的权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <!-- 扫描蓝牙设备或者操作蓝牙设置 -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 使用蓝牙的权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" /> <!-- 扫描蓝牙设备或者操作蓝牙设置 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-
-    <!--模糊定位权限，仅作用于6.0+-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--精准定位权限，仅作用于6.0+-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 模糊定位权限，仅作用于6.0+ -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 精准定位权限，仅作用于6.0+ -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
- <!--   <uses-permission
-        android:name="android.permission.BLUETOOTH_SCAN"
-        android:usesPermissionFlags="neverForLocation"
-        tools:targetApi="s" />-->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".MApplication"
@@ -40,9 +30,11 @@
         android:theme="@style/Theme.MarshalIM"
         tools:targetApi="31">
         <activity
+            android:name=".mine.UDPConnectActivity"
+            android:exported="false" />
+        <activity
             android:name=".mine.BlueToothConnectActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".chat.ChatActivity"
             android:exported="false"
