@@ -7,4 +7,6 @@
     <style name="message_tv_style_subtitle" parent="@android:style/Widget.TextView">
 
     </style>
+
+
 </resources>

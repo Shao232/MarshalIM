@@ -2,9 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
 
     <color name="purple_200">#FFBB86FC</color>
-    <color name="transparent">#00000000</color>
+
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
@@ -26,8 +27,9 @@
     <color name="im_chat_input_border_color">#B2B2B2</color>
     <color name="im_chat_input_hint_color">#B2B2B2</color>
 
+    <color name="black_mode">#FF000000</color>
+    <color name="bg_mode_white">#EAE9E9</color>
     <color name="gray_line">#c3c3c3</color>
-
     <color name="text_color_black">#FF000000</color>
 
 

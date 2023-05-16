@@ -10,18 +10,20 @@
     android:orientation="vertical"
     tools:context=".chat.ChatActivity">
 
+    <include layout="@layout/include_toolbar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_im_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/wrapperInputBox"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" />
 
     <include
         android:id="@+id/wrapperInputBox"
         layout="@layout/include_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 

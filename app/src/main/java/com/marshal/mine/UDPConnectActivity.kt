@@ -63,19 +63,24 @@ class UDPConnectActivity : BaseViewActivity<ActivityUdpconnectctivityBinding>() 
 
     override fun onDestroy() {
         super.onDestroy()
-        if(socketSend?.isClosed == false) {
+        if(socketSend!= null && socketSend?.isClosed == false) {
             socketSend?.close()
+            socketSend = null
         }
 
-        if(socketReceive?.isClosed == false) {
+        if(socketReceive != null && socketReceive?.isClosed == false) {
             socketReceive?.close()
+            socketReceive = null
         }
     }
 
     private fun createSend(messageString:String) {
         Thread {
             try {
-                socketSend = DatagramSocket()
+                if (socketSend == null || socketSend?.isClosed == true) {
+                    socketSend = DatagramSocket()
+                }
+
                 val address = InetAddress.getByName(if(ipAddress == miIPAddress) huaWeiIPAddress else miIPAddress)
                 val data: ByteArray = messageString.toByteArray()
                 val packet = DatagramPacket(data, data.size, address, port)
@@ -88,22 +93,27 @@ class UDPConnectActivity : BaseViewActivity<ActivityUdpconnectctivityBinding>() 
 
     private fun createReceive() {
         Thread{
-            val buffer = ByteArray(1024)
-            socketReceive = DatagramSocket(port)
-            val packet = DatagramPacket(buffer, buffer.size)
-
             Looper.prepare()
 
+            val buffer = ByteArray(1024)
+            if (socketReceive == null || socketReceive?.isClosed == true) {
+                socketReceive = DatagramSocket(port)
+            }
+
+            val packet = DatagramPacket(buffer, buffer.size)
+
             while (true) {
-                socketReceive?.receive(packet)
-                val message = String(packet.data, 0, packet.length)
-                // 处理接收到的消息
-                Log.d("TAG","receive: $message")
-                val handlerMessage = handler?.obtainMessage()
-                val data = Bundle()
-                data.putString("receiveMsg",message)
-                handlerMessage?.data = data
-                handler?.sendMessage(handlerMessage?:return@Thread)
+                if(socketReceive?.isConnected == true) {
+                    socketReceive?.receive(packet)
+                    val message = String(packet.data, 0, packet.length)
+                    // 处理接收到的消息
+                    Log.d("TAG","receive: $message")
+                    val handlerMessage = handler?.obtainMessage()
+                    val data = Bundle()
+                    data.putString("receiveMsg",message)
+                    handlerMessage?.data = data
+                    handler?.sendMessage(handlerMessage?:return@Thread)
+                }
 
             }
 
