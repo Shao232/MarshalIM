@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.marshal.EmojiTextView
+    <com.marshal.widget.EmojiTextView
         android:id="@+id/emoji_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

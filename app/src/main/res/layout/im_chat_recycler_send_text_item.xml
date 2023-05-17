@@ -64,7 +64,7 @@
             android:padding="12dp"
             >
 
-            <com.marshal.EmojiTextView
+            <com.marshal.widget.EmojiTextView
                 android:id="@+id/tvTextContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

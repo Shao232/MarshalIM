@@ -10,6 +10,7 @@ import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.util.Log
 import com.marshal.MApplication
+import okhttp3.internal.platform.android.AndroidLogHandler.flush
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -89,9 +90,9 @@ class RecorderService : Service() {
                 with(recorder ?: return) {
                     setAudioSource(MediaRecorder.AudioSource.MIC)
                     //3gp
-                    setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+                    setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
+                    setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
                     setOutputFile(createRecordFile())
-                    setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
                     try {
                         prepare()
                     } catch (e: IOException) {
@@ -109,8 +110,8 @@ class RecorderService : Service() {
             if (!file.exists()) {
                 file.mkdirs()
             }
-            Log.d("TAG",recordPath + "/${getRecordTime()}.3gp")
-            return recordPath + "/${getRecordTime()}.3gp"
+            Log.d("TAG",recordPath + "/${getRecordTime()}.m4a")
+            return recordPath + "/${getRecordTime()}.m4a"
         }
 
         private fun getRecordTime(): String {
