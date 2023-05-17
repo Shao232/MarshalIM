@@ -23,6 +23,8 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         Manifest.permission.CALL_PHONE
     )
 
+    private var toRecorderServiceIntent:Intent? = null
+
     override fun getResLayoutBinding(): View? {
         binding = ActivityImphoneBinding.inflate(layoutInflater)
         return binding?.root
@@ -30,27 +32,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
 
     override fun initView() {
 
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.RECORD_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.CALL_PHONE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                Log.d("TAG", "请求打电话的权限")
-
-                ActivityCompat.requestPermissions(this, permissionArray, 12)
-            }
-
-        //createFile()
-
-        val intent = Intent(this@IMPhoneActivity, RecorderService::class.java)
-        startService(intent)
-
         binding?.btnCallPhone?.setOnClickListener {
-
             val phoneNumber = binding?.editPhoneNumber?.text.toString()
             if(PhoneUtils.checkPhone(phoneNumber)) {
                 val phoneStr = "tel:$phoneNumber"
@@ -60,36 +42,37 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             }
         }
 
-    }
+        binding?.btnRecorderStart?.setOnClickListener {
 
- /*   private fun createFile() {
-        val path = createRecordFile()
-        val file = File(path)
-        if(file.exists()) {
-            Log.d("TAG","文件创建成功")
-        }
-        Log.d("TAG","$path")
-    }
-
-    private fun createRecordFile():String {
-        //val filePath = Environment.getExternalStorageDirectory().absolutePath
-        val filePath = context?.externalCacheDir
-        val recordPath = "${filePath}/MarshalIM/recorder"
-        val file = File(recordPath)
-        if (!file.exists()) {
-            //mkdirs可以创建多级目录
-            file.mkdirs()
         }
 
-        Log.d("TAG","$file")
-        return recordPath + "/${getRecordTime()}.3gp"
+        binding?.btnRecorderEnd?.setOnClickListener {
+
+        }
+
     }
 
-    private fun getRecordTime(): String {
-        val simpleFormat = SimpleDateFormat("yyyy-MM-dd-HHmmss")
-        val date = Date()
-        return simpleFormat.format(date)
-    }*/
+    override fun onResume() {
+        super.onResume()
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("TAG", "请求打电话的权限")
+
+            ActivityCompat.requestPermissions(this, permissionArray, 12)
+        }else {
+            toRecorderServiceIntent = Intent(this@IMPhoneActivity, RecorderService::class.java)
+            startService(toRecorderServiceIntent)
+        }
+    }
+
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -105,6 +88,8 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             } else {
                 Log.d("TAG", "dataResults is empty ")
             }
+            toRecorderServiceIntent = Intent(this@IMPhoneActivity, RecorderService::class.java)
+            startService(toRecorderServiceIntent)
         }
 
     }
