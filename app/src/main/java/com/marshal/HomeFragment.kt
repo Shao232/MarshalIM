@@ -5,7 +5,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.marshal.baseview.BaseViewFragment
 import com.marshal.databinding.FragmentHomeBinding
 
-class HomeFragment: BaseViewFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
     override fun getResLayoutId(): Int = R.layout.fragment_home
 
     override fun getResLayoutBinding(): View? {
@@ -19,6 +19,11 @@ class HomeFragment: BaseViewFragment<FragmentHomeBinding>() {
             ARouter.getInstance().build(IMPath.CHAT_PATH).navigation()
 
         }
+
+        binding?.tvPhone?.setOnClickListener {
+            ARouter.getInstance().build(IMPath.PHONE_PAGE).navigation()
+        }
+
 
     }
 

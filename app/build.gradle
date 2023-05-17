@@ -82,6 +82,8 @@ dependencies {
     implementation 'com.alibaba:arouter-api:1.5.2'
     kapt 'com.alibaba:arouter-compiler:1.5.2'
     implementation 'com.tencent:mmkv:1.2.14'
+    //第三方支持修改状态栏
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -11,4 +11,6 @@ object IMPath {
     //连接upd页
     const val MINE_TO_CONNECT_UDP = "/mine/connectUdp"
 
+    const val PHONE_PAGE = "/phone/page"
+
 }
