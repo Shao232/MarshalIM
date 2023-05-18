@@ -2,6 +2,8 @@ package com.marshal.utils
 
 import com.marshal.MApplication
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 object FileUtils {
 
@@ -17,6 +19,17 @@ object FileUtils {
             file.mkdirs()
         }
         return file.absolutePath
+    }
+
+    fun createRecordFile(): String {
+        val recordPath = getRecordFilePath()
+        return recordPath + "/${getRecordTime()}.m4a"
+    }
+
+    private fun getRecordTime(): String {
+        val simpleFormat = SimpleDateFormat("yyyyMMdd-HHmmss")
+        val date = Date()
+        return simpleFormat.format(date)
     }
 
     /**

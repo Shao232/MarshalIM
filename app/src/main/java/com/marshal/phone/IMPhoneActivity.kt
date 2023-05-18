@@ -6,15 +6,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.PHONE_PAGE
+import com.marshal.MApplication
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityImphoneBinding
 import com.marshal.utils.FileUtils
@@ -37,6 +42,9 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
     private var recorderFilePath: File? = null
 
     private var mediaPlayer: MediaPlayer? = null
+
+    private var telephoneManager: TelephonyManager? = null
+    private var audioManager:AudioManager? = null
 
     override fun getResLayoutBinding(): View? {
         binding = ActivityImphoneBinding.inflate(layoutInflater)
@@ -90,6 +98,11 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             false
         }
 
+        telephoneManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+
+
 
         getRecorderFileLocal()
 
@@ -112,6 +125,9 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
     }
 
     private fun startRecorderService() {
+        val filePath = FileUtils.createRecordFile()
+        telephoneManager?.listen(MyListener(filePath), PhoneStateListener.LISTEN_CALL_STATE)
+
         conn = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 Log.d("TAG", "service -- onServiceConnected")
@@ -197,6 +213,110 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         }
 
     }
+
+    private inner class MyListener(recordFile: String) : PhoneStateListener() {
+
+        private var recorder: MediaRecorder? = null
+        private var outPutFilePath = recordFile
+        private var recorderRunning:Boolean = false
+        //计数器
+        private var recorderStart: Int = 0
+
+        init {
+            recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                MediaRecorder(MApplication.getInstance().applicationContext)
+            } else {
+                MediaRecorder()
+            }
+        }
+
+        override fun onCallStateChanged(state: Int, phoneNumber: String?) {
+            super.onCallStateChanged(state, phoneNumber)
+            when (state) {
+                TelephonyManager.CALL_STATE_IDLE -> {
+                    Log.d("TAG", "空闲状态 开始录音的计数器:${recorderStart}")
+                    if (recorderStart > 0) {
+                        recorderStart = 0
+                        stopRecording()
+                    }
+                }
+
+                TelephonyManager.CALL_STATE_RINGING -> {
+                    //有来电时
+                    Log.d("TAG", "响铃状态 录音计数器:${recorderStart}")
+                }
+
+                TelephonyManager.CALL_STATE_OFFHOOK -> {
+                    recorderStart++
+                    Log.d("TAG", "接听状态 录音计数器:${recorderStart}")
+                    if (recorderStart == 1) {
+                        try {
+                            if(!recorderRunning) {
+                                Log.d("TAG","接听状态  准备录音:${recorderRunning}")
+                                initRecordStatus()
+                            }
+
+//                            if (runnable?.getRecorderRunning() == false) {
+//                                Log.d("TAG", "接听状态 线程中是正在录音:${runnable?.getRecorderRunning()}")
+//                                thread?.start()
+//                            }
+                        } catch (e: Exception) {
+                            Log.e("TAG", "CALL_STATE_OFFHOOK error:${e.printStackTrace()}")
+                        }
+                    }
+                }
+
+                else -> {
+                    Log.d("TAG", "state :${state}")
+                }
+            }
+        }
+
+        private fun initRecordStatus() {
+            if (recorder != null && !recorderRunning) {
+                // 将音频模式设置为通信模式，关闭扬声器
+                audioManager?.mode = AudioManager.MODE_IN_CALL
+                audioManager?.isSpeakerphoneOn = false
+
+                with(recorder ?: return) {
+                    try {
+                        Log.d("TAG","running 开始准备录音 ~~~")
+                        recorderRunning = true
+                        setAudioSource(MediaRecorder.AudioSource.MIC)
+                        //3gp
+                        setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+                        setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+                        //比特率为16Kbps，采样率为8kHz
+                        setAudioEncodingBitRate(16 * 1000)
+                        setAudioSamplingRate(8000)
+                        setOutputFile(outPutFilePath)
+                        prepare()
+                        start()
+                        Log.d("TAG","start 开始录音 ~~~")
+                    } catch (e: Exception) {
+                        Log.e("TAG", "运行 报错:${e.printStackTrace()}")
+                    }
+                }
+            }
+        }
+
+        private fun stopRecording() {
+            try {
+                recorderRunning = false
+                // 重置音频模式，打开扬声器
+                audioManager?.mode = AudioManager.MODE_NORMAL
+                audioManager?.isSpeakerphoneOn = true
+                with(recorder ?: return) {
+                    stop()
+                    release()
+                    recorder = null
+                }
+            } catch (e: Exception) {
+                Log.e("TAG", "CALL_STATE_IDLE msg:${e.message}")
+            }
+        }
+    }
+
 
 
 }
