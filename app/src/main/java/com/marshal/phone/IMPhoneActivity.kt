@@ -72,6 +72,11 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             }
         }
 
+        binding?.btnRecorderClean?.setOnClickListener {
+            val folder = File(FileUtils.getRecordFilePath())
+            FileUtils.clearFolder(folder)
+        }
+
         mediaPlayer?.setOnCompletionListener {
             Log.d("TAG", "player 播放完成")
             it.reset()
@@ -83,6 +88,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
 
             false
         }
+
 
         getRecorderFileLocal()
 
@@ -112,13 +118,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
                     service as RecorderService.RecorderBinder
                 recorderService = binder.getService()
                 getRecorderFileLocal()
-                try {
-                    mediaPlayer?.setDataSource(recorderFilePath?.absolutePath)
-                } catch (e: Exception) {
-                    Log.e("TAG", "onServiceConnected play:${e.message}")
-                }
                 binding?.tvShowRecorderFile?.text = "文件:${recorderFilePath?.name}"
-                Log.d("TAG", "activity path:${recorderFilePath?.name}")
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
@@ -142,21 +142,22 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         stopService(toRecorderServiceIntent)
     }
 
+    /**
+     * 获取录音文件
+     */
     private fun getRecorderFileLocal() {
         val folder = File(FileUtils.getRecordFilePath())
         if (folder.exists()) {
             val files: Array<File> = folder.listFiles() as Array<File>
-            val filesList = files.filter { it.length() > 0 } as ArrayList
-            var fileShow: File? = null
-            val size = filesList.size
-            Log.d("TAG", "length:$size")
-            for ((index, file) in filesList.withIndex()) {
+            if(files.isNullOrEmpty()) {
+                return
+            }
 
-                val nextIndex = if (index + 1 < size) {
-                    index + 1
-                } else {
-                    index
-                }
+            val filesList = files.filter { it.length() > 0 } as ArrayList
+            var fileShow: File? = filesList[0]
+            val size = filesList.size
+            for ((index, file) in filesList.withIndex()) {
+                val nextIndex = if (index + 1 < size) index + 1 else index
 
                 if (index != nextIndex) {
                     fileShow = if (filesList[index].length() >= filesList[nextIndex].length()) {
@@ -167,9 +168,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
                 }
             }
 
-            Log.d("TAG", "最终显示的file:${fileShow?.absolutePath}")
             recorderFilePath = fileShow
-
             if (recorderFilePath?.absolutePath?.isNotEmpty() == true) {
                 binding?.tvShowRecorderFile?.text = "文件:${recorderFilePath?.name}"
             }
@@ -181,7 +180,6 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         super.onStop()
         stopRecorderService()
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
