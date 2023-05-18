@@ -81,6 +81,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             Log.d("TAG", "player 播放完成")
             it.reset()
             it.release()
+            mediaPlayer = null
         }
 
         mediaPlayer?.setOnErrorListener { mp, what, extra ->
@@ -175,9 +176,8 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         }
     }
 
-
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         stopRecorderService()
     }
 

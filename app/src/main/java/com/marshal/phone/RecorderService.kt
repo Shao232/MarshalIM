@@ -48,7 +48,6 @@ class RecorderService : Service() {
         telephoneManager?.listen(
             MyListener(recorderThreadRun!!), PhoneStateListener.LISTEN_CALL_STATE
         )
-
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -111,30 +110,6 @@ class RecorderService : Service() {
         }
     }
 
-    /*  private fun initRecordStatus() {
-          if (recorder == null) {
-              recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                  MediaRecorder(MApplication.getInstance().applicationContext)
-              } else {
-                  MediaRecorder()
-              }
-
-              with(recorder ?: return) {
-                  try {
-                      setAudioSource(MediaRecorder.AudioSource.MIC)
-                      //3gp
-                      setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-                      setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-                      outPutFilePath = createRecordFile()
-                      setOutputFile(outPutFilePath)
-                      prepare()
-                  } catch (e: IOException) {
-                      Log.e("TAG", "报错:${e.message}")
-                  }
-              }
-          }
-      }*/
-
     private fun createRecordFile(): String {
         val recordPath = FileUtils.getRecordFilePath()
         return recordPath + "/${getRecordTime()}.m4a"
@@ -158,7 +133,6 @@ class RecorderService : Service() {
         init {
             thread = Thread(runnable)
         }
-
 
         override fun onCallStateChanged(state: Int, phoneNumber: String?) {
             super.onCallStateChanged(state, phoneNumber)
