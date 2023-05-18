@@ -16,7 +16,8 @@
         android:hint="请输入电话号码"
         android:textColorHint="@color/black"
         android:inputType="phone"
-        />
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"/>
 
     <Button
         android:id="@+id/btn_call_phone"
@@ -28,25 +29,29 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_phone_number"
         />
 
-    <Button
-        android:id="@+id/btn_recorder_start"
+    <TextView
+        android:id="@+id/tv_show_recorder_file"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="开始录音"
-        android:textSize="18dp"
-        android:textColor="@color/text_color_black"
         app:layout_constraintTop_toBottomOf="@+id/btn_call_phone"
-        />
+        tools:text="录音文件地址"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"/>
 
     <Button
-        android:id="@+id/btn_recorder_end"
+        android:id="@+id/btn_recorder_play"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="结束录音"
+        android:text="播放录音"
         android:textSize="18dp"
         android:textColor="@color/text_color_black"
-        app:layout_constraintTop_toBottomOf="@+id/btn_recorder_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_show_recorder_file"
         />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

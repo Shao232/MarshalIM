@@ -1,31 +1,25 @@
 package com.marshal.phone
 
-import android.Manifest
-import android.app.Activity
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.media.MediaRecorder
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
-import android.telephony.PhoneStateListener
-import android.telephony.TelephonyManager
-import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import com.marshal.MApplication
-import com.marshal.R
-import java.io.File
-import java.io.IOException
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.Date
+    import android.app.NotificationChannel
+    import android.app.NotificationManager
+    import android.app.Service
+    import android.content.Context
+    import android.content.Intent
+    import android.graphics.Color
+    import android.media.MediaRecorder
+    import android.os.Binder
+    import android.os.Build
+    import android.os.IBinder
+    import android.telephony.PhoneStateListener
+    import android.telephony.TelephonyManager
+    import android.util.Log
+    import androidx.core.app.NotificationCompat
+    import com.marshal.MApplication
+    import com.marshal.utils.FileUtils
+    import java.io.IOException
+    import java.text.SimpleDateFormat
+    import java.util.Date
+
 
 class RecorderService : Service() {
 
@@ -33,6 +27,10 @@ class RecorderService : Service() {
     private var recorder: MediaRecorder? = null
 
     private var recorderBinder:RecorderBinder? = null
+    private var outPutFilePath = ""
+
+
+    fun getOutPutFilePath() = outPutFilePath
 
     //使用内部类访问外部类时，需要使用 inner 关键字来声明内部类，否则无法访问外部类的成员变量和方法
     inner class RecorderBinder : Binder() {
@@ -45,7 +43,6 @@ class RecorderService : Service() {
         super.onCreate()
         Log.d("TAG","service -- onCreate")
 
-
         telephoneManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         initRecordStatus()
     }
@@ -56,21 +53,38 @@ class RecorderService : Service() {
             telephoneManager?.listen(MyListener(recorder!!), PhoneStateListener.LISTEN_CALL_STATE)
         }
 
-        val notificationBuilder :NotificationCompat.Builder = NotificationCompat.Builder(this,"")
+        val notificationChannelId = "notification_channel_id_01"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager =  getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            //用户可见的通道名称
+            //用户可见的通道名称
+          val channelName = "Foreground Service Notification"
+            //通道的重要程度
+            //通道的重要程度
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val notificationChannel =
+                NotificationChannel(notificationChannelId, channelName, importance)
+            notificationChannel.description = "Channel description"
+            //LED灯
+            //LED灯
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            //震动
+            //震动
+            notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
+            notificationChannel.enableVibration(true)
+            manager.createNotificationChannel(notificationChannel)
+        }
+
+        val notificationBuilder :NotificationCompat.Builder = NotificationCompat.Builder(this,notificationChannelId)
             .setAutoCancel(true)
         notificationBuilder.setContentText("Text")
         notificationBuilder.setContentTitle("Title")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val manager =  getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val channelId = "channelId" + System.currentTimeMillis()
-            val channel =  NotificationChannel(channelId, resources.getString(R.string.app_name),
-                NotificationManager.IMPORTANCE_HIGH)
-            manager.createNotificationChannel(channel)
-            notificationBuilder.setChannelId(channelId)
-        }
         notificationBuilder.setContentIntent(null)
-        startForeground(222, notificationBuilder.build())
+        val notification = notificationBuilder.build()
+        startForeground(222, notification)
 
 
         return super.onStartCommand(intent, flags, startId)
@@ -111,7 +125,8 @@ class RecorderService : Service() {
                     //3gp
                     setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
                     setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-                    setOutputFile(createRecordFile())
+                    outPutFilePath = createRecordFile()
+                    setOutputFile(outPutFilePath)
                     prepare()
                 } catch (e: IOException) {
                     Log.e("TAG", "报错:${e.message}")
@@ -121,19 +136,13 @@ class RecorderService : Service() {
     }
 
     private fun createRecordFile():String {
-        val context = MApplication.getInstance().applicationContext
-        val filePath = context.externalCacheDir
-        val recordPath = "${filePath}/MarshalIM/recorder"
-        val file = File(recordPath)
-        if (!file.exists()) {
-            file.mkdirs()
-        }
+        val recordPath = FileUtils.getRecordFilePath()
         Log.d("TAG",recordPath + "/${getRecordTime()}.m4a")
         return recordPath + "/${getRecordTime()}.m4a"
     }
 
     private fun getRecordTime(): String {
-        val simpleFormat = SimpleDateFormat("yyyy-MM-dd-HHmmss")
+        val simpleFormat = SimpleDateFormat("yyyyMMdd-HHmmss")
         val date = Date()
         return simpleFormat.format(date)
     }
