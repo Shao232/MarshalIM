@@ -2,19 +2,25 @@ package com.marshal.phone
 
 import android.Manifest
 import android.app.Activity
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.marshal.MApplication
+import com.marshal.R
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
@@ -26,24 +32,19 @@ class RecorderService : Service() {
     private var telephoneManager:TelephonyManager? = null
     private var recorder: MediaRecorder? = null
 
-    private var permissionArray:Array<String> = arrayOf(
-        Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.RECORD_AUDIO,
-    )
+    private var recorderBinder:RecorderBinder? = null
+
+    //使用内部类访问外部类时，需要使用 inner 关键字来声明内部类，否则无法访问外部类的成员变量和方法
+    inner class RecorderBinder : Binder() {
+        fun getService():RecorderService{
+            return this@RecorderService
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
         Log.d("TAG","service -- onCreate")
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.RECORD_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d("TAG", "请求录音的权限")
 
-            ActivityCompat.requestPermissions(MApplication.getInstance().applicationContext as Activity,
-                permissionArray, 12)
-        }
 
         telephoneManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         initRecordStatus()
@@ -55,17 +56,45 @@ class RecorderService : Service() {
             telephoneManager?.listen(MyListener(recorder!!), PhoneStateListener.LISTEN_CALL_STATE)
         }
 
+        val notificationBuilder :NotificationCompat.Builder = NotificationCompat.Builder(this,"")
+            .setAutoCancel(true)
+        notificationBuilder.setContentText("Text")
+        notificationBuilder.setContentTitle("Title")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager =  getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channelId = "channelId" + System.currentTimeMillis()
+            val channel =  NotificationChannel(channelId, resources.getString(R.string.app_name),
+                NotificationManager.IMPORTANCE_HIGH)
+            manager.createNotificationChannel(channel)
+            notificationBuilder.setChannelId(channelId)
+        }
+        notificationBuilder.setContentIntent(null)
+        startForeground(222, notificationBuilder.build())
+
+
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
         Log.d("TAG","service -- onBind")
-        return null
+        recorderBinder = RecorderBinder()
+        return recorderBinder
+    }
+
+    override fun onRebind(intent: Intent?) {
+        super.onRebind(intent)
+        Log.d("TAG","service -- onRebind")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d("TAG","service -- onDestroy")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        }else {
+            stopForeground(true)
+        }
     }
 
     private fun initRecordStatus(){
@@ -169,5 +198,7 @@ class RecorderService : Service() {
             }
         }
     }
+
+
 
 }

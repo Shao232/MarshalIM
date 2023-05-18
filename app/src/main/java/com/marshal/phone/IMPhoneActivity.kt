@@ -1,14 +1,26 @@
 package com.marshal.phone
 
 import android.Manifest
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
+import androidx.work.WorkerParameters
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.PHONE_PAGE
+import com.marshal.MApplication
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityImphoneBinding
 import com.marshal.utils.PhoneUtils
@@ -24,6 +36,9 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
     )
 
     private var toRecorderServiceIntent:Intent? = null
+    private var conn: ServiceConnection? = null
+    private var recorderService:RecorderService? = null
+
 
     override fun getResLayoutBinding(): View? {
         binding = ActivityImphoneBinding.inflate(layoutInflater)
@@ -50,6 +65,9 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
 
         }
 
+
+
+
     }
 
     override fun onResume() {
@@ -67,11 +85,40 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
 
             ActivityCompat.requestPermissions(this, permissionArray, 12)
         }else {
-            toRecorderServiceIntent = Intent(this@IMPhoneActivity, RecorderService::class.java)
-            startService(toRecorderServiceIntent)
+            startRecorderService()
         }
     }
 
+    private fun startRecorderService() {
+        conn = object:ServiceConnection{
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                val binder:RecorderService.RecorderBinder = service as RecorderService.RecorderBinder
+                recorderService = binder.getService()
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                recorderService = null
+            }
+        }
+
+        toRecorderServiceIntent = Intent().setClass(this@IMPhoneActivity, RecorderService::class.java)
+        bindService(toRecorderServiceIntent, conn as ServiceConnection,Context.BIND_AUTO_CREATE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(toRecorderServiceIntent)
+        } else {
+            startService(toRecorderServiceIntent);
+        }
+    }
+
+    private fun stopRecorderService(){
+        conn?.let { unbindService(it) }
+        stopService(toRecorderServiceIntent)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopRecorderService()
+    }
 
 
     override fun onRequestPermissionsResult(
@@ -88,8 +135,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             } else {
                 Log.d("TAG", "dataResults is empty ")
             }
-            toRecorderServiceIntent = Intent(this@IMPhoneActivity, RecorderService::class.java)
-            startService(toRecorderServiceIntent)
+            startRecorderService()
         }
 
     }
