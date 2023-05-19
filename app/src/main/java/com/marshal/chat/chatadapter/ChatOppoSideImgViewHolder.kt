@@ -1,7 +1,6 @@
 package com.marshal.chat.chatadapter
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.marshal.R
@@ -16,7 +15,7 @@ class ChatOppoSideImgViewHolder(context: Context?, resId:Int,
     init {
         with(itemView) {
             oppoSideProfile = findViewById(R.id.oppo_side_profile)
-            oppoSideSendImg = findViewById(R.id.sdvImg)
+            oppoSideSendImg = findViewById(R.id.oppo_side_show_img)
 
         }
     }

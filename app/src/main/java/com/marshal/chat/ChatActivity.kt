@@ -31,7 +31,7 @@ class ChatActivity : BaseViewActivity<ActivityChatBinding>() {
             R.drawable.img_default_profile,"你好 marshal","",1,"1"))
 
         chatAdapter?.itemList?.add(ChatUser("",
-            R.drawable.img_default_profile,"你好 tom","https://gw.alicdn.com/i2/63986519/O1CN01AH1zKP1y1kkNYZE61_!!63986519.jpg_300x300Q75.jpg_.webp",
+            R.drawable.img_default_profile,"你好 tom","https://seopic.699pic.com/photo/50051/5435.jpg_wh1200.jpg",
             2,"2"))
 
         chatAdapter?.itemList?.add(ChatUser("",
@@ -41,7 +41,7 @@ class ChatActivity : BaseViewActivity<ActivityChatBinding>() {
             R.drawable.img_default_profile,"你好 seven","",1,"2"))
 
         chatAdapter?.itemList?.add(ChatUser("",
-            R.drawable.img_default_profile,"你好 norris","https://gw.alicdn.com/i2/63986519/O1CN01AH1zKP1y1kkNYZE61_!!63986519.jpg_300x300Q75.jpg_.webp",2,"1"))
+            R.drawable.img_default_profile,"你好 norris","https://file03.16sucai.com/2017/1100/16sucai_P591F3A055.JPG",2,"1"))
 
 
         binding?.rvImList?.adapter = chatAdapter

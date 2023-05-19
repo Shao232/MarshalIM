@@ -8,7 +8,6 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
@@ -19,11 +18,12 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.PHONE_PAGE
-import com.marshal.MApplication
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityImphoneBinding
+import com.marshal.utils.AudioUtil
 import com.marshal.utils.FileUtils
 import com.marshal.utils.PhoneUtils
+import com.marshal.utils.RecordAudioCallBack
 import java.io.File
 
 
@@ -44,7 +44,13 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
     private var mediaPlayer: MediaPlayer? = null
 
     private var telephoneManager: TelephonyManager? = null
-    private var audioManager:AudioManager? = null
+    private var audioManager: AudioManager? = null
+
+    private var audioUtil: AudioUtil? = null
+
+    //计数器 当通话开始时计数递增，逻辑是当计数器为1时才是录音，后面的数字都过滤，挂断后计数器归零
+    private var recorderStart: Int = 0
+
 
     override fun getResLayoutBinding(): View? {
         binding = ActivityImphoneBinding.inflate(layoutInflater)
@@ -68,8 +74,8 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         binding?.btnRecorderPlay?.setOnClickListener {
             if (recorderFilePath?.absolutePath?.isNotEmpty() == true) {
                 try {
-                    Log.d("TAG","播放前展示数据:${recorderFilePath?.absolutePath}")
-                    mediaPlayer = MediaPlayer.create(this,Uri.fromFile(recorderFilePath))
+                    Log.d("TAG", "播放前展示数据:${recorderFilePath?.absolutePath}")
+                    mediaPlayer = MediaPlayer.create(this, Uri.fromFile(recorderFilePath))
                     mediaPlayer?.start()
                 } catch (e: IllegalStateException) {
                     Log.e("TAG", "点击播放录音  error:${e.printStackTrace()}")
@@ -80,10 +86,30 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             }
         }
 
+        binding?.btnRecorder?.setOnClickListener {
+            recorderStart++
+            Log.d("TAG", "接听状态 录音计数器:${recorderStart}")
+            if (recorderStart == 1) {
+                try {
+                    Log.d("TAG", "接听状态  准备录音:${recorderStart}")
+                    audioUtil?.startRecord()
+                    binding?.btnRecorder?.text = "结束录音"
+                } catch (e: Exception) {
+                    Log.e("TAG", "CALL_STATE_OFFHOOK error:${e.printStackTrace()}")
+                }
+            }else if(recorderStart > 0) {
+                recorderStart  = 0
+                audioUtil?.stopRecord()
+                binding?.btnRecorder?.text = "开始录音"
+            }
+        }
+
         binding?.btnRecorderClean?.setOnClickListener {
             val folder = File(FileUtils.getRecordFilePath())
             FileUtils.clearFolder(folder)
         }
+
+
 
         mediaPlayer?.setOnCompletionListener {
             Log.d("TAG", "player 播放完成")
@@ -101,15 +127,6 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         telephoneManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-
-
-
-        getRecorderFileLocal()
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.RECORD_AUDIO
             ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
@@ -122,11 +139,31 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         } else {
             startRecorderService()
         }
+
+
+        getRecorderFileLocal()
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun startRecorderService() {
         val filePath = FileUtils.createRecordFile()
-        telephoneManager?.listen(MyListener(filePath), PhoneStateListener.LISTEN_CALL_STATE)
+        audioUtil = AudioUtil(filePath, object : RecordAudioCallBack {
+            override fun onRecordAudioErr(msg: String) {
+
+            }
+
+            override fun onRecordComplete(path: String) {
+                getRecorderFileLocal()
+                binding?.tvShowRecorderFile?.text = "文件:${recorderFilePath?.name}"
+            }
+        })
+
+        telephoneManager?.listen(MyListener(), PhoneStateListener.LISTEN_CALL_STATE)
 
         conn = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -134,8 +171,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
                 val binder: RecorderService.RecorderBinder =
                     service as RecorderService.RecorderBinder
                 recorderService = binder.getService()
-                getRecorderFileLocal()
-                binding?.tvShowRecorderFile?.text = "文件:${recorderFilePath?.name}"
+
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
@@ -147,6 +183,7 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         toRecorderServiceIntent =
             Intent().setClass(this@IMPhoneActivity, RecorderService::class.java)
         bindService(toRecorderServiceIntent, conn as ServiceConnection, Context.BIND_AUTO_CREATE)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(toRecorderServiceIntent)
         } else {
@@ -166,10 +203,9 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
         val folder = File(FileUtils.getRecordFilePath())
         if (folder.exists()) {
             val files: Array<File> = folder.listFiles() as Array<File>
-            if(files.isNullOrEmpty()) {
+            if (files.isNullOrEmpty()) {
                 return
             }
-
             val filesList = files.filter { it.length() > 0 } as ArrayList
             var fileShow: File? = filesList[0]
             val size = filesList.size
@@ -211,34 +247,17 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
             }
             startRecorderService()
         }
-
     }
 
-    private inner class MyListener(recordFile: String) : PhoneStateListener() {
 
-        private var recorder: MediaRecorder? = null
-        private var outPutFilePath = recordFile
-        private var recorderRunning:Boolean = false
-        //计数器
-        private var recorderStart: Int = 0
-
-        init {
-            recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                MediaRecorder(MApplication.getInstance().applicationContext)
-            } else {
-                MediaRecorder()
-            }
-        }
+    private inner class MyListener : PhoneStateListener() {
 
         override fun onCallStateChanged(state: Int, phoneNumber: String?) {
             super.onCallStateChanged(state, phoneNumber)
             when (state) {
                 TelephonyManager.CALL_STATE_IDLE -> {
                     Log.d("TAG", "空闲状态 开始录音的计数器:${recorderStart}")
-                    if (recorderStart > 0) {
-                        recorderStart = 0
-                        stopRecording()
-                    }
+
                 }
 
                 TelephonyManager.CALL_STATE_RINGING -> {
@@ -247,76 +266,58 @@ class IMPhoneActivity : BaseViewActivity<ActivityImphoneBinding>() {
                 }
 
                 TelephonyManager.CALL_STATE_OFFHOOK -> {
-                    recorderStart++
-                    Log.d("TAG", "接听状态 录音计数器:${recorderStart}")
-                    if (recorderStart == 1) {
-                        try {
-                            if(!recorderRunning) {
-                                Log.d("TAG","接听状态  准备录音:${recorderRunning}")
-                                initRecordStatus()
-                            }
 
-//                            if (runnable?.getRecorderRunning() == false) {
-//                                Log.d("TAG", "接听状态 线程中是正在录音:${runnable?.getRecorderRunning()}")
-//                                thread?.start()
-//                            }
-                        } catch (e: Exception) {
-                            Log.e("TAG", "CALL_STATE_OFFHOOK error:${e.printStackTrace()}")
-                        }
-                    }
                 }
-
                 else -> {
                     Log.d("TAG", "state :${state}")
                 }
             }
         }
 
-        private fun initRecordStatus() {
-            if (recorder != null && !recorderRunning) {
-                // 将音频模式设置为通信模式，关闭扬声器
-                audioManager?.mode = AudioManager.MODE_IN_CALL
-                audioManager?.isSpeakerphoneOn = false
+        /*  private fun initRecordStatus() {
+              if (recorder != null && !recorderRunning) {
+                  // 将音频模式设置为通信模式，关闭扬声器
+                  audioManager?.mode = AudioManager.MODE_IN_CALL
+                  audioManager?.isSpeakerphoneOn = false
 
-                with(recorder ?: return) {
-                    try {
-                        Log.d("TAG","running 开始准备录音 ~~~")
-                        recorderRunning = true
-                        setAudioSource(MediaRecorder.AudioSource.MIC)
-                        //3gp
-                        setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
-                        setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-                        //比特率为16Kbps，采样率为8kHz
-                        setAudioEncodingBitRate(16 * 1000)
-                        setAudioSamplingRate(8000)
-                        setOutputFile(outPutFilePath)
-                        prepare()
-                        start()
-                        Log.d("TAG","start 开始录音 ~~~")
-                    } catch (e: Exception) {
-                        Log.e("TAG", "运行 报错:${e.printStackTrace()}")
-                    }
-                }
-            }
-        }
+                  with(recorder ?: return) {
+                      try {
+                          Log.d("TAG","running 开始准备录音 ~~~")
+                          recorderRunning = true
+                          setAudioSource(MediaRecorder.AudioSource.MIC)
+                          //3gp
+                          setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
+                          setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+                          //比特率为16Kbps，采样率为8kHz
+                          setAudioEncodingBitRate(16 * 1000)
+                          setAudioSamplingRate(8000)
+                          setOutputFile(outPutFilePath)
+                          prepare()
+                          start()
+                          Log.d("TAG","start 开始录音 ~~~")
+                      } catch (e: Exception) {
+                          Log.e("TAG", "运行 报错:${e.printStackTrace()}")
+                      }
+                  }
+              }
+          }*/
 
-        private fun stopRecording() {
-            try {
-                recorderRunning = false
-                // 重置音频模式，打开扬声器
-                audioManager?.mode = AudioManager.MODE_NORMAL
-                audioManager?.isSpeakerphoneOn = true
-                with(recorder ?: return) {
-                    stop()
-                    release()
-                    recorder = null
-                }
-            } catch (e: Exception) {
-                Log.e("TAG", "CALL_STATE_IDLE msg:${e.message}")
-            }
-        }
+        /* private fun stopRecording() {
+             try {
+                 recorderRunning = false
+                 // 重置音频模式，打开扬声器
+                 audioManager?.mode = AudioManager.MODE_NORMAL
+                 audioManager?.isSpeakerphoneOn = true
+                 with(recorder ?: return) {
+                     stop()
+                     release()
+                     recorder = null
+                 }
+             } catch (e: Exception) {
+                 Log.e("TAG", "CALL_STATE_IDLE msg:${e.message}")
+             }
+         }*/
     }
-
 
 
 }

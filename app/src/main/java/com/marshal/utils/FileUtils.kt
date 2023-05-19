@@ -10,6 +10,17 @@ object FileUtils {
     /**
      * 在应用cache中生成录音文件夹
      */
+    fun getTempPath():String{
+        val context = MApplication.getInstance().applicationContext
+        val filePath = context.externalCacheDir
+        val temp = "${filePath}/MarshalIM/recorder/temp"
+        val file = File(temp)
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+        return file.absolutePath
+    }
+
     fun getRecordFilePath():String{
         val context = MApplication.getInstance().applicationContext
         val filePath = context.externalCacheDir
@@ -27,7 +38,7 @@ object FileUtils {
     }
 
     private fun getRecordTime(): String {
-        val simpleFormat = SimpleDateFormat("yyyyMMdd-HHmmss")
+        val simpleFormat = SimpleDateFormat("yyyyMMddHHmmss")
         val date = Date()
         return simpleFormat.format(date)
     }

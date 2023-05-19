@@ -17,7 +17,6 @@ class RecorderService : Service() {
 
     private var recorderBinder: RecorderBinder? = null
 
-
     //使用内部类访问外部类时，需要使用 inner 关键字来声明内部类，否则无法访问外部类的成员变量和方法
     inner class RecorderBinder : Binder() {
         fun getService(): RecorderService {
@@ -28,7 +27,6 @@ class RecorderService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d("TAG", "service -- onCreate")
-
 
     }
 

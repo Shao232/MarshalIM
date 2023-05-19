@@ -78,7 +78,6 @@ class ChatAdapter : BaseRecyclerAdapter<BaseRecyclerViewHolder, ChatUser>() {
 
             is ChatOppoSideTextViewHolder -> {
                 holder.oppoSideProfile?.setImageResource(bean.userProfileRes)
-
                 holder.tvTextContent?.text = bean.messageText
 
             }
