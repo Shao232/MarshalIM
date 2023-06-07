@@ -3,7 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-
+        maven { url 'https://jitpack.io' }
         flatDir {
             dirs 'libs'
         }
@@ -18,3 +18,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MarshalIM"
 include ':app'
+include ':zz-excel-creator'
+include ':commit'

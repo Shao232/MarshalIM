@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!--允许读取网络状态-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--网络权限-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--允许读取wifi网络状态-->
+    <!-- 允许读取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许读取wifi网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 静态声明+动态申请存储权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -20,16 +17,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 精准定位权限，仅作用于6.0+ -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-feature android:name="android.hardware.telephony"/>
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <!-- 录音权限  -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <!-- 前台服务   -->
+    <uses-feature android:name="android.hardware.telephony" />
+
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" /> <!-- 录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 前台服务 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -43,6 +37,9 @@
         android:supportsRtl="true"
         android:theme="@style/appStyle"
         tools:targetApi="31">
+        <activity
+            android:name=".mine.OpenQuestionBankActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -54,8 +51,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <service android:name=".phone.RecorderService"
-            android:exported="false"/>
+        <service
+            android:name=".phone.RecorderService"
+            android:exported="false" />
 
         <activity
             android:name=".phone.IMPhoneActivity"
