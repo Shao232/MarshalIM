@@ -3,9 +3,11 @@ package com.marshal.mine
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.google.gson.Gson
 import com.marshal.IMPath.OPEN_QUESTION_BANK
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityOpenQuestionBankBinding
+import com.marshal.pojo.OpenAnswersBean
 import com.marshal.utils.FileUtils
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 
@@ -51,9 +53,26 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
             val array3 = writableSheet.getColumn(2)
             val array4 = writableSheet.getColumn(3)
             val array5 = writableSheet.getColumn(4)
+            val array6 = writableSheet.getColumn(5)
+
+            val data = ArrayList<OpenAnswersBean>()
 
 
-            Log.d("TAG", "array:${array1.forEach { Log.d("TAG", it.contents) }}")
+           array1.forEachIndexed { index, cell ->
+
+
+               data.add(OpenAnswersBean(cell.contents))
+           }
+
+           val json = Gson().toJson(data)
+            Log.d("TAG", "json:${ json}")
+
+         /*   Log.d("TAG", "array1:${ array1.size}")
+            Log.d("TAG", "array2:${array2.size}")
+            Log.d("TAG", "array3:${array3.size}")
+            Log.d("TAG", "array4:${array4.size}")
+            Log.d("TAG", "array5:${array5.size}")
+            Log.d("TAG", "array6:${array6.size}")*/
 
 
             //别忘了close
