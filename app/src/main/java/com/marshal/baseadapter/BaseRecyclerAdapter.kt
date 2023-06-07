@@ -46,6 +46,13 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
 
     abstract fun bindViewHolderData(holder: T, position: Int)
 
+    fun addListAll(list: Collection<E>) {
+        itemList.clear()
+        itemList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+
 }
 
 

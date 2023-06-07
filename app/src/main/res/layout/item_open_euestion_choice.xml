@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:minHeight="100dp"
+    android:minHeight="30dp"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_question_answer_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="18dp"
         android:textColor="@color/black"
-        tools:text="A.信息安全"/>
+        tools:text="A.信息安全信息安全信息安全信息安"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

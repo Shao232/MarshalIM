@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:minHeight="400dp"
+    android:minHeight="300dp"
     android:background="@color/white">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_question_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +19,7 @@
         tools:text="防止网络环境中的数据、信息被泄露和篡改，以及确保网络资源可由授权方按需使用的方法和技术称为__________。"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_list_answers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:minHeight="300dp"
@@ -93,7 +94,7 @@
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="g"
         android:minHeight="100dp">
 
         <TextView
@@ -106,7 +107,8 @@
             android:textSize="18dp"
             android:textColor="@color/right_answers_color"/>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_right_answer_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toEndOf="@+id/tv_right_answers_tag"
