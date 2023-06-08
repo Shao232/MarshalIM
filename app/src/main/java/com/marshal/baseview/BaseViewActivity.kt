@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.viewbinding.ViewBinding
+import com.marshal.R
+import com.marshal.utils.NoShakeBtnUtil
 
 abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
@@ -16,6 +20,16 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
     var context: Context? = null
 
+    var hasIncludeToolbar:Boolean =false
+
+    /**
+     * toolbar
+     */
+    var ivBackBar: AppCompatImageView? = null
+    var tvTitle: AppCompatTextView? = null
+    var ivMenu:AppCompatImageView? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,6 +38,26 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
         val view:View? = getResLayoutBinding()
         if(view != null) {
             setContentView(view)
+        }
+        hasIncludeToolbar = hasToolbar()
+
+        if(hasIncludeToolbar) {
+            ivBackBar = findViewById(R.id.iv_back_toolbar)
+            tvTitle = findViewById(R.id.tv_title_toolbar)
+            ivMenu = findViewById(R.id.iv_menu_toolbar)
+            ivBackBar?.visibility = View.VISIBLE
+            ivMenu?.visibility = View.VISIBLE
+
+            ivBackBar?.setOnClickListener {
+                finish()
+            }
+            ivMenu?.setOnClickListener {
+                if(NoShakeBtnUtil.isFastDoubleClick()){
+                    return@setOnClickListener
+                }
+
+                onClickMenu(it)
+            }
         }
 
         initView()
@@ -40,9 +74,11 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
     abstract fun initView()
 
+    open fun hasToolbar():Boolean = false
+
     open fun subscribeBack(){}
 
-
+    open fun onClickMenu(view:View){}
 
 
 }

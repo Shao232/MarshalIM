@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".mine.OpenQuestionBankActivity">
 
+    <include layout="@layout/include_toolbar"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_custom"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

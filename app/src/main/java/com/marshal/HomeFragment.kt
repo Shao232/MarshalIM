@@ -17,13 +17,15 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
         binding?.tvChat?.setOnClickListener {
             ARouter.getInstance().build(IMPath.CHAT_PATH).navigation()
-
         }
 
         binding?.tvPhone?.setOnClickListener {
             ARouter.getInstance().build(IMPath.PHONE_PAGE).navigation()
         }
 
+        binding?.tvQuestion?.setOnClickListener {
+            ARouter.getInstance().build(IMPath.OPEN_QUESTION_BANK).navigation(mContext)
+        }
 
     }
 

@@ -80,7 +80,7 @@
                 android:id="@+id/btn_to_read_question"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="开大题库-学习"
+                android:text="开大题库(仅供学习)"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:clickable="true"

@@ -1,8 +1,6 @@
 package com.marshal.baseadapter
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.marshal.MApplication
@@ -37,6 +35,7 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
         holder.itemView.setOnClickListener{
             if(itemOnClickListener !=null) {
                 itemOnClickListener?.onClick(it,bean)
+                itemOnClickListener?.onClick(it,position)
             }
         }
         bindViewHolderData(holder,position)

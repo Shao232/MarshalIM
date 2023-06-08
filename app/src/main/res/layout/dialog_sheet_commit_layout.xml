@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="150dp"
+    android:background="@color/white_mode"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_first"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        tools:text="按钮1"
+        android:textSize="18dp"
+        android:textColor="@color/text_color_black"
+        app:layout_constraintBottom_toTopOf="@+id/view_stub"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_line"
+        app:layout_constraintTop_toBottomOf="@id/button_first"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_second"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        tools:text="按钮2"
+        android:textSize="18dp"
+        android:textColor="@color/text_color_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_stub"/>
+
+    <View
+        android:id="@+id/view_stub_second"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_line"
+        app:layout_constraintTop_toBottomOf="@id/button_second"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_third"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        tools:text="按钮3"
+        android:textSize="18dp"
+        android:textColor="@color/text_color_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_stub_second"/>
+
+    <View
+        android:id="@+id/view_stub_third"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_line"
+        app:layout_constraintTop_toBottomOf="@id/button_third"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
