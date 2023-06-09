@@ -122,4 +122,6 @@ class OpenQuestionAdapter : BaseRecyclerAdapter<OpenQuestionViewHolder, OpenAnsw
             }
         })
     }
+
+
 }

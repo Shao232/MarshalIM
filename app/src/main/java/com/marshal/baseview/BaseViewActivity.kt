@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewbinding.ViewBinding
 import com.marshal.R
 import com.marshal.utils.NoShakeBtnUtil
@@ -28,6 +29,8 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
     var ivBackBar: AppCompatImageView? = null
     var tvTitle: AppCompatTextView? = null
     var ivMenu:AppCompatImageView? = null
+    var clnTitleLayout:ConstraintLayout? = null
+    var ivDown:AppCompatImageView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +45,10 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
         hasIncludeToolbar = hasToolbar()
 
         if(hasIncludeToolbar) {
+            clnTitleLayout = findViewById(R.id.cln_center_title_layout)
             ivBackBar = findViewById(R.id.iv_back_toolbar)
             tvTitle = findViewById(R.id.tv_title_toolbar)
+            ivDown = findViewById(R.id.iv_title_down)
             ivMenu = findViewById(R.id.iv_menu_toolbar)
             ivBackBar?.visibility = View.VISIBLE
             ivMenu?.visibility = View.VISIBLE

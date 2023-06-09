@@ -1,22 +1,15 @@
-package com.marshal.mine
+package com.marshal.mine.open
 
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.FragmentManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.google.gson.Gson
 import com.marshal.IMPath.OPEN_QUESTION_BANK
+import com.marshal.R
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityOpenQuestionBankBinding
-import com.marshal.mine.adapter.OpenQuestionAdapter
 import com.marshal.mine.dialog.OpenQuestionSelectDialog
 import com.marshal.mine.event.OpenQuestionEventBean
-import com.marshal.pojo.OpenAnswerBean
-import com.marshal.pojo.OpenAnswersBean
-import com.marshal.utils.FileUtils
-import jxl.Cell
-import jxl.write.WritableSheet
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -25,30 +18,35 @@ import org.greenrobot.eventbus.ThreadMode
 @Route(path = OPEN_QUESTION_BANK)
 class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBinding>() {
 
-    private var adapter: OpenQuestionAdapter? = null
-
-    private var singleQuestions = ArrayList<OpenAnswersBean>()
-    private var multipleQuestions = ArrayList<OpenAnswersBean>()
-    private var estimateQuestions = ArrayList<OpenAnswersBean>()
-
-    private var layoutManager: LinearLayoutManager? = null
+    /**
+     * 当前的课程 第一次进入时默认应用基础 ,后续通过点击title切换成思维导论或者程序设计
+     */
+    private var currentCourse = appFunction
 
     companion object {
         /**
          * 应用基础
          */
         const val appFunction = 3
+        const val firstTitle = "计算机应用基础"
 
         /**
          * 思维导论
          */
         const val thought = 2
+        const val secondTitle = "计算思维导论"
 
         /**
          * 程序设计
          */
         const val programDesign = 1
+        const val thirdTitle = "程序设计复习资料"
     }
+
+    private var fragmentManager: FragmentManager? = null
+    private var appFunctionFragment: OpenAppFunctionFragment? = null
+    private var thoughtFragment: OpenThoughtFragment? = null
+    private var programDesignFragment: OpenProgramDesignFragment? = null
 
     override fun hasToolbar(): Boolean {
         return true
@@ -63,67 +61,125 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         EventBus.getDefault().register(this)
 
         if (hasIncludeToolbar) {
-            tvTitle?.text = "计算机应用基础"
+            tvTitle?.text = firstTitle
+            ivDown?.visibility = View.VISIBLE
+            clnTitleLayout?.setOnClickListener {
+                val dialogFragment = OpenQuestionSelectDialog(firstTitle, secondTitle, thirdTitle)
+                dialogFragment.setOnDialogClickListener(object :
+                    OpenQuestionSelectDialog.QuestionDialogClickListener {
+                    override fun onClickFirstItem(view: View) {
+                        currentCourse = appFunction
+                        tvTitle?.text = firstTitle
+
+                        if (appFunctionFragment?.isAdded == true) {
+                            fragmentManager?.beginTransaction()?.hide(thoughtFragment ?: return)
+                                ?.hide(programDesignFragment ?: return)
+                                ?.show(appFunctionFragment ?: return)
+                                ?.commitNowAllowingStateLoss()
+                        }
+
+                    }
+
+                    override fun onClickSecondItem(view: View) {
+                        currentCourse = thought
+                        tvTitle?.text = secondTitle
+
+                        if (thoughtFragment?.isAdded == true) {
+                            fragmentManager?.beginTransaction()?.hide(appFunctionFragment ?: return)
+                                ?.hide(programDesignFragment ?: return)
+                                ?.show(thoughtFragment ?: return)
+                                ?.commitNowAllowingStateLoss()
+                        }else {
+                            fragmentManager?.beginTransaction()?.add(
+                                R.id.frame_layout, thoughtFragment
+                                    ?: return, "fragment_thought")?.commitNowAllowingStateLoss()
+                        }
+
+                    }
+
+                    override fun onClickThirdItem(view: View) {
+                        currentCourse = programDesign
+                        tvTitle?.text = thirdTitle
+
+                        if (programDesignFragment?.isAdded == true) {
+                            fragmentManager?.beginTransaction()?.hide(appFunctionFragment ?: return)
+                                ?.hide(thoughtFragment ?: return)
+                                ?.show(programDesignFragment ?: return)
+                                ?.commitNowAllowingStateLoss()
+                        }else {
+                            fragmentManager?.beginTransaction()?.add(
+                                R.id.frame_layout, programDesignFragment
+                                    ?: return, "fragment_thought")?.commitNowAllowingStateLoss()
+                        }
+
+                    }
+                })
+                dialogFragment.show(supportFragmentManager, "dialog_title")
+            }
         }
 
-        Thread(OpenReadQuestionRunnable()).start()
+        Thread(OpenReadQuestionsWork()).start()
 
-        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding?.recyclerList?.layoutManager = layoutManager
-        adapter = OpenQuestionAdapter()
-        binding?.recyclerList?.adapter = adapter
+        appFunctionFragment = OpenAppFunctionFragment()
+        thoughtFragment = OpenThoughtFragment()
+        programDesignFragment = OpenProgramDesignFragment()
+
+        fragmentManager = supportFragmentManager
+        fragmentManager?.beginTransaction()?.add(
+            R.id.frame_layout, appFunctionFragment ?: return,
+            "fragment_appFunction"
+        )?.commitNowAllowingStateLoss()
 
     }
 
     override fun onClickMenu(view: View) {
         super.onClickMenu(view)
-        val dialogFragment = OpenQuestionSelectDialog()
-        dialogFragment.setOnDialogClickListener(object :
-            OpenQuestionSelectDialog.QuestionDialogClickListener {
-            override fun onClickFirstItem(view: View) {
-                adapter?.itemList?.clear()
-                adapter?.addListAll(singleQuestions)
-                layoutManager?.scrollToPosition(0)
-            }
 
-            override fun onClickSecondItem(view: View) {
-                adapter?.itemList?.clear()
-                adapter?.addListAll(multipleQuestions)
-                layoutManager?.scrollToPosition(0)
+        if(currentCourse == appFunction) {
+            val dialogFragment = OpenQuestionSelectDialog("单选题", "多选题", "判断题")
+            dialogFragment.setOnDialogClickListener(object :
+                OpenQuestionSelectDialog.QuestionDialogClickListener {
+                override fun onClickFirstItem(view: View) {
+                    //通知fragment更新
+                    appFunctionFragment?.updateList(1)
+                }
 
-            }
+                override fun onClickSecondItem(view: View) {
+                    //通知fragment更新
+                    appFunctionFragment?.updateList(2)
+                }
 
-            override fun onClickThirdItem(view: View) {
-                adapter?.itemList?.clear()
-                adapter?.addListAll(estimateQuestions)
-                layoutManager?.scrollToPosition(0)
-            }
-        })
-
-        dialogFragment.show(supportFragmentManager, "dialog_question")
+                override fun onClickThirdItem(view: View) {
+                    //通知fragment更新
+                    appFunctionFragment?.updateList(3)
+                }
+            })
+            dialogFragment.show(supportFragmentManager, "dialog_question")
+        }
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun eventBusMessage(data: OpenQuestionEventBean) {
-        Log.d("TAG", "eventBus收到消息了: ${data}")
+        Log.d("TAG", "eventBus收到消息了: ")
+
         when (data.what) {
-            1 -> {
-                adapter?.itemList?.clear()
-                singleQuestions = data.questionList as ArrayList<OpenAnswersBean>
-                adapter?.addListAll(singleQuestions)
+            0x11 -> {
+                appFunctionFragment?.addSingleQuestionsShow(data)
             }
 
-            2 -> {
-                multipleQuestions = data.questionList as ArrayList<OpenAnswersBean>
-                /* adapter?.itemList?.clear()
-
-                 adapter?.addListAll(multipleQuestions)*/
-
+            0x12 -> {
+                appFunctionFragment?.setMultipleQuestionList(data)
             }
 
-            3 -> {
-                estimateQuestions = data.questionList as ArrayList<OpenAnswersBean>
+            0x13 -> {
+                appFunctionFragment?.setEstimateQuestionList(data)
+            }
+            0x21 ->{
+                thoughtFragment?.addSingleQuestionsShow(data)
+            }
+            0x31 ->{
+                programDesignFragment?.addSingleQuestionsShow(data)
             }
         }
 
@@ -134,6 +190,9 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         super.onDestroy()
     }
 
+  /*  *//**
+     * 读取计算机应用基础文件
+     *//*
     inner class OpenReadQuestionRunnable : Runnable {
         override fun run() {
             try {
@@ -185,6 +244,9 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         }
     }
 
+    *//**
+     * 单选题
+     *//*
     private fun singleChoiceAnswer(writableSheet: WritableSheet) {
         val array1 = writableSheet.getColumn(0)
         val array2 = writableSheet.getColumn(1)
@@ -232,9 +294,9 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         EventBus.getDefault().postSticky(eventMsg)
     }
 
-    /**
+    *//**
      * 将答题的题目集合到arraylist中
-     */
+     *//*
     private fun setAnswerList(
         array: Array<Cell>,
         data: ArrayList<OpenAnswersBean>,
@@ -250,6 +312,9 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         return data
     }
 
+    *//**
+     * 多选题
+     *//*
     private fun multipleChoiceAnswer(writableSheet: WritableSheet) {
         val array1 = writableSheet.getColumn(0)
         val array2 = writableSheet.getColumn(1)
@@ -258,17 +323,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         val array5 = writableSheet.getColumn(4)
         val array6 = writableSheet.getColumn(5)
         val array7 = writableSheet.getColumn(6)
-
-        /*  val size = writableSheet.columns
-          var index = 0
-          while(index < size) {
-              val array = writableSheet.getColumn(index)
-              Log.d("TAG","index ---- :${index}")
-              for(item in array) {
-                  Log.d("TAG","多选:${item.contents}")
-              }
-              index++
-          }*/
 
         var data = ArrayList<OpenAnswersBean>()
 
@@ -310,20 +364,12 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         EventBus.getDefault().postSticky(eventMsg)
     }
 
+    *//**
+     * 判断题
+     *//*
     private fun estimateAnswer(writableSheet: WritableSheet) {
         val array1 = writableSheet.getColumn(0)
         val array2 = writableSheet.getColumn(1)
-
-//        val size = writableSheet.columns
-      /*  var index = 0
-        while (index < size) {
-            val array = writableSheet.getColumn(index)
-            Log.d("TAG", "index ---- :${index}")
-            for (item in array) {
-                Log.d("TAG", "判断:${item.contents}")
-            }
-            index++
-        }*/
 
         val data = ArrayList<OpenAnswersBean>()
 
@@ -371,6 +417,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         eventMsg.questionList = data
         EventBus.getDefault().postSticky(eventMsg)
     }
-
+*/
 
 }

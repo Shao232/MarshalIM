@@ -1,6 +1,7 @@
 package com.marshal.pojo
 
 import android.os.Parcelable
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -16,4 +17,10 @@ data class OpenAnswersBean(
     //答案，比如单选4个回答,判断两个回答
     var answerList: ArrayList<OpenAnswerBean>? = ArrayList(),
     var rightAnswer:String? = ""
-) : Parcelable
+) : Parcelable {
+
+
+    override fun toString(): String {
+        return Gson().toJson(this)
+    }
+}

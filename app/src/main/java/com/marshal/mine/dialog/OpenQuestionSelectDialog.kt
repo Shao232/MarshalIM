@@ -8,19 +8,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.marshal.R
 import com.marshal.databinding.DialogSheetCommitLayoutBinding
 
-class OpenQuestionSelectDialog: BottomSheetDialogFragment() {
+class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=""): BottomSheetDialogFragment() {
 
     private var rootView:View? = null
     private var binding:DialogSheetCommitLayoutBinding? = null
-
     private var questionDialogClick:QuestionDialogClickListener? = null
+
+    /**
+     * data
+     */
+    private var firstTitle:String? = first
+    private var secondTitle:String? = second
+    private var thirdTitle:String? = third
 
     fun setOnDialogClickListener(dialogClickListener: QuestionDialogClickListener) {
         questionDialogClick = dialogClickListener
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -37,9 +39,9 @@ class OpenQuestionSelectDialog: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.buttonFirst?.text = "单选题"
-        binding?.buttonSecond?.text = "多选题"
-        binding?.buttonThird?.text = "判断题"
+        binding?.buttonFirst?.text = firstTitle
+        binding?.buttonSecond?.text =secondTitle
+        binding?.buttonThird?.text = thirdTitle
 
         binding?.buttonFirst?.setOnClickListener {
             questionDialogClick?.onClickFirstItem(it)
@@ -53,7 +55,6 @@ class OpenQuestionSelectDialog: BottomSheetDialogFragment() {
             questionDialogClick?.onClickThirdItem(it)
             dismiss()
         }
-
     }
 
     interface QuestionDialogClickListener{
