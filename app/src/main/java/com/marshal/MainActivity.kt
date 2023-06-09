@@ -1,6 +1,7 @@
 package com.marshal
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import android.view.View
@@ -13,6 +14,12 @@ import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityMainBinding
 import com.marshal.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
+import com.marshal.mine.event.OpenQuestionEventBean
+import com.marshal.pojo.OpenAnswersBean
+import com.marshal.sharedata.CommitShareData
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  *  ImmersionBar.with(this)
@@ -45,6 +52,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
+        EventBus.getDefault().register(this)
         initAny()
         mainFragmentArray.add(homeFragment?:return)
         mainFragmentArray.add(mineFragment?:return)
@@ -71,6 +79,9 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
             ActivityCompat.requestPermissions(this, permissionArray, 12)
         }
+
+        val intent = Intent(this,MainService::class.java)
+        startService(intent)
     }
 
     private fun initAny(){
@@ -98,5 +109,32 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         }
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onOpenDataEvent(data: OpenQuestionEventBean){
+        when (data.what) {
+            0x11 -> {
+                CommitShareData.appSingleQuestions = data.questionList as ArrayList<OpenAnswersBean>
+            }
+            0x12 -> {
+                CommitShareData.appMultipleQuestions = data.questionList as ArrayList<OpenAnswersBean>
+            }
+            0x13 -> {
+                CommitShareData.appEstimateQuestions = data.questionList as ArrayList<OpenAnswersBean>
+            }
+            0x21 ->{
+                CommitShareData.thoughtSingleQuestions = data.questionList as ArrayList<OpenAnswersBean>
+            }
+            0x31 ->{
+                CommitShareData.programSingleQuestions = data.questionList as ArrayList<OpenAnswersBean>
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
+
 
 }

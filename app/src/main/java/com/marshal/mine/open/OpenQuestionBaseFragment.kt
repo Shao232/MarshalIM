@@ -2,6 +2,7 @@ package com.marshal.mine.open
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.marshal.R
 import com.marshal.baseview.BaseViewFragment
 import com.marshal.databinding.IncludeOpenQuestionListFragmentBinding
@@ -9,7 +10,7 @@ import com.marshal.databinding.IncludeOpenQuestionListFragmentBinding
 /**
  * fragment都基于recyclerview，抽取公共方法到父类中
  */
-open class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionListFragmentBinding>() {
+abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionListFragmentBinding>() {
 
 
     protected var layoutManager: LinearLayoutManager? = null
@@ -22,11 +23,19 @@ open class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionListFr
     }
 
     override fun initView() {
+
+
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding?.recyclerList?.layoutManager = layoutManager
+        binding?.recyclerList?.adapter =getAdapter()
         viewCreate()
     }
 
+
+    abstract fun getAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>?
+
     open fun viewCreate(){}
+
+
 
 }

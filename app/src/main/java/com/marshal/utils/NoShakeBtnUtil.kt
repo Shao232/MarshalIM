@@ -31,7 +31,7 @@ object NoShakeBtnUtil {
      * @param diff
      * @return
      */
-    fun isFastDoubleClick(buttonId: Int = 10, diff: Long = 1000): Boolean {
+    fun isFastDoubleClick(buttonId: Int = 30, diff: Long = 1000): Boolean {
         val time = System.currentTimeMillis()
         val timeD = time - lastClickTime
         if (timeD < 0) {

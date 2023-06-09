@@ -27,7 +27,6 @@ abstract class BaseViewFragment<T: ViewBinding>:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return getResLayoutBinding()
     }
 
