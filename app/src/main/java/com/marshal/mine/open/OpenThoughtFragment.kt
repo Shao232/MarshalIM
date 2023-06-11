@@ -15,8 +15,6 @@ class OpenThoughtFragment :OpenQuestionBaseFragment()  {
 
     private var adapter = OpenQuestionThoughtAdapter()
 
-
-
     override fun getAdapter():  RecyclerView.Adapter<RecyclerView.ViewHolder>? {
         return adapter as?  RecyclerView.Adapter<RecyclerView.ViewHolder>?
     }

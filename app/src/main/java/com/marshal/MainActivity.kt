@@ -41,6 +41,8 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     private var homeFragment:HomeFragment? = null
     private var mineFragment: MineFragment? = null
 
+    private var intentStartMainService:Intent? = null
+
     private var permissionArray:Array<String> = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
@@ -52,7 +54,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
-        EventBus.getDefault().register(this)
         initAny()
         mainFragmentArray.add(homeFragment?:return)
         mainFragmentArray.add(mineFragment?:return)
@@ -80,8 +81,11 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             ActivityCompat.requestPermissions(this, permissionArray, 12)
         }
 
-        val intent = Intent(this,MainService::class.java)
-        startService(intent)
+        intentStartMainService = Intent(this,MainService::class.java)
+        startService(intentStartMainService)
+
+
+
     }
 
     private fun initAny(){
@@ -110,29 +114,8 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onOpenDataEvent(data: OpenQuestionEventBean){
-        when (data.what) {
-            0x11 -> {
-                CommitShareData.appSingleQuestions = data.questionList as ArrayList<OpenAnswersBean>
-            }
-            0x12 -> {
-                CommitShareData.appMultipleQuestions = data.questionList as ArrayList<OpenAnswersBean>
-            }
-            0x13 -> {
-                CommitShareData.appEstimateQuestions = data.questionList as ArrayList<OpenAnswersBean>
-            }
-            0x21 ->{
-                CommitShareData.thoughtSingleQuestions = data.questionList as ArrayList<OpenAnswersBean>
-            }
-            0x31 ->{
-                CommitShareData.programSingleQuestions = data.questionList as ArrayList<OpenAnswersBean>
-            }
-        }
-    }
-
     override fun onDestroy() {
-        EventBus.getDefault().unregister(this)
+        stopService(intentStartMainService)
         super.onDestroy()
     }
 

@@ -1,15 +1,26 @@
 package com.marshal.mine.open.works
 
+import StoreManager
+import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.marshal.mine.event.OpenQuestionEventBean
 import com.marshal.pojo.OpenAnswerBean
 import com.marshal.pojo.OpenAnswersBean
+import com.marshal.sharedata.CommitShareData
 import com.marshal.utils.FileUtils
+import getAppFunctionEstimateData
+import getAppFunctionMultipleData
+import getAppFunctionSingleData
 import jxl.Cell
 import jxl.write.WritableSheet
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import org.greenrobot.eventbus.EventBus
+import putAppFunctionEstimateData
+import putAppFunctionMultipleData
+import putAppFunctionSingleData
 
-class OpenReadQuestionsWork :Runnable{
+class OpenReadQuestionsWork : Runnable {
 
     override fun run() {
         try {
@@ -20,7 +31,8 @@ class OpenReadQuestionsWork :Runnable{
         }
     }
 
-    private fun readAppFunctionWork(){
+    private fun readAppFunctionWork() {
+
         //如果文件不存在从程序中获取
         val file = FileUtils.copyAssetsResFile(
             "计算机应用基础.xls",
@@ -28,35 +40,33 @@ class OpenReadQuestionsWork :Runnable{
             "计算机应用基础.xls"
         )
 
-        val zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file).openSheet(0)
+        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
         //读取单元格内容
         //读取单元格内容
+        Log.d("TAG", "sheet size : ${zzExcelCreator1.writableWorkbook.numberOfSheets}")
+        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
         var writableSheet = zzExcelCreator1.writableSheet
-       /* Log.d("TAG", "columns: 有${writableSheet.columns}列")
-        Log.d("TAG", "rows: 有${writableSheet.rows}行")*/
 
         if (writableSheet.name == "单选题") {
             singleChoiceAnswer(writableSheet)
         }
 
-        val zzExcelCreator2 = zzExcelCreator1.openSheet(1)
-        writableSheet = zzExcelCreator2.writableSheet
+        zzExcelCreator1 = zzExcelCreator1.openSheet(1)
+        writableSheet = zzExcelCreator1.writableSheet
 
         if (writableSheet.name == "多选题") {
 
             multipleChoiceAnswer(writableSheet)
         }
 
-        val zzExcelCreator3 = zzExcelCreator1.openSheet(2)
-        writableSheet = zzExcelCreator3.writableSheet
+        zzExcelCreator1 = zzExcelCreator1.openSheet(2)
+        writableSheet = zzExcelCreator1.writableSheet
 
         if (writableSheet.name == "判断题") {
             estimateAnswer(writableSheet)
         }
 
         //别忘了close
-        zzExcelCreator3.close()
-        zzExcelCreator2.close()
         zzExcelCreator1.close()
     }
 
@@ -102,12 +112,19 @@ class OpenReadQuestionsWork :Runnable{
             }
         }
 
-        //val json = Gson().toJson(data)
-        //Log.d("TAG", "json:${json}")
-        val eventMsg = OpenQuestionEventBean()
-        eventMsg.what = 0x11
-        eventMsg.questionList = data
-        EventBus.getDefault().post(eventMsg)
+        val json = Gson().toJson(data)
+        putAppFunctionSingleData(json)
+        Log.d("TAG", "json:${getAppFunctionSingleData()}")
+
+        val appFunctionSingleData = getAppFunctionSingleData()
+        val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
+        CommitShareData.appSingleQuestions = Gson().fromJson(appFunctionSingleData,type)
+        Log.d("TAG","save CommitShareData :${CommitShareData.appSingleQuestions.size}")
+
+//        val eventMsg = OpenQuestionEventBean()
+//        eventMsg.what = 0x11
+//        eventMsg.questionList = data
+//        EventBus.getDefault().post(eventMsg)
     }
 
     /**
@@ -172,10 +189,19 @@ class OpenReadQuestionsWork :Runnable{
             }
         }
 
-        val eventMsg = OpenQuestionEventBean()
-        eventMsg.what = 0x12
-        eventMsg.questionList = data
-        EventBus.getDefault().post(eventMsg)
+        val json = Gson().toJson(data)
+        putAppFunctionMultipleData(json)
+        Log.d("TAG", "json:${getAppFunctionMultipleData()}")
+
+        val appFunctionMultipleData = getAppFunctionMultipleData()
+        val type2 = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
+        CommitShareData.appMultipleQuestions = Gson().fromJson(appFunctionMultipleData,type2)
+        Log.d("TAG","save CommitShareData :${CommitShareData.appMultipleQuestions.size}")
+
+//        val eventMsg = OpenQuestionEventBean()
+//        eventMsg.what = 0x12
+//        eventMsg.questionList = data
+//        EventBus.getDefault().post(eventMsg)
     }
 
     /**
@@ -222,12 +248,19 @@ class OpenReadQuestionsWork :Runnable{
             }
         }
 
-        /*val json = Gson().toJson(data)
-        Log.d("TAG", "json:${json}")*/
-        val eventMsg = OpenQuestionEventBean()
-        eventMsg.what = 0x13
-        eventMsg.questionList = data
-        EventBus.getDefault().post(eventMsg)
+        val json = Gson().toJson(data)
+        putAppFunctionEstimateData(json)
+        Log.d("TAG", "json:${getAppFunctionEstimateData()}")
+
+        val appFunctionEstimateData = getAppFunctionEstimateData()
+        val type3 = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
+        CommitShareData.appEstimateQuestions = Gson().fromJson(appFunctionEstimateData,type3)
+        Log.d("TAG","save CommitShareData :${CommitShareData.appEstimateQuestions.size}")
+
+//        val eventMsg = OpenQuestionEventBean()
+//        eventMsg.what = 0x13
+//        eventMsg.questionList = data
+//        EventBus.getDefault().post(eventMsg)
     }
 
 

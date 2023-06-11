@@ -4,11 +4,16 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.marshal.IMPath.OPEN_QUESTION_BANK
 import com.marshal.R
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityOpenQuestionBankBinding
 import com.marshal.mine.dialog.OpenQuestionSelectDialog
+import com.marshal.pojo.OpenAnswersBean
+import com.marshal.sharedata.CommitShareData
+import getAppFunctionSingleData
 
 
 @Route(path = OPEN_QUESTION_BANK)
@@ -73,15 +78,11 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                                 ?.show(appFunctionFragment ?: return)
                                 ?.commitNowAllowingStateLoss()
                         }
-
                     }
 
                     override fun onClickSecondItem(view: View) {
                         currentCourse = thought
                         tvTitle?.text = secondTitle
-
-                        Log.d("TAG","switch fragment second add:${thoughtFragment?.isAdded}")
-                        Log.d("TAG","switch fragment second hide:${thoughtFragment?.isHidden}")
 
                         if (thoughtFragment?.isAdded == true) {
                             fragmentManager?.beginTransaction()
@@ -100,8 +101,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                     override fun onClickThirdItem(view: View) {
                         currentCourse = programDesign
                         tvTitle?.text = thirdTitle
-                        Log.d("TAG","switch fragment third add:${programDesignFragment?.isAdded}")
-                        Log.d("TAG","switch fragment third hide:${programDesignFragment?.isHidden}")
                         if (programDesignFragment?.isAdded == true) {
                             fragmentManager?.beginTransaction()
                                 ?.hide(appFunctionFragment ?: return)
@@ -119,6 +118,7 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                 dialogFragment.show(supportFragmentManager, "dialog_title")
             }
         }
+
 
         appFunctionFragment = OpenAppFunctionFragment()
         thoughtFragment = OpenThoughtFragment()
@@ -159,30 +159,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
 
     }
 
-/*    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun eventBusMessage(data: OpenQuestionEventBean) {
-        Log.d("TAG", "eventBus收到消息了: ")
-
-        when (data.what) {
-            0x11 -> {
-                appFunctionFragment?.addSingleQuestionsShow(data)
-            }
-
-            0x12 -> {
-                appFunctionFragment?.setMultipleQuestionList(data)
-            }
-
-            0x13 -> {
-                appFunctionFragment?.setEstimateQuestionList(data)
-            }
-            0x21 ->{
-                thoughtFragment?.addThoughtSingleQuestionsShow(data)
-            }
-            0x31 ->{
-                programDesignFragment?.addProgramSingleQuestionsShow(data)
-            }
-        }
-    }*/
 
     override fun onStop() {
         super.onStop()

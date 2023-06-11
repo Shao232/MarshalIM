@@ -21,12 +21,10 @@ class OpenProgramDesignFragment : OpenQuestionBaseFragment()  {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun viewCreate() {

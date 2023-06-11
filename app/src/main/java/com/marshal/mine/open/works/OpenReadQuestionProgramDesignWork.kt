@@ -1,13 +1,18 @@
 package com.marshal.mine.open.works
 
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.marshal.mine.event.OpenQuestionEventBean
 import com.marshal.pojo.OpenAnswerBean
 import com.marshal.pojo.OpenAnswersBean
+import com.marshal.sharedata.CommitShareData
 import com.marshal.utils.FileUtils
+import getAppProgramSingleData
 import jxl.Cell
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import org.greenrobot.eventbus.EventBus
+import putAppProgramSingleData
 
 class OpenReadQuestionProgramDesignWork :Runnable{
 
@@ -23,16 +28,18 @@ class OpenReadQuestionProgramDesignWork :Runnable{
      * 程序设计读取
      */
     private fun readProgramDesign(){
+
         val file = FileUtils.copyAssetsResFile(
             "程序设计复习资料_2.xls",
             "${FileUtils.app_cacheDir_path}/open/",
             "程序设计复习资料_2.xls"
         )
 
-        val zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file).openSheet(0)
+        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
         //读取单元格内容
         //读取单元格内容
-        var writableSheet = zzExcelCreator1.writableSheet
+        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
+        val writableSheet = zzExcelCreator1.writableSheet
         Log.d("TAG", "columns: 有${writableSheet.columns}列")
         Log.d("TAG", "rows: 有${writableSheet.rows}行")
 
@@ -74,12 +81,21 @@ class OpenReadQuestionProgramDesignWork :Runnable{
             }
         }
 
+        val json = Gson().toJson(data)
+        putAppProgramSingleData(json)
+        Log.d("TAG", "json:${getAppProgramSingleData()}")
+
+        val appProgramSingleData = getAppProgramSingleData()
+        val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
+        CommitShareData.programSingleQuestions = Gson().fromJson(appProgramSingleData,type)
+        Log.d("TAG","save CommitShareData :${CommitShareData.programSingleQuestions.size}")
+
        /* val json = Gson().toJson(data)
         Log.d("TAG", "json:${json}")*/
-        val eventMsg = OpenQuestionEventBean()
-        eventMsg.what = 0x31
-        eventMsg.questionList = data
-        EventBus.getDefault().post(eventMsg)
+//        val eventMsg = OpenQuestionEventBean()
+//        eventMsg.what = 0x31
+//        eventMsg.questionList = data
+//        EventBus.getDefault().post(eventMsg)
 
         zzExcelCreator1.close()
     }
@@ -98,6 +114,4 @@ class OpenReadQuestionProgramDesignWork :Runnable{
         }
         return data
     }
-
-
 }
