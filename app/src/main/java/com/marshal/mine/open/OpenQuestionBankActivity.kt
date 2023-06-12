@@ -1,19 +1,13 @@
 package com.marshal.mine.open
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.marshal.IMPath.OPEN_QUESTION_BANK
 import com.marshal.R
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityOpenQuestionBankBinding
 import com.marshal.mine.dialog.OpenQuestionSelectDialog
-import com.marshal.pojo.OpenAnswersBean
-import com.marshal.sharedata.CommitShareData
-import getAppFunctionSingleData
 
 
 @Route(path = OPEN_QUESTION_BANK)
@@ -61,7 +55,8 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
     override fun initView() {
 
         if (hasIncludeToolbar) {
-            tvTitle?.text = firstTitle
+            setTitle(firstTitle)
+            ivMenu?.visibility = View.VISIBLE
             ivDown?.visibility = View.VISIBLE
             clnTitleLayout?.setOnClickListener {
                 val dialogFragment = OpenQuestionSelectDialog(firstTitle, secondTitle, thirdTitle)
@@ -69,7 +64,7 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                     OpenQuestionSelectDialog.QuestionDialogClickListener {
                     override fun onClickFirstItem(view: View) {
                         currentCourse = appFunction
-                        tvTitle?.text = firstTitle
+                        setTitle(firstTitle)
 
                         if (appFunctionFragment?.isAdded == true) {
                             fragmentManager?.beginTransaction()
@@ -82,7 +77,7 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
 
                     override fun onClickSecondItem(view: View) {
                         currentCourse = thought
-                        tvTitle?.text = secondTitle
+                        setTitle(secondTitle)
 
                         if (thoughtFragment?.isAdded == true) {
                             fragmentManager?.beginTransaction()
@@ -100,7 +95,7 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
 
                     override fun onClickThirdItem(view: View) {
                         currentCourse = programDesign
-                        tvTitle?.text = thirdTitle
+                        setTitle(thirdTitle)
                         if (programDesignFragment?.isAdded == true) {
                             fragmentManager?.beginTransaction()
                                 ?.hide(appFunctionFragment ?: return)

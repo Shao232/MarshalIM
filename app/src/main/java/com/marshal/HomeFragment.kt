@@ -14,20 +14,27 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
         return binding?.root
     }
 
+    override fun hasToolbar(): Boolean = true
+
     override fun initView() {
 
+         if(hasIncludeToolbar) {
+             setTitle("首页")
+         }
+
+
         binding?.tvChat?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick()) return@setOnClickListener
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(IMPath.CHAT_PATH).navigation()
         }
 
         binding?.tvPhone?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick()) return@setOnClickListener
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(IMPath.PHONE_PAGE).navigation()
         }
 
         binding?.tvQuestion?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick()) return@setOnClickListener
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
 
             ARouter.getInstance().build(IMPath.OPEN_QUESTION_BANK).navigation(mContext)
         }

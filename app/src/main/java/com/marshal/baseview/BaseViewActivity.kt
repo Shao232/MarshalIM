@@ -51,13 +51,16 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
             ivDown = findViewById(R.id.iv_title_down)
             ivMenu = findViewById(R.id.iv_menu_toolbar)
             ivBackBar?.visibility = View.VISIBLE
-            ivMenu?.visibility = View.VISIBLE
 
             ivBackBar?.setOnClickListener {
+                if(NoShakeBtnUtil.isFastDoubleClick(it)){
+                    return@setOnClickListener
+                }
+
                 finish()
             }
             ivMenu?.setOnClickListener {
-                if(NoShakeBtnUtil.isFastDoubleClick()){
+                if(NoShakeBtnUtil.isFastDoubleClick(it)){
                     return@setOnClickListener
                 }
 
@@ -77,13 +80,16 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
     abstract fun getResLayoutBinding(): View?
 
-    abstract fun initView()
-
     open fun hasToolbar():Boolean = false
+
+    abstract fun initView()
 
     open fun subscribeBack(){}
 
     open fun onClickMenu(view:View){}
 
+    fun setTitle(title:String){
+        tvTitle?.text = title
+    }
 
 }

@@ -1,11 +1,14 @@
 package com.marshal.utils
 
+import android.view.View
+import kotlin.math.abs
+
 /**
  * 防止按钮多次点击
  */
 object NoShakeBtnUtil {
     private var lastClickTime: Long = 0
-    private const val DIFF: Long = 1000
+    private const val DIFF: Long = 500
     private var lastButtonId = -1
 
     /**
@@ -13,35 +16,27 @@ object NoShakeBtnUtil {
      *
      * @return
      */
-    val isFastDoubleClick: Boolean
-        get() = isFastDoubleClick(-1, DIFF)
-
-    /**
-     * 判断两次点击的间隔，如果小于1000，则认为是多次无效点击
-     *
-     * @return
-     */
-    fun isFastDoubleClick(buttonId: Int): Boolean {
-        return isFastDoubleClick(buttonId, DIFF)
+    fun isFastDoubleClick(view: View): Boolean {
+        return isFastDoubleClick(view, DIFF)
     }
 
     /**
-     * 判断两次点击的间隔，如果小于diff，则认为是多次无效点击
+     * 是否是快速点击
      *
-     * @param diff
-     * @return
+     * @param v 点击的控件
+     * @param intervalMillis 时间间期（毫秒）
+     * @return true:是，false:不是
      */
-    fun isFastDoubleClick(buttonId: Int = 30, diff: Long = 1000): Boolean {
+    fun isFastDoubleClick(view: View, intervalMillis: Long = DIFF): Boolean {
+        val viewId = view.id
         val time = System.currentTimeMillis()
-        val timeD = time - lastClickTime
-        if (timeD < 0) {
-            return false
+        val timeInterval = abs(time - lastClickTime)
+        return if (timeInterval < intervalMillis && viewId == lastButtonId) {
+            true
+        } else {
+            lastClickTime = time
+            lastButtonId = viewId
+            false
         }
-        if (lastButtonId == buttonId && lastClickTime > 0 && timeD < diff) {
-            return true
-        }
-        lastClickTime = time
-        lastButtonId = buttonId
-        return false
     }
 }

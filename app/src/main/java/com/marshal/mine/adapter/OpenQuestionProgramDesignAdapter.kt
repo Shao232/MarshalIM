@@ -35,8 +35,13 @@ class OpenQuestionProgramDesignAdapter : BaseRecyclerAdapter<OpenQuestionViewHol
         if (selectSelfAnswerBean != null) {
             holder.clnRightAnswerLayout?.visibility = View.VISIBLE
             val rightBean = adapter.itemList.find { it.answerTitle == openAnswersBean.rightAnswer }
-            holder.tvRightAnswerContent?.text =
-                "${openAnswersBean.rightAnswer}.${rightBean?.answerContent}"
+            if(rightBean !=null) {
+                holder.tvRightAnswerContent?.text =
+                    "${openAnswersBean.rightAnswer}.${rightBean.answerContent}"
+            }else {
+                holder.tvRightAnswerContent?.text =
+                    "${openAnswersBean.rightAnswer}"
+            }
             //判断选择的回答是否正确，设置正确或者错误的字体颜色
             val hasRight = openAnswersBean.rightAnswer == selectSelfAnswerBean.answerTitle
 
@@ -67,8 +72,14 @@ class OpenQuestionProgramDesignAdapter : BaseRecyclerAdapter<OpenQuestionViewHol
                     //当用户点击回答时，判断回答是否正确
                     val rightBean =
                         adapter.itemList.find { it.answerTitle == openAnswersBean.rightAnswer }
-                    holder.tvRightAnswerContent?.text =
-                        "${openAnswersBean.rightAnswer}.${rightBean?.answerContent}"
+                    if(rightBean !=null) {
+                        holder.tvRightAnswerContent?.text =
+                            "${openAnswersBean.rightAnswer}.${rightBean.answerContent}"
+                    }else {
+                        holder.tvRightAnswerContent?.text =
+                            "${openAnswersBean.rightAnswer}"
+                    }
+
 
                     val hasRight = openAnswersBean.rightAnswer == bean.answerTitle
 

@@ -6,7 +6,6 @@ import com.marshal.R
 import com.marshal.baseadapter.AdapterItemOnClickListener
 import com.marshal.baseadapter.BaseRecyclerAdapter
 import com.marshal.pojo.OpenAnswerBean
-import com.marshal.utils.NoShakeBtnUtil
 
 /**
  * 单选题 答案
@@ -34,15 +33,11 @@ class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerVie
         itemOnClickListener = object : AdapterItemOnClickListener<OpenAnswerBean>{
             override fun onClick(view: View, bean: OpenAnswerBean) {
                 super.onClick(view, bean)
-                if(NoShakeBtnUtil.isFastDoubleClick(10)) {
-                    return
-                }
                 //通过循环，选择任意一个答案，就会告诉adapter有选择的答案，修改背景颜色
                 itemList.forEach {
                     it.hasSelectSelf = it.answerTitle == bean.answerTitle
                 }
                 onSelectAnswerListener?.onSelectAnswer(view,bean)
-
                 notifyDataSetChanged()
             }
         }

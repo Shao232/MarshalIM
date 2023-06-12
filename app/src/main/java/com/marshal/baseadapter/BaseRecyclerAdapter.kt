@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.marshal.MApplication
+import com.marshal.utils.NoShakeBtnUtil
 
 abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Adapter<T>() {
 
@@ -34,6 +35,9 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
         val bean = itemList[position]
         holder.itemView.setOnClickListener{
             if(itemOnClickListener !=null) {
+                if(NoShakeBtnUtil.isFastDoubleClick(it)) {
+                    return@setOnClickListener
+                }
                 itemOnClickListener?.onClick(it,bean)
                 itemOnClickListener?.onClick(it,position)
             }
