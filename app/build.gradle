@@ -85,15 +85,29 @@ dependencies {
     //arouter
     implementation 'com.alibaba:arouter-api:1.5.2'
     kapt 'com.alibaba:arouter-compiler:1.5.2'
+    //第三方框架 做数据持久化缓存
     implementation 'com.tencent:mmkv:1.2.14'
     //第三方支持修改状态栏
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
-
+    //eventbus 消息传递
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     //def work_version = "2.7.1"
     implementation "androidx.work:work-runtime:2.7.1"
 
+    //room框架
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    // For Kotlin use kapt instead of annotationProcessor  这里 把  annotationProcessor 替换为 kapt
+    kapt "androidx.room:room-compiler:$room_version"
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+
+    //依赖的模块
     api project(':commit')
     api project(':zz-excel-creator')
 

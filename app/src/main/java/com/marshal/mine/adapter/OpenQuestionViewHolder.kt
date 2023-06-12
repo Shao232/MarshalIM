@@ -3,7 +3,6 @@ package com.marshal.mine.adapter
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.marshal.R
@@ -14,7 +13,7 @@ class OpenQuestionViewHolder(context: Context?, resId:Int,
 ):BaseRecyclerViewHolder(context, resId, parent)  {
 
     var clnRootViewLayout:ConstraintLayout? = null
-    var tvQuestionTitle: AppCompatTextView? = null
+    var tvQuestionTitle: TextView? = null
     var recyclerListAnswers:RecyclerView? = null
     var clnRightAnswerLayout:ConstraintLayout? = null
     var tvRightAnswerTag:TextView? = null

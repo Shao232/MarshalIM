@@ -14,12 +14,6 @@ import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityMainBinding
 import com.marshal.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
-import com.marshal.mine.event.OpenQuestionEventBean
-import com.marshal.pojo.OpenAnswersBean
-import com.marshal.sharedata.CommitShareData
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  *  ImmersionBar.with(this)
@@ -79,10 +73,10 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             Log.d("TAG", "请求读写权限")
 
             ActivityCompat.requestPermissions(this, permissionArray, 12)
+        }else {
+            intentStartMainService = Intent(this,MainService::class.java)
+            startService(intentStartMainService)
         }
-
-        intentStartMainService = Intent(this,MainService::class.java)
-        startService(intentStartMainService)
 
 
 
@@ -107,11 +101,12 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             Log.d("TAG", "permissions: ${permissions.forEach {Log.d("TAG",it) }}")
             if (dataResults.isNotEmpty()) {
                 Log.d("TAG", "权限请求成功!!!!!")
+                intentStartMainService = Intent(this,MainService::class.java)
+                startService(intentStartMainService)
             } else {
                 Log.d("TAG", "dataResults is empty ")
             }
         }
-
     }
 
     override fun onDestroy() {

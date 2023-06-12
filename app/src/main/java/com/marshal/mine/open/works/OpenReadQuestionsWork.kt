@@ -1,13 +1,9 @@
 package com.marshal.mine.open.works
 
-import StoreManager
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.marshal.mine.event.OpenQuestionEventBean
 import com.marshal.pojo.OpenAnswerBean
 import com.marshal.pojo.OpenAnswersBean
-import com.marshal.sharedata.CommitShareData
 import com.marshal.utils.FileUtils
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
@@ -15,19 +11,28 @@ import getAppFunctionSingleData
 import jxl.Cell
 import jxl.write.WritableSheet
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
-import org.greenrobot.eventbus.EventBus
 import putAppFunctionEstimateData
 import putAppFunctionMultipleData
 import putAppFunctionSingleData
+import java.util.concurrent.locks.ReentrantReadWriteLock
 
+/**
+ * 计算机应用基础
+ */
 class OpenReadQuestionsWork : Runnable {
 
-    override fun run() {
-        try {
-            readAppFunctionWork()
+    private val lock = ReentrantReadWriteLock()
 
-        } catch (e: Exception) {
-            e.printStackTrace()
+    override fun run() {
+        synchronized(this){
+            lock.readLock().lock()
+            try {
+                readAppFunctionWork()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }finally {
+                lock.readLock().unlock()
+            }
         }
     }
 
@@ -43,28 +48,13 @@ class OpenReadQuestionsWork : Runnable {
         var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
         //读取单元格内容
         //读取单元格内容
-        Log.d("TAG", "sheet size : ${zzExcelCreator1.writableWorkbook.numberOfSheets}")
         zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        var writableSheet = zzExcelCreator1.writableSheet
+        val writableSheet = zzExcelCreator1.writableSheet
 
-        if (writableSheet.name == "单选题") {
-            singleChoiceAnswer(writableSheet)
-        }
+        Log.d("TAG", "计算机应用基础 columns: 有${writableSheet.columns}列")
+        Log.d("TAG", "计算机应用基础 rows: 有${writableSheet.rows}行")
 
-        zzExcelCreator1 = zzExcelCreator1.openSheet(1)
-        writableSheet = zzExcelCreator1.writableSheet
-
-        if (writableSheet.name == "多选题") {
-
-            multipleChoiceAnswer(writableSheet)
-        }
-
-        zzExcelCreator1 = zzExcelCreator1.openSheet(2)
-        writableSheet = zzExcelCreator1.writableSheet
-
-        if (writableSheet.name == "判断题") {
-            estimateAnswer(writableSheet)
-        }
+        singleChoiceAnswer(writableSheet)
 
         //别忘了close
         zzExcelCreator1.close()
@@ -74,194 +64,184 @@ class OpenReadQuestionsWork : Runnable {
      * 单选题
      */
     private fun singleChoiceAnswer(writableSheet: WritableSheet) {
-        val array1 = writableSheet.getColumn(0)
-        val array2 = writableSheet.getColumn(1)
-        val array3 = writableSheet.getColumn(2)
-        val array4 = writableSheet.getColumn(3)
-        val array5 = writableSheet.getColumn(4)
-        val array6 = writableSheet.getColumn(12)
+         //读取应用基础的第一部分 单选题 从第3行到169行 程序中从0计数
 
-        var data = ArrayList<OpenAnswersBean>()
+        val dataSingle = ArrayList<OpenAnswersBean>()
+        val dataMultiple = ArrayList<OpenAnswersBean>()
+        val dataEstimate = ArrayList<OpenAnswersBean>()
 
-        var indexFirst = 0
-        while (indexFirst < array1.size) {
-            if (indexFirst >= 2) {
-                //添加数据，并设置题目
-                data.add(
-                    OpenAnswersBean(
-                        indexFirst, 1,
-                        array1[indexFirst].contents,
-                    )
-                )
-            }
-            indexFirst++
-        }
+        val arrayColum1 = writableSheet.getColumn(0)
+        val arrayColum2 = writableSheet.getColumn(1)
+        val arrayColum3 = writableSheet.getColumn(2)
+        val arrayColum4 = writableSheet.getColumn(3)
+        val arrayColum5 = writableSheet.getColumn(4)
+        val arrayColum6 = writableSheet.getColumn(5)
+        val arrayColum7 = writableSheet.getColumn(6)
 
-        //设置回答
-        data = setAnswerList(array2, data, "A")
-        data = setAnswerList(array3, data, "B")
-        data = setAnswerList(array4, data, "C")
-        data = setAnswerList(array5, data, "D")
+        Log.d("TAG"," writableSheet.size ${ writableSheet.columns}")
+        setQuestionTitle(arrayColum1, dataSingle, dataMultiple, dataEstimate)
 
-        //读取参考答案，设置在对象中
-        var indexSix = 0
-        array6.mapIndexed { index, cell ->
-            if (index >= 2) {
-                data[indexSix].rightAnswer = cell.contents
-                indexSix++
-            }
-        }
+        /**
+         * 将答题的题目集合到arraylist中
+         */
+        setSingleAnswerList(arrayColum2,"A",dataSingle)
+        setSingleAnswerList(arrayColum3,"B",dataSingle)
+        setSingleAnswerList(arrayColum4,"C",dataSingle)
+        setSingleAnswerList(arrayColum5,"D",dataSingle)
+        setSingleRightAnswer(arrayColum6,dataSingle)
 
-        val json = Gson().toJson(data)
-        putAppFunctionSingleData(json)
-        Log.d("TAG", "json:${getAppFunctionSingleData()}")
+        setMultipleAnswerList(arrayColum2,"A",dataMultiple)
+        setMultipleAnswerList(arrayColum3,"B",dataMultiple)
+        setMultipleAnswerList(arrayColum4,"C",dataMultiple)
+        setMultipleAnswerList(arrayColum5,"D",dataMultiple)
+        setMultipleAnswerList(arrayColum6,"E",dataMultiple)
+        setMultipleRightAnswer(arrayColum7,dataMultiple)
 
-        val appFunctionSingleData = getAppFunctionSingleData()
-        val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
-        CommitShareData.appSingleQuestions = Gson().fromJson(appFunctionSingleData,type)
-        Log.d("TAG","save CommitShareData :${CommitShareData.appSingleQuestions.size}")
+        setEstimateAnswerList(arrayColum2,dataEstimate)
+        setEstimateRightAnswer(arrayColum2,dataEstimate)
 
-//        val eventMsg = OpenQuestionEventBean()
-//        eventMsg.what = 0x11
-//        eventMsg.questionList = data
-//        EventBus.getDefault().post(eventMsg)
+       val json1 = Gson().toJson(dataSingle)
+        putAppFunctionSingleData(json1)
+        Log.d("TAG", "应用基础 单选 json:${getAppFunctionSingleData()}")
+
+        val json2 = Gson().toJson(dataMultiple)
+        putAppFunctionMultipleData(json2)
+        Log.d("TAG", "应用基础 多选 json:${getAppFunctionMultipleData()}")
+
+        val json3 = Gson().toJson(dataEstimate)
+        putAppFunctionEstimateData(json3)
+        Log.d("TAG", "应用基础 判断 json:${getAppFunctionEstimateData()}")
+
     }
 
-    /**
-     * 将答题的题目集合到arraylist中
-     */
-    private fun setAnswerList(
-        array: Array<Cell>,
-        data: ArrayList<OpenAnswersBean>,
-        answerTag: String
-    ): ArrayList<OpenAnswersBean> {
+    private fun setSingleRightAnswer(arrayColum: Array<Cell>,  dataSingle: ArrayList<OpenAnswersBean>){
         var indexSecond = 0
-        array.mapIndexed { index, cell ->
-            if (index >= 2) {
-                data[indexSecond].answerList?.add(OpenAnswerBean(answerTag, cell.contents))
+        var indexColumRow = 0
+        while(indexColumRow < arrayColum.size) {
+            if (indexColumRow in 2..168) {
+                dataSingle[indexSecond].rightAnswer = arrayColum[indexColumRow].contents
                 indexSecond++
             }
+            indexColumRow ++
         }
-        return data
     }
 
-    /**
-     * 多选题
-     */
-    private fun multipleChoiceAnswer(writableSheet: WritableSheet) {
-        val array1 = writableSheet.getColumn(0)
-        val array2 = writableSheet.getColumn(1)
-        val array3 = writableSheet.getColumn(2)
-        val array4 = writableSheet.getColumn(3)
-        val array5 = writableSheet.getColumn(4)
-        val array6 = writableSheet.getColumn(5)
-        val array7 = writableSheet.getColumn(6)
-
-        var data = ArrayList<OpenAnswersBean>()
-
-        var indexFirst = 0
-        while (indexFirst < array1.size) {
-            if (indexFirst >= 2) {
-                //添加数据，并设置题目
-                data.add(
-                    OpenAnswersBean(
-                        indexFirst, 2,
-                        array1[indexFirst].contents,
-                    )
-                )
-            }
-            indexFirst++
-        }
-
-        //设置回答
-        data = setAnswerList(array2, data, "A")
-        data = setAnswerList(array3, data, "B")
-        data = setAnswerList(array4, data, "C")
-        data = setAnswerList(array5, data, "D")
-        data = setAnswerList(array6, data, "E")
-
-        //读取参考答案，设置在对象中
-        var indexSix = 0
-        array7.mapIndexed { index, cell ->
-            if (index >= 2) {
-                data[indexSix].rightAnswer = cell.contents
-                indexSix++
-            }
-        }
-
-        val json = Gson().toJson(data)
-        putAppFunctionMultipleData(json)
-        Log.d("TAG", "json:${getAppFunctionMultipleData()}")
-
-        val appFunctionMultipleData = getAppFunctionMultipleData()
-        val type2 = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
-        CommitShareData.appMultipleQuestions = Gson().fromJson(appFunctionMultipleData,type2)
-        Log.d("TAG","save CommitShareData :${CommitShareData.appMultipleQuestions.size}")
-
-//        val eventMsg = OpenQuestionEventBean()
-//        eventMsg.what = 0x12
-//        eventMsg.questionList = data
-//        EventBus.getDefault().post(eventMsg)
-    }
-
-    /**
-     * 判断题
-     */
-    private fun estimateAnswer(writableSheet: WritableSheet) {
-        val array1 = writableSheet.getColumn(0)
-        val array2 = writableSheet.getColumn(1)
-
-        val data = ArrayList<OpenAnswersBean>()
-
-        var indexFirst = 0
-        while (indexFirst < array1.size) {
-            if (indexFirst >= 2) {
-                //添加数据，并设置题目
-                data.add(
-                    OpenAnswersBean(
-                        indexFirst, 3,
-                        array1[indexFirst].contents,
-                    )
-                )
-            }
-            indexFirst++
-        }
-
-        //设置回答
+    private fun setMultipleRightAnswer(arrayColum: Array<Cell>,  dataMultiple: ArrayList<OpenAnswersBean>){
         var indexSecond = 0
-        var indexValue = 0
-        while (indexSecond < array2.size) {
-            if (indexSecond >= 2) {
-                data[indexValue].answerList?.add(OpenAnswerBean("A", "正确"))
-                data[indexValue].answerList?.add(OpenAnswerBean("B", "错误"))
-                indexValue++
+        var indexColumRow = 0
+        while(indexColumRow < arrayColum.size) {
+            if (indexColumRow in 172..217) {
+                dataMultiple[indexSecond].rightAnswer = arrayColum[indexColumRow].contents
+                indexSecond++
             }
-            indexSecond++
+            indexColumRow ++
         }
-
-        //读取参考答案，设置在对象中
-        var indexSix = 0
-        array2.mapIndexed { index, cell ->
-            if (index >= 2) {
-                data[indexSix].rightAnswer = cell.contents
-                indexSix++
-            }
-        }
-
-        val json = Gson().toJson(data)
-        putAppFunctionEstimateData(json)
-        Log.d("TAG", "json:${getAppFunctionEstimateData()}")
-
-        val appFunctionEstimateData = getAppFunctionEstimateData()
-        val type3 = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
-        CommitShareData.appEstimateQuestions = Gson().fromJson(appFunctionEstimateData,type3)
-        Log.d("TAG","save CommitShareData :${CommitShareData.appEstimateQuestions.size}")
-
-//        val eventMsg = OpenQuestionEventBean()
-//        eventMsg.what = 0x13
-//        eventMsg.questionList = data
-//        EventBus.getDefault().post(eventMsg)
     }
 
+    private fun setEstimateRightAnswer(arrayColum: Array<Cell>,  dataEstimate: ArrayList<OpenAnswersBean>){
+        var indexSecond = 0
+        var indexColumRow = 0
+        while(indexColumRow < arrayColum.size) {
+            if (indexColumRow in 222..301) {
+                dataEstimate[indexSecond].rightAnswer = arrayColum[indexColumRow].contents
+                indexSecond++
+            }
+            indexColumRow ++
+        }
+    }
 
+    private fun setSingleAnswerList(
+        arrayColum: Array<Cell>,
+        answerTitle:String,
+        dataSingle: ArrayList<OpenAnswersBean>,
+    ) {
+        var indexSecond = 0
+        var indexColumRow = 0
+        while(indexColumRow < arrayColum.size) {
+            if (indexColumRow in 2..168) {
+                dataSingle[indexSecond].answerList?.add(OpenAnswerBean(answerTitle, arrayColum[indexColumRow].contents))
+                indexSecond++
+            }
+            indexColumRow ++
+        }
+    }
+
+    private fun setMultipleAnswerList(
+        arrayColum: Array<Cell>,
+        answerTitle:String,
+        dataMultiple: ArrayList<OpenAnswersBean>,
+
+        ) {
+        var indexSecond = 0
+        var indexColumRow = 0
+        while(indexColumRow < arrayColum.size) {
+            if (indexColumRow in 172..217) {
+                dataMultiple[indexSecond].answerList?.add(OpenAnswerBean(answerTitle, arrayColum[indexColumRow].contents))
+                indexSecond++
+            }
+            indexColumRow ++
+        }
+    }
+
+    private fun setEstimateAnswerList(
+        arrayColum: Array<Cell>,
+        dataEstimate: ArrayList<OpenAnswersBean>,
+        ) {
+        var indexSecond = 0
+        var indexColumRow = 0
+        while(indexColumRow < arrayColum.size) {
+            if (indexColumRow in 222..301) {
+                dataEstimate[indexSecond].answerList?.add(OpenAnswerBean("A", "正确"))
+                dataEstimate[indexSecond].answerList?.add(OpenAnswerBean("B", "错误"))
+                indexSecond++
+            }
+            indexColumRow ++
+        }
+    }
+
+    /**
+     * 设置单选，多选，判断的题目
+     * 直接硬编码读取行数，从168之前都是单选题，后面的节点类似
+     */
+    private fun setQuestionTitle(
+        arrayColum1: Array<Cell>,
+        dataSingle: ArrayList<OpenAnswersBean>,
+        dataMultiple: ArrayList<OpenAnswersBean>,
+        dataEstimate: ArrayList<OpenAnswersBean>
+    ) {
+        Log.d("TAG", " arrayColum1.size ${arrayColum1.size}")
+        var indexColumFirst = 0
+        while (indexColumFirst < arrayColum1.size) {
+            if (indexColumFirst in 2..168) {
+                //添加数据，并设置单选题的题目
+                dataSingle.add(
+                    OpenAnswersBean(
+                        indexColumFirst, 1,
+                        arrayColum1[indexColumFirst].contents,
+                    )
+                )
+            }
+
+            if (indexColumFirst in 172..217) {
+                //添加数据，并设置多选题的题目
+                dataMultiple.add(
+                    OpenAnswersBean(
+                        indexColumFirst, 2,
+                        arrayColum1[indexColumFirst].contents,
+                    )
+                )
+            }
+
+            if (indexColumFirst in 222..301) {
+                //添加数据，并设置判断题的题目
+                dataEstimate.add(
+                    OpenAnswersBean(
+                        indexColumFirst, 3,
+                        arrayColum1[indexColumFirst].contents,
+                    )
+                )
+            }
+            indexColumFirst++
+        }
+    }
 }

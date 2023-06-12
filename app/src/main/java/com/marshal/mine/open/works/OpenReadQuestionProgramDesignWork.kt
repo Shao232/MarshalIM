@@ -2,25 +2,29 @@ package com.marshal.mine.open.works
 
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.marshal.mine.event.OpenQuestionEventBean
 import com.marshal.pojo.OpenAnswerBean
 import com.marshal.pojo.OpenAnswersBean
-import com.marshal.sharedata.CommitShareData
 import com.marshal.utils.FileUtils
 import getAppProgramSingleData
 import jxl.Cell
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
-import org.greenrobot.eventbus.EventBus
 import putAppProgramSingleData
+import java.util.concurrent.locks.ReentrantReadWriteLock
 
 class OpenReadQuestionProgramDesignWork :Runnable{
 
+    private val lock = ReentrantReadWriteLock()
+
     override fun run() {
-        try {
-            readProgramDesign()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        synchronized(this){
+            lock.readLock().lock()
+            try {
+                readProgramDesign()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }finally {
+                lock.readLock().unlock()
+            }
         }
     }
 
@@ -40,8 +44,8 @@ class OpenReadQuestionProgramDesignWork :Runnable{
         //读取单元格内容
         zzExcelCreator1 = zzExcelCreator1.openSheet(0)
         val writableSheet = zzExcelCreator1.writableSheet
-        Log.d("TAG", "columns: 有${writableSheet.columns}列")
-        Log.d("TAG", "rows: 有${writableSheet.rows}行")
+        Log.d("TAG", "程序设计 columns: 有${writableSheet.columns}列")
+        Log.d("TAG", "程序设计 rows: 有${writableSheet.rows}行")
 
         val array1 = writableSheet.getColumn(1)
         val array2 = writableSheet.getColumn(2)
@@ -83,19 +87,7 @@ class OpenReadQuestionProgramDesignWork :Runnable{
 
         val json = Gson().toJson(data)
         putAppProgramSingleData(json)
-        Log.d("TAG", "json:${getAppProgramSingleData()}")
-
-        val appProgramSingleData = getAppProgramSingleData()
-        val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
-        CommitShareData.programSingleQuestions = Gson().fromJson(appProgramSingleData,type)
-        Log.d("TAG","save CommitShareData :${CommitShareData.programSingleQuestions.size}")
-
-       /* val json = Gson().toJson(data)
-        Log.d("TAG", "json:${json}")*/
-//        val eventMsg = OpenQuestionEventBean()
-//        eventMsg.what = 0x31
-//        eventMsg.questionList = data
-//        EventBus.getDefault().post(eventMsg)
+        Log.d("TAG", "程序设计 题目 json:${getAppProgramSingleData()}")
 
         zzExcelCreator1.close()
     }

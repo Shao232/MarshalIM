@@ -26,6 +26,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 前台服务 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!--  When targeting Android 13 or higher, posting a permission requires holding the POST_NOTIFICATIONS permission   -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <application
         android:name=".MApplication"
         android:allowBackup="true"
