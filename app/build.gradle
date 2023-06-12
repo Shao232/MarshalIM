@@ -27,10 +27,36 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
+    signingConfigs {
+        debug {
+            keyAlias 'marshalIM'
+            keyPassword 'Wasd@150136'
+            storeFile file(".\\..\\key_doc\\marshalIM.jks")
+            storePassword 'Wasd@150136'
+        }
+        release {
+            keyAlias 'marshalIM'
+            keyPassword 'Wasd@150136'
+            storeFile file(".\\..\\key_doc\\marshalIM.jks")
+            storePassword 'Wasd@150136'
+        }
+    }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            zipAlignEnabled true
+            debuggable = true
+        }
         release {
+            signingConfig signingConfigs.release
+            debuggable = false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -61,6 +87,7 @@ dependencies {
     //kotlin协程+LiveData
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    //live data
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'

@@ -15,4 +15,6 @@ object IMPath {
     const val PHONE_PAGE = "/phone/page"
     //开大题库
     const val OPEN_QUESTION_BANK = "/open/question/bank"
+
+    const val ROOM_DATA_PAGE = "/room/data/page"
 }

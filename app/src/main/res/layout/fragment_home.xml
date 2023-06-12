@@ -6,56 +6,92 @@
 
     <include layout="@layout/include_toolbar" />
 
-    <TextView
-        android:id="@+id/tv_chat"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingStart="30dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="0dp"
-        android:text="聊天入口"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" />
+        android:layout_height="0dp"
+        android:background="@color/bg_mode_white"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:dividerPadding="4dp"
+        app:divider="@color/gray_line"
+        app:showDividers="middle|end"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_phone"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingStart="30dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="0dp"
-        android:text="打电话入口"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat" />
+        <!--
+              none表示不展示分割线；beginning表示只在第一个子View的前面展示分割线；
+              end表示只在最后一个子View的后面展示分割线；
+              middle表示在每一个子View的中间展示分割线。
+              这些参数也可以组合起来使用
+         -->
 
-    <TextView
-        android:id="@+id/tv_question"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingStart="30dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="0dp"
-        android:text="开大题库(仅供学习)"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+        <TextView
+            android:id="@+id/tv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:text="聊天入口"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:text="打电话入口"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat" />
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:text="开大题库(仅供学习)"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+        <TextView
+            android:id="@+id/tv_room_sqlite"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:text="本地数据库"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="暂无联系人"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:visibility="gone" />
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="暂无联系人"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

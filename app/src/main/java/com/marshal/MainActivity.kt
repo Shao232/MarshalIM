@@ -77,9 +77,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             intentStartMainService = Intent(this,MainService::class.java)
             startService(intentStartMainService)
         }
-
-
-
     }
 
     private fun initAny(){

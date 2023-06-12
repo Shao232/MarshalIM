@@ -11,6 +11,4 @@ data class OpenAnswerBean(
     var answerContent:String? = null,
     //设置每一个选择是否点击，如果点击为true
     var hasSelectSelf:Boolean? = false
-) : Parcelable {
-
-}
+) : Parcelable

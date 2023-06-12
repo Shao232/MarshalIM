@@ -24,10 +24,8 @@
 
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" /> <!-- 录音权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 前台服务 -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <!--  When targeting Android 13 or higher, posting a permission requires holding the POST_NOTIFICATIONS permission   -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- When targeting Android 13 or higher, posting a permission requires holding the POST_NOTIFICATIONS permission -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".MApplication"
@@ -40,10 +38,13 @@
         android:supportsRtl="true"
         android:theme="@style/appStyle"
         tools:targetApi="31">
+        <activity
+            android:name=".roomdata.RoomDataActivity"
+            android:exported="false" />
 
-        <service android:name=".MainService"
-            android:exported="false"
-            />
+        <service
+            android:name=".MainService"
+            android:exported="false" />
 
         <activity
             android:name=".mine.open.OpenQuestionBankActivity"

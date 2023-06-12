@@ -19,7 +19,6 @@ data class OpenAnswersBean(
     var rightAnswer:String? = ""
 ) : Parcelable {
 
-
     override fun toString(): String {
         return Gson().toJson(this)
     }
