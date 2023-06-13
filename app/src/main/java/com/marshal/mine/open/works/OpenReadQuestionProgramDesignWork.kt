@@ -11,18 +11,18 @@ import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import putAppProgramSingleData
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
-class OpenReadQuestionProgramDesignWork :Runnable{
+class OpenReadQuestionProgramDesignWork : Runnable {
 
     private val lock = ReentrantReadWriteLock()
 
     override fun run() {
-        synchronized(this){
+        synchronized(this) {
             lock.readLock().lock()
             try {
                 readProgramDesign()
             } catch (e: Exception) {
                 e.printStackTrace()
-            }finally {
+            } finally {
                 lock.readLock().unlock()
             }
         }
@@ -31,7 +31,7 @@ class OpenReadQuestionProgramDesignWork :Runnable{
     /**
      * 程序设计读取
      */
-    private fun readProgramDesign(){
+    private fun readProgramDesign() {
 
         val file = FileUtils.copyAssetsResFile(
             "程序设计复习资料_2.xls",
@@ -55,15 +55,23 @@ class OpenReadQuestionProgramDesignWork :Runnable{
         val array6 = writableSheet.getColumn(6)
         val array7 = writableSheet.getColumn(7)
 
-        var data = ArrayList<OpenAnswersBean>()
+        val data = ArrayList<OpenAnswersBean>()
 
+        //设置题目
         var indexFirst = 0
         while (indexFirst < array1.size) {
-            if (indexFirst >= 2) {
+            if (indexFirst >= 1) {
                 //添加数据，并设置题目
+                val questionType = if (indexFirst in 1..3) {
+                    //填空类型
+                    4
+                } else {
+                    //单选类型
+                    1
+                }
                 data.add(
                     OpenAnswersBean(
-                        indexFirst, 1,
+                        indexFirst, questionType,
                         array1[indexFirst].contents,
                     )
                 )
@@ -71,15 +79,17 @@ class OpenReadQuestionProgramDesignWork :Runnable{
             indexFirst++
         }
 
-        data = setAnswerList(array2, data, "A")
-        data = setAnswerList(array3, data, "B")
-        data = setAnswerList(array4, data, "C")
-        data = setAnswerList(array5, data, "D")
-        data = setAnswerList(array6, data, "E")
+        setSecondAnswersType(array2, data, "A")
+        setSecondAnswersType(array3, data, "B")
+        setSecondAnswersType(array4, data, "C")
+        setSecondAnswersType(array5, data, "D")
+        setSecondAnswersType(array6, data, "E")
 
+
+        //通过列设置正确的参考答案
         var indexSix = 0
         array7.mapIndexed { index, cell ->
-            if (index >= 2) {
+            if (index >= 1) {
                 data[indexSix].rightAnswer = cell.contents
                 indexSix++
             }
@@ -92,18 +102,37 @@ class OpenReadQuestionProgramDesignWork :Runnable{
         zzExcelCreator1.close()
     }
 
-    private fun setAnswerList(
-        array: Array<Cell>,
-        data: ArrayList<OpenAnswersBean>,
-        answerTag: String
-    ): ArrayList<OpenAnswersBean> {
-        var indexSecond = 0
-        array.mapIndexed { index, cell ->
-            if (index >= 2) {
-                data[indexSecond].answerList?.add(OpenAnswerBean(answerTag, cell.contents))
-                indexSecond++
+    /**
+     * 多选题 149到 188
+     */
+    private fun setSecondAnswersType(
+        arrayColum: Array<Cell>,
+        dataSingle: ArrayList<OpenAnswersBean>,
+        answerTitle: String,
+    ) {
+        //这个循环excel的列
+        var indexColumns = 0
+        //这个循环数据源data
+        var indexDataSecond = 0
+        while (indexColumns < arrayColum.size) {
+            //去掉题目
+            if (indexColumns >= 1) {
+                //去掉前三个填空题
+                if(indexDataSecond >= 3) {
+                    val content =  arrayColum[indexColumns].contents
+                    if(content?.isNotEmpty() == true) {
+                        dataSingle[indexDataSecond].answerList?.add(
+                            OpenAnswerBean(
+                                answerTitle,
+                                arrayColum[indexColumns].contents
+                            )
+                        )
+                    }
+                }
+                indexDataSecond++
             }
+            indexColumns++
         }
-        return data
     }
+
 }

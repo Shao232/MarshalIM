@@ -12,18 +12,18 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 /**
  * 计算思维导论
  */
-class OpenReadQuestionThoughtWork :Runnable{
+class OpenReadQuestionThoughtWork : Runnable {
 
     private val lock = ReentrantReadWriteLock()
 
     override fun run() {
-        synchronized(this){
+        synchronized(this) {
             lock.readLock().lock()
             try {
                 readThought()
             } catch (e: Exception) {
                 e.printStackTrace()
-            }finally {
+            } finally {
                 lock.readLock().unlock()
             }
         }
@@ -32,7 +32,7 @@ class OpenReadQuestionThoughtWork :Runnable{
     /**
      * 思维导论读取
      */
-    private fun readThought(){
+    private fun readThought() {
         val file = FileUtils.copyAssetsResFile(
             "计算思维导论_2.xls",
             "${FileUtils.app_cacheDir_path}/open/",
@@ -54,24 +54,20 @@ class OpenReadQuestionThoughtWork :Runnable{
 
         var indexFirst = 0
         while (indexFirst < array1.size) {
-            if (indexFirst >= 2) {
-                //添加数据，并设置题目
-                data.add(
-                    OpenAnswersBean(
-                        indexFirst, 1,
-                        array1[indexFirst].contents,
-                    )
+            //添加数据，并设置题目
+            data.add(
+                OpenAnswersBean(
+                    indexFirst, 1,
+                    array1[indexFirst].contents,
                 )
-            }
+            )
             indexFirst++
         }
 
         var indexSix = 0
         array2.mapIndexed { index, cell ->
-            if (index >= 2) {
-                data[indexSix].rightAnswer = cell.contents
-                indexSix++
-            }
+            data[indexSix].rightAnswer = cell.contents
+            indexSix++
         }
 
         val json = Gson().toJson(data)

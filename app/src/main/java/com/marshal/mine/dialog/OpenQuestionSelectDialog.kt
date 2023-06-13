@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.marshal.R
 import com.marshal.databinding.DialogSheetCommitLayoutBinding
+import com.marshal.utils.NoShakeBtnUtil
 
 class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=""): BottomSheetDialogFragment() {
 
@@ -44,14 +45,26 @@ class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=
         binding?.buttonThird?.text = thirdTitle
 
         binding?.buttonFirst?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)){
+                return@setOnClickListener
+            }
+
             questionDialogClick?.onClickFirstItem(it)
             dismiss()
         }
         binding?.buttonSecond?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)){
+                return@setOnClickListener
+            }
+
             questionDialogClick?.onClickSecondItem(it)
             dismiss()
         }
         binding?.buttonThird?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)){
+                return@setOnClickListener
+            }
+
             questionDialogClick?.onClickThirdItem(it)
             dismiss()
         }

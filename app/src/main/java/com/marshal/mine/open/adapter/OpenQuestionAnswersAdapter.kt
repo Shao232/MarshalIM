@@ -34,8 +34,9 @@ class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerVie
             override fun onClick(view: View, bean: OpenAnswerBean) {
                 super.onClick(view, bean)
                 //通过循环，选择任意一个答案，就会告诉adapter有选择的答案，修改背景颜色
+                //这里不判断是否正确
                 itemList.forEach {
-                    it.hasSelectSelf = it.answerTitle == bean.answerTitle
+                    it.hasSelectSelf = it.answerTitle.contentEquals(bean.answerTitle)
                 }
                 onSelectAnswerListener?.onSelectAnswer(view,bean)
                 notifyDataSetChanged()
@@ -46,6 +47,4 @@ class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerVie
     interface QuestionSelectAnswerListener{
         fun onSelectAnswer(view:View,bean: OpenAnswerBean)
     }
-
-
 }

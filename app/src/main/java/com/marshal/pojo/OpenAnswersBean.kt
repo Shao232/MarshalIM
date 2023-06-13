@@ -11,6 +11,7 @@ data class OpenAnswersBean(
      * 1 单选
      * 2.多选
      * 3.判断
+     * 4.填空
      */
     var questionType:Int,
     var title:String?="",

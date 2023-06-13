@@ -28,40 +28,56 @@ class OpenQuestionProgramDesignAdapter : BaseRecyclerAdapter<OpenQuestionViewHol
         holder.recyclerListAnswers?.adapter = adapter
         adapter.addListAll(openAnswersBean.answerList as ArrayList<OpenAnswerBean>)
 
-        //通过查找当前是否有选择的回答，设置界面，避免界面复用导致混乱
-        val selectSelfAnswerBean =
-            adapter.itemList.find { answerBean -> answerBean.hasSelectSelf == true }
-
-        if (selectSelfAnswerBean != null) {
+        //程序设计里有填空题，特别处理，直接显示参考答案
+        if(position <=2) {
             holder.clnRightAnswerLayout?.visibility = View.VISIBLE
-            val rightBean = adapter.itemList.find { it.answerTitle == openAnswersBean.rightAnswer }
-            if(rightBean !=null) {
-                holder.tvRightAnswerContent?.text =
-                    "${openAnswersBean.rightAnswer}.${rightBean.answerContent}"
-            }else {
-                holder.tvRightAnswerContent?.text =
-                    "${openAnswersBean.rightAnswer}"
-            }
-            //判断选择的回答是否正确，设置正确或者错误的字体颜色
-            val hasRight = openAnswersBean.rightAnswer == selectSelfAnswerBean.answerTitle
+            holder.tvRightAnswerContent?.text =openAnswersBean.rightAnswer
+            holder.tvRightAnswerTag?.setTextColor(
+                mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
+            )
+            holder.tvRightAnswerContent?.setTextColor(
+                mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
+            )
+        }else {
+            //通过查找当前是否有选择的回答，设置界面，避免界面复用导致混乱
+            val selectSelfAnswerBean =
+                adapter.itemList.find { answerBean -> answerBean.hasSelectSelf == true }
 
-            if (hasRight) {
-                holder.tvRightAnswerTag?.setTextColor(
-                    mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
-                )
-                holder.tvRightAnswerContent?.setTextColor(
-                    mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
-                )
+            if (selectSelfAnswerBean != null) {
+                holder.clnRightAnswerLayout?.visibility = View.VISIBLE
+                //找出正确的答案
+                val rightBean = adapter.itemList.find { it.answerTitle == openAnswersBean.rightAnswer
+                        || it.answerContent?.contains(openAnswersBean.rightAnswer?:"",false) == true
+                }
+                if(rightBean !=null) {
+                    holder.tvRightAnswerContent?.text =
+                        "${rightBean.answerContent}"
+                }else {
+                    holder.tvRightAnswerContent?.text =
+                        "${openAnswersBean.rightAnswer}"
+                }
+                //判断选择的回答是否正确，设置正确或者错误的字体颜色
+                val hasRight = openAnswersBean.rightAnswer == selectSelfAnswerBean.answerTitle
+                        || selectSelfAnswerBean.answerContent?.contains(openAnswersBean.rightAnswer?:"",false) == true
+
+                if (hasRight) {
+                    holder.tvRightAnswerTag?.setTextColor(
+                        mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
+                    )
+                    holder.tvRightAnswerContent?.setTextColor(
+                        mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
+                    )
+                } else {
+                    holder.tvRightAnswerTag?.setTextColor(
+                        mContext?.resources?.getColor(R.color.error_answers_color) ?: 0
+                    )
+                    holder.tvRightAnswerContent?.setTextColor(
+                        mContext?.resources?.getColor(R.color.error_answers_color) ?: 0
+                    )
+                }
             } else {
-                holder.tvRightAnswerTag?.setTextColor(
-                    mContext?.resources?.getColor(R.color.error_answers_color) ?: 0
-                )
-                holder.tvRightAnswerContent?.setTextColor(
-                    mContext?.resources?.getColor(R.color.error_answers_color) ?: 0
-                )
+                holder.clnRightAnswerLayout?.visibility = View.GONE
             }
-        } else {
-            holder.clnRightAnswerLayout?.visibility = View.GONE
         }
 
         adapter.setOnSelectAnswerClickListener(object :
@@ -71,18 +87,19 @@ class OpenQuestionProgramDesignAdapter : BaseRecyclerAdapter<OpenQuestionViewHol
                 if (bean.hasSelectSelf == true) {
                     //当用户点击回答时，判断回答是否正确
                     val rightBean =
-                        adapter.itemList.find { it.answerTitle == openAnswersBean.rightAnswer }
+                        adapter.itemList.find {
+                            it.answerTitle contentEquals(openAnswersBean.rightAnswer)
+                                    || it.answerContent?.contains(bean.answerContent?:"",false) == true
+                        }
                     if(rightBean !=null) {
                         holder.tvRightAnswerContent?.text =
-                            "${openAnswersBean.rightAnswer}.${rightBean.answerContent}"
+                            "${rightBean.answerContent}"
                     }else {
                         holder.tvRightAnswerContent?.text =
                             "${openAnswersBean.rightAnswer}"
                     }
 
-
-                    val hasRight = openAnswersBean.rightAnswer == bean.answerTitle
-
+                    val hasRight = rightBean !=null
                     if (hasRight) {
                         holder.tvRightAnswerTag?.setTextColor(
                             mContext?.resources?.getColor(R.color.right_answers_color) ?: 0
@@ -102,8 +119,5 @@ class OpenQuestionProgramDesignAdapter : BaseRecyclerAdapter<OpenQuestionViewHol
                 notifyDataSetChanged()
             }
         })
-
     }
-
-
 }

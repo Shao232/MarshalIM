@@ -94,6 +94,8 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                     }
 
                     override fun onClickThirdItem(view: View) {
+
+
                         currentCourse = programDesign
                         setTitle(thirdTitle)
                         if (programDesignFragment?.isAdded == true) {

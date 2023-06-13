@@ -10,7 +10,6 @@ import com.marshal.mine.open.works.OpenReadQuestionsWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData
-import getAppProgramSingleData
 import getAppThoughtSingleData
 
 class MainService : Service() {
@@ -30,9 +29,10 @@ class MainService : Service() {
             Thread(OpenReadQuestionThoughtWork()).start()
         }
 
-        if(getAppProgramSingleData()?.isEmpty() == true) {
+        /*if(getAppProgramSingleData()?.isEmpty() == true) {
             Thread(OpenReadQuestionProgramDesignWork()).start()
-        }
+        }*/
+        Thread(OpenReadQuestionProgramDesignWork()).start()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
