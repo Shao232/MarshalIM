@@ -12,7 +12,6 @@ import com.marshal.databinding.IncludeOpenQuestionListFragmentBinding
  */
 abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionListFragmentBinding>() {
 
-
     protected var layoutManager: LinearLayoutManager? = null
 
     override fun getResLayoutId(): Int = R.layout.include_open_question_list_fragment
@@ -23,19 +22,14 @@ abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionLi
     }
 
     override fun initView() {
-
-
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding?.recyclerList?.layoutManager = layoutManager
         binding?.recyclerList?.adapter =getAdapter()
         viewCreate()
     }
 
-
     abstract fun getAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>?
 
     open fun viewCreate(){}
-
-
 
 }

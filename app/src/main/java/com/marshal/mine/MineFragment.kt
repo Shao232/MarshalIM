@@ -34,7 +34,9 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
             ARouter.getInstance().build(IMPath.OPEN_QUESTION_BANK).navigation(mContext)
         }
 
+        binding?.ivSettingMine?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(IMPath.MINE_SETTING_PAGE).navigation(mContext)
+        }
     }
-
-
 }

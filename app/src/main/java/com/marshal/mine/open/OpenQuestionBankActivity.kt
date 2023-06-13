@@ -131,7 +131,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
 
     override fun onClickMenu(view: View) {
         super.onClickMenu(view)
-
         if(currentCourse == appFunction) {
             val dialogFragment = OpenQuestionSelectDialog("单选题", "多选题", "判断题")
             dialogFragment.setOnDialogClickListener(object :
@@ -153,16 +152,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
             })
             dialogFragment.show(supportFragmentManager, "dialog_question")
         }
-
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
 }

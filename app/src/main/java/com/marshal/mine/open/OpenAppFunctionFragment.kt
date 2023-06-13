@@ -1,6 +1,5 @@
 package com.marshal.mine.open
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -32,28 +31,21 @@ class OpenAppFunctionFragment : OpenQuestionBaseFragment() {
         if(appFunctionSingleData?.isNotEmpty() == true) {
             val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
             appSingleQuestions =Gson().fromJson(appFunctionSingleData,type)
-            Log.d("TAG","save appfunction first :${appSingleQuestions.size}")
         }
 
         val appFunctionMultipleData = getAppFunctionMultipleData()
         if(appFunctionMultipleData?.isNotEmpty() == true) {
             val type2 = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
             appMultipleQuestions = Gson().fromJson(appFunctionMultipleData,type2)
-            Log.d("TAG","save appfunction second :${appMultipleQuestions.size}")
         }
 
         val appFunctionEstimateData = getAppFunctionEstimateData()
         if(appFunctionEstimateData?.isNotEmpty() == true) {
             val type3 = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
             appEstimateQuestions = Gson().fromJson(appFunctionEstimateData,type3)
-            Log.d("TAG","save appfunction third :${appEstimateQuestions.size}")
         }
 
         adapter.addListAll(appSingleQuestions)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     fun updateList(type:Int){

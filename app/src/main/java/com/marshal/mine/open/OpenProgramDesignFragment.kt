@@ -1,6 +1,5 @@
 package com.marshal.mine.open
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -28,13 +27,8 @@ class OpenProgramDesignFragment : OpenQuestionBaseFragment()  {
         if(appProgramSingleData?.isNotEmpty() == true) {
             val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
             programSingleQuestions = Gson().fromJson(appProgramSingleData,type)
-            Log.d("TAG","programSingleQuestions :${programSingleQuestions.size}")
         }
         adapter.addListAll(programSingleQuestions)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
 }

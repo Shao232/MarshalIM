@@ -78,7 +78,6 @@ class OpenReadQuestionsWork : Runnable {
         val arrayColum6 = writableSheet.getColumn(5)
         val arrayColum7 = writableSheet.getColumn(6)
 
-        Log.d("TAG"," writableSheet.size ${ writableSheet.columns}")
         setQuestionTitle(arrayColum1, dataSingle, dataMultiple, dataEstimate)
 
         /**
@@ -102,16 +101,12 @@ class OpenReadQuestionsWork : Runnable {
 
        val json1 = Gson().toJson(dataSingle)
         putAppFunctionSingleData(json1)
-        Log.d("TAG", "应用基础 单选 json:${getAppFunctionSingleData()}")
 
         val json2 = Gson().toJson(dataMultiple)
         putAppFunctionMultipleData(json2)
-        Log.d("TAG", "应用基础 多选 json:${getAppFunctionMultipleData()}")
 
         val json3 = Gson().toJson(dataEstimate)
         putAppFunctionEstimateData(json3)
-        Log.d("TAG", "应用基础 判断 json:${getAppFunctionEstimateData()}")
-
     }
 
     private fun setSingleRightAnswer(arrayColum: Array<Cell>,  dataSingle: ArrayList<OpenAnswersBean>){

@@ -72,7 +72,6 @@ class OpenReadQuestionThoughtWork : Runnable {
 
         val json = Gson().toJson(data)
         putAppThoughtSingleData(json)
-        Log.d("TAG", "思维导论 题目 json:${getAppThoughtSingleData()}")
 
         zzExcelCreator1.close()
     }

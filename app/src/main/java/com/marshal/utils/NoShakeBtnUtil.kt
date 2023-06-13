@@ -8,7 +8,7 @@ import kotlin.math.abs
  */
 object NoShakeBtnUtil {
     private var lastClickTime: Long = 0
-    private const val DIFF: Long = 500
+    private const val DIFF: Long = 700
     private var lastButtonId = -1
 
     /**
@@ -27,7 +27,7 @@ object NoShakeBtnUtil {
      * @param intervalMillis 时间间期（毫秒）
      * @return true:是，false:不是
      */
-    fun isFastDoubleClick(view: View, intervalMillis: Long = DIFF): Boolean {
+    private fun isFastDoubleClick(view: View, intervalMillis: Long = DIFF): Boolean {
         val viewId = view.id
         val time = System.currentTimeMillis()
         val timeInterval = abs(time - lastClickTime)

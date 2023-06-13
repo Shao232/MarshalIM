@@ -22,7 +22,6 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
              setTitle("首页")
          }
 
-
         binding?.tvChat?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(IMPath.CHAT_PATH).navigation()
@@ -38,14 +37,6 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
             ARouter.getInstance().build(IMPath.OPEN_QUESTION_BANK).navigation(mContext)
         }
-
-        binding?.tvRoomSqlite?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-
-            ARouter.getInstance().build(IMPath.ROOM_DATA_PAGE).navigation(mContext)
-        }
-
-
     }
 
 

@@ -97,7 +97,6 @@ class OpenReadQuestionProgramDesignWork : Runnable {
 
         val json = Gson().toJson(data)
         putAppProgramSingleData(json)
-        Log.d("TAG", "程序设计 题目 json:${getAppProgramSingleData()}")
 
         zzExcelCreator1.close()
     }
@@ -134,5 +133,4 @@ class OpenReadQuestionProgramDesignWork : Runnable {
             indexColumns++
         }
     }
-
 }
