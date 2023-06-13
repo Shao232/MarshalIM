@@ -2,21 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white_mode">
 
     <include layout="@layout/include_toolbar" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/bg_mode_white"
+        android:background="@color/white_mode"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:dividerPadding="4dp"
         app:divider="@color/gray_line"
         app:showDividers="middle|end"
         android:orientation="vertical">
-
         <!--
               none表示不展示分割线；beginning表示只在第一个子View的前面展示分割线；
               end表示只在最后一个子View的后面展示分割线；
@@ -32,7 +32,7 @@
             android:paddingTop="20dp"
             android:paddingEnd="0dp"
             android:text="聊天入口"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
             android:paddingTop="20dp"
             android:paddingEnd="0dp"
             android:text="打电话入口"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
             android:paddingTop="20dp"
             android:paddingEnd="0dp"
             android:text="开大题库(仅供学习)"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
             android:paddingTop="20dp"
             android:paddingEnd="0dp"
             android:text="本地数据库"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,13 +85,10 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="暂无联系人"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_black"
             android:textSize="18dp"
             android:visibility="gone" />
 
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

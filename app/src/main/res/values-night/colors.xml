@@ -7,5 +7,6 @@
     <color name="white_mode">#0A0A0A</color>
     <color name="text_color_black">#FFFFFF</color>
     <color name="bg_mode_white">#393939</color>
+    <color name="gray_line">#555555</color>
 
 </resources>

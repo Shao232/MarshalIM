@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/cln_question_single_choice"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@color/white_mode"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_vertical"
         android:textSize="18dp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color_black"
         tools:text="A.信息安全信息安全信息安全信息安信息安全信息安全信息安全信息安信息安全信息安全信息安全信息安信息安全信息安全信息安全信息安信息安全信息安全信息安全信息安信息安全信息安全信息安全信息安"/>
 
     <View

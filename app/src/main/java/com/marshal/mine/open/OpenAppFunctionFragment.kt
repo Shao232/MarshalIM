@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.marshal.mine.adapter.OpenQuestionAdapter
+import com.marshal.mine.open.adapter.OpenQuestionAdapter
 import com.marshal.pojo.OpenAnswersBean
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData

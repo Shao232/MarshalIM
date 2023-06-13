@@ -1,4 +1,4 @@
-package com.marshal.mine.adapter
+package com.marshal.mine.open.adapter
 
 import android.content.Context
 import android.view.ViewGroup

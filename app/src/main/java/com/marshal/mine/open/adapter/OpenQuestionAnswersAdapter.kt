@@ -1,4 +1,4 @@
-package com.marshal.mine.adapter
+package com.marshal.mine.open.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import com.marshal.pojo.OpenAnswerBean
  */
 class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerViewHolder, OpenAnswerBean>() {
 
-    var onSelectAnswerListener:QuestionSelectAnswerListener? = null
+    var onSelectAnswerListener: QuestionSelectAnswerListener? = null
 
     fun setOnSelectAnswerClickListener(selectAnswerListener: QuestionSelectAnswerListener) {
         onSelectAnswerListener = selectAnswerListener
@@ -28,7 +28,7 @@ class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerVie
         //告诉adapter有选择的答案，修改背景颜色
         holder.clnChoice?.setBackgroundColor( if(answer.hasSelectSelf == true) mContext?.resources
             ?.getColor(R.color.gray_line)?:0 else mContext?.resources
-            ?.getColor(R.color.white)?:0)
+            ?.getColor(R.color.white_mode)?:0)
 
         itemOnClickListener = object : AdapterItemOnClickListener<OpenAnswerBean>{
             override fun onClick(view: View, bean: OpenAnswerBean) {

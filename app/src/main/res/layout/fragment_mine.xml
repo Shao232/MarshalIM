@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:overScrollMode="never"
+    android:background="@color/white_mode"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white_mode">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color_black"
                 android:text="nickName"
                 app:layout_constraintStart_toEndOf="@id/iv_user_profile"
                 app:layout_constraintTop_toTopOf="@id/iv_user_profile"
@@ -49,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="蓝牙连接"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color_black"
                 android:textSize="16dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -65,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="UDP连接"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color_black"
                 android:textSize="16dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -81,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="开大题库(仅供学习)"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color_black"
                 android:textSize="16dp"
                 android:clickable="true"
                 android:focusable="true"

@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.marshal.mine.adapter.OpenQuestionThoughtAdapter
+import com.marshal.mine.open.adapter.OpenQuestionThoughtAdapter
 import com.marshal.pojo.OpenAnswersBean
 import getAppThoughtSingleData
 

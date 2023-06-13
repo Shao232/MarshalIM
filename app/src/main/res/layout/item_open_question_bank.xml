@@ -5,7 +5,7 @@
     android:id="@+id/cln_question_bank"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white">
+    android:background="@color/white_mode">
 
     <TextView
         android:id="@+id/tv_question_title"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="20dp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color_black"
         android:textStyle="bold"
         android:padding="5dp"
         tools:text="防止网络环境中的数据、信息被泄露和篡改，以及确保网络资源可由授权方按需使用的方法和技术称为__________。"/>
