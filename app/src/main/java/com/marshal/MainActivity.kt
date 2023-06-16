@@ -3,6 +3,7 @@ package com.marshal
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.text.Html
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -12,8 +13,18 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityMainBinding
+import com.marshal.https.IMService
 import com.marshal.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
  *  ImmersionBar.with(this)
@@ -29,15 +40,15 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     private var ft: FragmentTransaction? = null
 
     private var mainAdapter: MainFragmentAdapter? = null
-    private var mainFragmentArray:ArrayList<Fragment> = arrayListOf()
+    private var mainFragmentArray: ArrayList<Fragment> = arrayListOf()
     private val mainArray: Array<String> = arrayOf("首页", "我的")
 
-    private var homeFragment:HomeFragment? = null
+    private var homeFragment: HomeFragment? = null
     private var mineFragment: MineFragment? = null
 
-    private var intentStartMainService:Intent? = null
+    private var intentStartMainService: Intent? = null
 
-    private var permissionArray:Array<String> = arrayOf(
+    private var permissionArray: Array<String> = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
@@ -49,16 +60,16 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
     override fun initView() {
         initAny()
-        mainFragmentArray.add(homeFragment?:return)
-        mainFragmentArray.add(mineFragment?:return)
+        mainFragmentArray.add(homeFragment ?: return)
+        mainFragmentArray.add(mineFragment ?: return)
         mainAdapter?.itemList?.add(mainFragmentArray[0])
         mainAdapter?.itemList?.add(mainFragmentArray[1])
 
         binding?.viewPager2?.adapter = mainAdapter
         //TabLayoutMediator  连接tablayout和viewpage2的中介人
-        TabLayoutMediator(binding?.tabLayout?:return,binding?.viewPager2?:return)
+        TabLayoutMediator(binding?.tabLayout ?: return, binding?.viewPager2 ?: return)
         { tab, position ->
-        tab.text =   mainArray[position]
+            tab.text = mainArray[position]
         }.attach()
 
         if (ActivityCompat.checkSelfPermission(
@@ -73,13 +84,52 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             Log.d("TAG", "请求读写权限")
 
             ActivityCompat.requestPermissions(this, permissionArray, 12)
-        }else {
-            intentStartMainService = Intent(this,MainService::class.java)
+        } else {
+            intentStartMainService = Intent(this, MainService::class.java)
             startService(intentStartMainService)
         }
+
+        initHttp()
+
     }
 
-    private fun initAny(){
+    private fun initHttp() {
+        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
+
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .writeTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .build()
+
+
+        val retrofit = Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl("https://www.baidu.com")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val api = retrofit.create(IMService::class.java)
+        api.getData().enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Log.d("TAG", "call: ${call.request()}")
+                Log.d("TAG", "response: $response")
+                Log.d("TAG", "response: ${response.body()}")
+                val span = Html.fromHtml(response.body())
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("TAG", "call: ${call.request()}")
+                t.printStackTrace()
+
+            }
+
+        })
+    }
+
+
+    private fun initAny() {
         fm = supportFragmentManager
         ft = fm?.beginTransaction()
         homeFragment = HomeFragment()
@@ -95,10 +145,10 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 12) {
             val dataResults = grantResults.filter { it == PackageManager.PERMISSION_GRANTED }
-            Log.d("TAG", "permissions: ${permissions.forEach {Log.d("TAG",it) }}")
+            Log.d("TAG", "permissions: ${permissions.forEach { Log.d("TAG", it) }}")
             if (dataResults.isNotEmpty()) {
                 Log.d("TAG", "权限请求成功!!!!!")
-                intentStartMainService = Intent(this,MainService::class.java)
+                intentStartMainService = Intent(this, MainService::class.java)
                 startService(intentStartMainService)
             } else {
                 Log.d("TAG", "dataResults is empty ")

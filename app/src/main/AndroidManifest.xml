@@ -37,6 +37,7 @@
         android:roundIcon="@drawable/icon_marshal_logo_round"
         android:supportsRtl="true"
         android:theme="@style/appStyle"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".mine.SettingActivity"

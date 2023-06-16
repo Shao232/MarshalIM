@@ -17,3 +17,6 @@
 
 ## 遇到的问题
 >1.ScrollView滚动布局嵌套RecyclerView布局时，内容不确定，recyclerview布局未设置固定大小，导致卡顿
+>2.由于 Android P(版本27以上) 限制了明文流量的网络请求，非加密的流量请求都会被系统禁止掉。如果当前应用的请求是 htttp 请求，
+   而非 https ,这样就会导系统禁止当前应用进行该请求。 也就是Android9.0以上都要https，不能http了，不然拒绝访问。
+   解决方法 在AndroidManifest.xml的文件的application节点中增加： android:usesCleartextTraffic="true"

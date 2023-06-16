@@ -34,9 +34,9 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
         binding?.tvQuestion?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-
             ARouter.getInstance().build(IMPath.OPEN_QUESTION_BANK).navigation(mContext)
         }
+
     }
 
 

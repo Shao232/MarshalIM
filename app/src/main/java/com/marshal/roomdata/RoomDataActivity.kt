@@ -19,7 +19,6 @@ class RoomDataActivity : BaseViewActivity<ActivityRoomDataBinding>() {
 
     override fun initView() {
 
-
         GlobalScope.launch {
 //            RoomUtil.getUserDao().insertAll(User(null, "jack", "love", 10, "AA"))
 //            val all = RoomUtil.getUserDao().getAll()
