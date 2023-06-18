@@ -116,7 +116,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
                 Log.d("TAG", "call: ${call.request()}")
                 Log.d("TAG", "response: $response")
                 Log.d("TAG", "response: ${response.body()}")
-                val span = Html.fromHtml(response.body())
+
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {

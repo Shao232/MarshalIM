@@ -1,6 +1,8 @@
 package com.marshal.mine.open
 
+import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marshal.R
@@ -26,6 +28,9 @@ abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionLi
         binding?.recyclerList?.layoutManager = layoutManager
         binding?.recyclerList?.adapter =getAdapter()
         viewCreate()
+
+        binding?.recyclerList?.scrollBarSize
+
     }
 
     abstract fun getAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>?
