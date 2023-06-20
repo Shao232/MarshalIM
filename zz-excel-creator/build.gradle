@@ -5,7 +5,6 @@ plugins{
     id 'com.android.library'
 }
 
-
 android {
     namespace 'com.zz.excel.creator'
     compileSdk 33
@@ -26,9 +25,18 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
     api fileTree(includes: ['*.jar'],dir: 'libs')
-    api project(':commit')
+    implementation project(path: ":base-common")
 }

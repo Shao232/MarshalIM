@@ -9,6 +9,7 @@ plugins {
 android {
     namespace 'com.marshal'
     compileSdk 33
+    buildToolsVersion '33.0.0'
 
     defaultConfig {
         applicationId "com.marshal"
@@ -16,6 +17,7 @@ android {
         targetSdk 33
         versionCode 3
         versionName "0.2"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //分包
         multiDexEnabled true
         kapt {
@@ -24,7 +26,6 @@ android {
             }
         }
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -36,13 +37,13 @@ android {
         debug {
             keyAlias 'marshalIM'
             keyPassword 'Wasd@150136'
-            storeFile file(".\\..\\key_doc\\marshalIM.jks")
+            storeFile file(".\\..\\doc\\key\\marshalIM.jks")
             storePassword 'Wasd@150136'
         }
         release {
             keyAlias 'marshalIM'
             keyPassword 'Wasd@150136'
-            storeFile file(".\\..\\key_doc\\marshalIM.jks")
+            storeFile file(".\\..\\doc\\key\\marshalIM.jks")
             storePassword 'Wasd@150136'
         }
     }
@@ -72,74 +73,23 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    buildToolsVersion '33.0.0'
+
+    configurations {
+        cleanedAnnotations
+        // implementation.exclude group: 'org.jetbrains' , module:'annotations'
+        implementation.exclude group: 'com.intellij' , module:'annotations'
+    }
 
 }
 
 dependencies {
     api fileTree(includes: ['*.jar'],dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-
-    //kotlin协程+LiveData
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    //live data
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    //解決65535方法
-    implementation 'androidx.multidex:multidex:2.0.1'
-    //gson解析json
-    implementation 'com.google.code.gson:gson:2.8.9'
-    //glide
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
-
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
-    //网络请求
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-    //rxjava 函数式编程
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    //arouter
-    implementation 'com.alibaba:arouter-api:1.5.2'
-    kapt 'com.alibaba:arouter-compiler:1.5.2'
-    //第三方框架 做数据持久化缓存
-    implementation 'com.tencent:mmkv:1.2.14'
-    //第三方支持修改状态栏
-    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
-    //eventbus 消息传递
-    implementation 'org.greenrobot:eventbus:3.1.1'
-
-    //def work_version = "2.8.1"
-    implementation "androidx.work:work-runtime:2.8.1"
-
-    //room框架
-    def room_version = "2.4.2"
-    implementation "androidx.room:room-ktx:2.5.1"
-    implementation "androidx.room:room-runtime:2.5.1"
-    // For Kotlin use kapt instead of annotationProcessor  这里 把  annotationProcessor 替换为 kapt
-    kapt "androidx.room:room-compiler:2.5.1"
-
-
-
-
     //依赖的模块
-    api project(':commit')
-    api project(':zz-excel-creator')
-
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation project(path: ":base-common")
+    implementation project(':zz-excel-creator')
+    implementation project(':driving-school')
+    kapt deps.support.arouter_compiler
 
 
 }

@@ -1,6 +1,6 @@
 package com.marshal.mine
 
-import android.os.Build
+import NewWorkUtils
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,9 +9,8 @@ import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.MINE_TO_CONNECT_UDP
-import com.marshal.baseview.BaseViewActivity
+import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityUdpconnectctivityBinding
-import com.marshal.utils.NewWorkUtils
 import java.lang.ref.WeakReference
 import java.net.DatagramPacket
 import java.net.DatagramSocket

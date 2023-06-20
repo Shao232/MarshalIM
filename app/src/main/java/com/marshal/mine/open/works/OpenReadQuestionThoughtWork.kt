@@ -1,10 +1,9 @@
 package com.marshal.mine.open.works
 
+import FileUtils
 import android.util.Log
 import com.google.gson.Gson
 import com.marshal.pojo.OpenAnswersBean
-import com.marshal.utils.FileUtils
-import getAppThoughtSingleData
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import putAppThoughtSingleData
 import java.util.concurrent.locks.ReentrantReadWriteLock

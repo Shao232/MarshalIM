@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.CHAT_PATH
 import com.marshal.R
-import com.marshal.baseview.BaseViewActivity
+import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.chat.chatadapter.ChatAdapter
 import com.marshal.databinding.ActivityChatBinding
 import com.marshal.pojo.ChatUser

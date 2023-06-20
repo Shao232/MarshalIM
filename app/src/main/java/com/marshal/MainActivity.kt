@@ -3,7 +3,6 @@ package com.marshal
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.text.Html
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -11,20 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayoutMediator
-import com.marshal.baseview.BaseViewActivity
+import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityMainBinding
-import com.marshal.https.IMService
 import com.marshal.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.concurrent.TimeUnit
 
 /**
  *  ImmersionBar.with(this)
@@ -33,7 +22,6 @@ import java.util.concurrent.TimeUnit
 .init()
  *
  */
-
 class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
     private var fm: FragmentManager? = null
@@ -94,38 +82,35 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     private fun initHttp() {
-        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .writeTimeout(5000, TimeUnit.MILLISECONDS)
-            .readTimeout(5000, TimeUnit.MILLISECONDS)
-            .build()
-
-
-        val retrofit = Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl("https://www.baidu.com")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val api = retrofit.create(IMService::class.java)
-        api.getData().enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.d("TAG", "call: ${call.request()}")
-                Log.d("TAG", "response: $response")
-                Log.d("TAG", "response: ${response.body()}")
-
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("TAG", "call: ${call.request()}")
-                t.printStackTrace()
-
-            }
-
-        })
+//        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
+//
+//        val okHttpClient = OkHttpClient.Builder()
+//            .addInterceptor(interceptor)
+//            .writeTimeout(5000, TimeUnit.MILLISECONDS)
+//            .readTimeout(5000, TimeUnit.MILLISECONDS)
+//            .build()
+//
+//        val retrofit = Retrofit.Builder()
+//            .client(okHttpClient)
+//            .baseUrl("https://www.baidu.com")
+//            .addConverterFactory(ScalarsConverterFactory.create())
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        val api = retrofit.create(IMService::class.java)
+//        api.getData().enqueue(object : Callback<String> {
+//            override fun onResponse(call: Call<String>, response: Response<String>) {
+//                Log.d("TAG", "call: ${call.request()}")
+//                Log.d("TAG", "response: $response")
+//                Log.d("TAG", "response: ${response.body()}")
+//                val span = Html.fromHtml(response.body())
+//            }
+//
+//            override fun onFailure(call: Call<String>, t: Throwable) {
+//                Log.e("TAG", "call: ${call.request()}")
+//                t.printStackTrace()
+//            }
+//        })
     }
 
 

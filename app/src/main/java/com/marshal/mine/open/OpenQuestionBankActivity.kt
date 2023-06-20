@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.OPEN_QUESTION_BANK
 import com.marshal.R
-import com.marshal.baseview.BaseViewActivity
+import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityOpenQuestionBankBinding
 import com.marshal.mine.dialog.OpenQuestionSelectDialog
 

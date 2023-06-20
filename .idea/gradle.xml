@@ -12,7 +12,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/commit" />
+            <option value="$PROJECT_DIR$/base-common" />
+            <option value="$PROJECT_DIR$/driving-school" />
             <option value="$PROJECT_DIR$/zz-excel-creator" />
           </set>
         </option>

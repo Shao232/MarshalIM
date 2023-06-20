@@ -1,12 +1,12 @@
 package com.marshal.mine
 
+import NoShakeBtnUtil
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.marshal.IMPath
 import com.marshal.R
-import com.marshal.baseview.BaseViewFragment
+import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.databinding.FragmentMineBinding
-import com.marshal.utils.NoShakeBtnUtil
 
 class MineFragment : BaseViewFragment<FragmentMineBinding>() {
 

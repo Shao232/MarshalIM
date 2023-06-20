@@ -1,5 +1,6 @@
 package com.marshal.mine.dialog
 
+import NoShakeBtnUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.marshal.R
 import com.marshal.databinding.DialogSheetCommitLayoutBinding
-import com.marshal.utils.NoShakeBtnUtil
 
 class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=""): BottomSheetDialogFragment() {
 

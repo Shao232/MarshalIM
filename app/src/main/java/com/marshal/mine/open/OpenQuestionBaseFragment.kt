@@ -1,12 +1,10 @@
 package com.marshal.mine.open
 
-import android.util.Log
 import android.view.View
-import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marshal.R
-import com.marshal.baseview.BaseViewFragment
+import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.databinding.IncludeOpenQuestionListFragmentBinding
 
 /**

@@ -19,4 +19,5 @@ dependencyResolutionManagement {
 rootProject.name = "MarshalIM"
 include ':app'
 include ':zz-excel-creator'
-include ':commit'
+include ':driving-school'
+include ':base-common'

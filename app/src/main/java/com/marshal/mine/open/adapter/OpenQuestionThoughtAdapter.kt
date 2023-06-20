@@ -1,10 +1,10 @@
 package com.marshal.mine.open.adapter
 
+import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import com.marshal.R
-import com.marshal.baseadapter.BaseRecyclerAdapter
 import com.marshal.pojo.OpenAnswersBean
 
 class OpenQuestionThoughtAdapter : BaseRecyclerAdapter<OpenQuestionViewHolder, OpenAnswersBean>() {

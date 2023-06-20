@@ -1,13 +1,10 @@
 package com.marshal.mine.open.works
 
+import FileUtils
 import android.util.Log
 import com.google.gson.Gson
 import com.marshal.pojo.OpenAnswerBean
 import com.marshal.pojo.OpenAnswersBean
-import com.marshal.utils.FileUtils
-import getAppFunctionEstimateData
-import getAppFunctionMultipleData
-import getAppFunctionSingleData
 import jxl.Cell
 import jxl.write.WritableSheet
 import me.zhouzhuo.zzexcelcreator.ZzExcelCreator

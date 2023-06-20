@@ -1,10 +1,10 @@
 package com.marshal.chat.chatadapter
 
+import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
+import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.marshal.R
-import com.marshal.baseadapter.BaseRecyclerAdapter
-import com.marshal.baseadapter.BaseRecyclerViewHolder
 import com.marshal.pojo.ChatUser
 
 class ChatAdapter : BaseRecyclerAdapter<BaseRecyclerViewHolder, ChatUser>() {

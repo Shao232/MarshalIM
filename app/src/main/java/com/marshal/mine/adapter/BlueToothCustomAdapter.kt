@@ -6,9 +6,9 @@ import android.content.pm.PackageManager
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import com.marshal.R
-import com.marshal.baseadapter.BaseRecyclerAdapter
+import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 
-class BlueToothCustomAdapter:BaseRecyclerAdapter<BlueToothCustomViewHolder,BluetoothDevice>() {
+class BlueToothCustomAdapter: BaseRecyclerAdapter<BlueToothCustomViewHolder, BluetoothDevice>() {
     override fun onViewHolder(parent: ViewGroup, viewType: Int): BlueToothCustomViewHolder {
         return BlueToothCustomViewHolder(mContext, R.layout.item_string,parent)
     }

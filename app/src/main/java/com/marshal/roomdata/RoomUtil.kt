@@ -3,7 +3,7 @@ package com.marshal.roomdata
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.marshal.MApplication
+import com.marshal.base_common.MApplication
 
 object RoomUtil {
 

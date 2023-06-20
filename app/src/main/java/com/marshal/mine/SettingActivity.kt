@@ -1,14 +1,14 @@
 package com.marshal.mine
 
+import AppUtils
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.IMPath.MINE_SETTING_PAGE
 import com.marshal.R
-import com.marshal.baseview.BaseViewActivity
+import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivitySettingBinding
-import com.marshal.utils.AppUtils
 
 @Route(path = MINE_SETTING_PAGE)
 class SettingActivity : BaseViewActivity<ActivitySettingBinding>() {

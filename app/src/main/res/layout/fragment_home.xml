@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:dividerPadding="4dp"
         app:divider="@color/gray_line"
-        app:showDividers="middle|end"
+        app:showDividers="beginning|middle|end"
         android:orientation="vertical">
         <!--
               none表示不展示分割线；beginning表示只在第一个子View的前面展示分割线；
@@ -38,19 +38,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" />
 
-        <TextView
-            android:id="@+id/tv_phone"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingStart="30dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="0dp"
-            android:text="打电话入口"
-            android:textColor="@color/text_color_black"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat" />
 
         <TextView
             android:id="@+id/tv_question"
@@ -65,6 +52,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+        <TextView
+            android:id="@+id/tv_coroutines"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:text="协程学习"
+            android:textColor="@color/text_color_black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question" />
 
 
         <TextView

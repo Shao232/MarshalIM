@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
 import com.marshal.R
-import com.marshal.baseadapter.BaseRecyclerViewHolder
+import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 
 class BlueToothCustomViewHolder(context: Context?, resId:Int,
                                 parent: ViewGroup
-):BaseRecyclerViewHolder(context, resId, parent) {
+): BaseRecyclerViewHolder(context, resId, parent) {
 
     var tvStr:TextView? = null
 

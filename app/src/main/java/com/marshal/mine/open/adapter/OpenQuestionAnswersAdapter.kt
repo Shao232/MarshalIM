@@ -1,10 +1,10 @@
 package com.marshal.mine.open.adapter
 
+import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
+import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 import android.view.View
 import android.view.ViewGroup
 import com.marshal.R
-import com.marshal.baseadapter.AdapterItemOnClickListener
-import com.marshal.baseadapter.BaseRecyclerAdapter
 import com.marshal.pojo.OpenAnswerBean
 
 /**
@@ -30,7 +30,7 @@ class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerVie
             ?.getColor(R.color.gray_line)?:0 else mContext?.resources
             ?.getColor(R.color.white_mode)?:0)
 
-        itemOnClickListener = object : AdapterItemOnClickListener<OpenAnswerBean>{
+        itemOnClickListener = object : AdapterItemOnClickListener<OpenAnswerBean> {
             override fun onClick(view: View, bean: OpenAnswerBean) {
                 super.onClick(view, bean)
                 //通过循环，选择任意一个答案，就会告诉adapter有选择的答案，修改背景颜色
