@@ -3,6 +3,7 @@ package com.marshal
 import NoShakeBtnUtil
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
+import com.driving_school.DrivingRouterPath
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.databinding.FragmentHomeBinding
 
@@ -23,17 +24,22 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
         binding?.tvChat?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(IMPath.CHAT_PATH).navigation()
+            ARouter.getInstance().build(AppRouterPath.CHAT_PATH).navigation()
         }
 
         binding?.tvQuestion?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(IMPath.OPEN_QUESTION_BANK).navigation(mContext)
+            ARouter.getInstance().build(AppRouterPath.OPEN_QUESTION_BANK).navigation(mContext)
         }
 
         binding?.tvCoroutines?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(IMPath.HOME_COROUTINES).navigation(mContext)
+            ARouter.getInstance().build(AppRouterPath.HOME_COROUTINES).navigation(mContext)
+        }
+
+        binding?.tvDrivingSchool?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(DrivingRouterPath.DRIVING_HOME_PATH).navigation(mContext)
         }
 
     }

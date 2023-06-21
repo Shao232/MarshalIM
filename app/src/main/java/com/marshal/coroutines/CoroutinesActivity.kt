@@ -2,10 +2,9 @@ package com.marshal.coroutines
 
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.marshal.IMPath.HOME_COROUTINES
+import com.marshal.AppRouterPath.HOME_COROUTINES
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityCoroutinesBinding
-import kotlinx.coroutines.GlobalScope
 
 @Route(path = HOME_COROUTINES)
 class CoroutinesActivity : BaseViewActivity<ActivityCoroutinesBinding>() {

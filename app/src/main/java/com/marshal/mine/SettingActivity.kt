@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.marshal.IMPath.MINE_SETTING_PAGE
+import com.marshal.AppRouterPath.MINE_SETTING_PAGE
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivitySettingBinding

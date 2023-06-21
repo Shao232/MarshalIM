@@ -3,7 +3,7 @@ package com.marshal
 /**
  * 界面路径
  */
-object IMPath {
+object AppRouterPath {
 
     private const val APP_PATH = "/app"
 

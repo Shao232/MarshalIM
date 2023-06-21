@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.marshal.IMPath.MINE_TO_BLUE_TOOTH
+import com.marshal.AppRouterPath.MINE_TO_BLUE_TOOTH
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityBlueToothConnectBinding

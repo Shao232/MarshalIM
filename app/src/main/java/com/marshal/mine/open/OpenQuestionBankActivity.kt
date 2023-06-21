@@ -3,7 +3,7 @@ package com.marshal.mine.open
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.marshal.IMPath.OPEN_QUESTION_BANK
+import com.marshal.AppRouterPath.OPEN_QUESTION_BANK
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityOpenQuestionBankBinding

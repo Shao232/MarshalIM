@@ -2,7 +2,7 @@ package com.marshal.roomdata
 
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.marshal.IMPath.ROOM_DATA_PAGE
+import com.marshal.AppRouterPath.ROOM_DATA_PAGE
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityRoomDataBinding
 

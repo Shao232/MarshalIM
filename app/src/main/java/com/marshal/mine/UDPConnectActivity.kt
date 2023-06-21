@@ -8,7 +8,7 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.marshal.IMPath.MINE_TO_CONNECT_UDP
+import com.marshal.AppRouterPath.MINE_TO_CONNECT_UDP
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityUdpconnectctivityBinding
 import java.lang.ref.WeakReference
