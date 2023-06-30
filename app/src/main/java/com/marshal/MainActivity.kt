@@ -1,6 +1,8 @@
 package com.marshal
 
 import android.Manifest
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
@@ -12,8 +14,18 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityMainBinding
+import com.marshal.https.IMService
 import com.marshal.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
  *  ImmersionBar.with(this)
@@ -79,38 +91,51 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
         initHttp()
 
+        initServer()
+
+    }
+
+    private fun initServer() {
+        val aManager =  getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val appRunningService = aManager.getRunningServices (Integer.MAX_VALUE);
+        if (appRunningService != null) {
+            Log.println(Log.DEBUG, "TAG", "appRunningService: " + appRunningService.size)
+            for (aProcess: ActivityManager.RunningServiceInfo in appRunningService) {
+                Log.d("TAG", "package Name:" + aProcess.service.getPackageName());
+                Log.d("TAG", "process:" + aProcess.process);
+            }
+        }
     }
 
     private fun initHttp() {
-//        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
-//
-//        val okHttpClient = OkHttpClient.Builder()
-//            .addInterceptor(interceptor)
-//            .writeTimeout(5000, TimeUnit.MILLISECONDS)
-//            .readTimeout(5000, TimeUnit.MILLISECONDS)
-//            .build()
-//
-//        val retrofit = Retrofit.Builder()
-//            .client(okHttpClient)
-//            .baseUrl("https://www.baidu.com")
-//            .addConverterFactory(ScalarsConverterFactory.create())
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        val api = retrofit.create(IMService::class.java)
-//        api.getData().enqueue(object : Callback<String> {
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                Log.d("TAG", "call: ${call.request()}")
-//                Log.d("TAG", "response: $response")
-//                Log.d("TAG", "response: ${response.body()}")
-//                val span = Html.fromHtml(response.body())
-//            }
-//
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                Log.e("TAG", "call: ${call.request()}")
-//                t.printStackTrace()
-//            }
-//        })
+        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
+
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .writeTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl("https://www.marshalim.club")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val api = retrofit.create(IMService::class.java)
+        api.getData().enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Log.d("TAG", "call: ${call.request()}")
+                Log.d("TAG", "response: $response")
+                Log.d("TAG", "response: ${response.body()}")
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("TAG", "call: ${call.request()}")
+                t.printStackTrace()
+            }
+        })
     }
 
 
@@ -142,7 +167,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     override fun onDestroy() {
-        stopService(intentStartMainService)
         super.onDestroy()
     }
 
