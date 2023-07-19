@@ -39,7 +39,12 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
         binding?.tvDrivingSchool?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(DrivingRouterPath.DRIVING_HOME_PATH).navigation(mContext)
+            ARouter.getInstance().build(DrivingRouterPath.Driving_HOME_PATH).navigation(mContext)
+        }
+
+        binding?.tvStoreData?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(AppRouterPath.STORE_DATA_PAGE).navigation(mContext)
         }
 
     }

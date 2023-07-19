@@ -40,6 +40,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".StoreDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".coroutines.CoroutinesActivity"
             android:exported="false" />
         <activity

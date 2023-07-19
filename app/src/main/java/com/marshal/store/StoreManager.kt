@@ -80,5 +80,8 @@ class StoreManager private constructor() {
         fun removeValue(keyString: String) {
             mmkv.removeValueForKey(keyString)
         }
+
+        fun getRootDir():String = MMKV.getRootDir()?:""
+
     }
 }

@@ -5,8 +5,8 @@ package com.driving_school
  */
 object DrivingRouterPath {
 
-    private const val DRIVING_PATH = "/driving"
+    private const val Driving = "/app"
 
-    const val DRIVING_HOME_PATH = "${DRIVING_PATH}/home"
+    const val Driving_HOME_PATH = "${Driving}/home"
 
 }

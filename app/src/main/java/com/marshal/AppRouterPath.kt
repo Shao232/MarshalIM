@@ -22,5 +22,7 @@ object AppRouterPath {
     //学习协程页面
     const val HOME_COROUTINES="/home/coroutines"
 
+    const val STORE_DATA_PAGE = "/store/data"
+
 
 }

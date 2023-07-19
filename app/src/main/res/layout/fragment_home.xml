@@ -82,6 +82,20 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_question" />
 
         <TextView
+            android:id="@+id/tv_store_data"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="0dp"
+            android:text="保存数据"
+            android:textColor="@color/text_color_black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

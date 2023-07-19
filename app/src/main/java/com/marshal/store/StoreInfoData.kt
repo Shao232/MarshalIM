@@ -9,7 +9,7 @@ const val appFunctionMultipleDataKey:String = "app_function_multiple_data"
 const val appFunctionEstimateDataKey:String = "app_function_Estimate_data"
 const val appThoughtSingleDataKey:String = "app_thought_single_data"
 const val appProgramSingleDataKey:String = "app_program_single_data"
-
+const val appTestDataKey:String = "app_test_data"
 
 fun putAppLightMode(value:Boolean){
     StoreManager.putData(appLightModeKey,value)
@@ -59,6 +59,11 @@ fun getAppProgramSingleData():String?{
     return StoreManager.getData(appProgramSingleDataKey,"")
 }
 
+fun putAppTestData(value: String){
+    StoreManager.putData(appTestDataKey,value)
+}
+
+fun getAppTestData():String? = StoreManager.getData(appTestDataKey,"")
 
 
 

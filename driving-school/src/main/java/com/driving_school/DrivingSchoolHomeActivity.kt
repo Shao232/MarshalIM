@@ -4,14 +4,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.driving_school.DrivingRouterPath.DRIVING_HOME_PATH
+import com.driving_school.DrivingRouterPath.Driving_HOME_PATH
 import com.driving_school.databinding.ActivityDrivingSchoolHomeBinding
 import com.driving_school.db.QuestionsDataBase
 import com.driving_school.db.QuestionsMetaData
 import com.marshal.base_common.baseview.BaseViewActivity
 
 
-@Route(path = DRIVING_HOME_PATH)
+@Route(path = Driving_HOME_PATH)
 class DrivingSchoolHomeActivity : BaseViewActivity<ActivityDrivingSchoolHomeBinding>() {
 
     var myDatabase: SQLiteDatabase? = null
@@ -33,9 +33,6 @@ class DrivingSchoolHomeActivity : BaseViewActivity<ActivityDrivingSchoolHomeBind
 
         val dbHelper = QuestionsDataBase(this, QuestionsMetaData.DATABASE_NAME,null, 1)
         myDatabase = dbHelper.readableDatabase
-//        val cursor = myDatabase?.query(false,QuestionsMetaData.MetaData.TABLE_NAME_COLLECTIONS_SUBJECT1,null,
-//            null,null,null,null,null,null)
-//        cursor?.getColumnIndex("id")
         val cursor = myDatabase?.rawQuery("select * from collectionsSubject1",null)
         if(cursor!=null) {
             while(cursor.moveToNext()) {
