@@ -1,6 +1,8 @@
 package com.marshal.base_common
 
 import androidx.multidex.MultiDexApplication
+import cn.jiguang.api.utils.JCollectionAuth
+import cn.jpush.android.api.JPushInterface
 import com.alibaba.android.arouter.launcher.ARouter
 import com.tencent.mmkv.MMKV
 
@@ -16,12 +18,22 @@ class MApplication : MultiDexApplication() {
         }
     }
 
-    init {  
+    init {
         mApplication = this
     }
 
     override fun onCreate() {
         super.onCreate()
+
+        JPushInterface.setDebugMode(true)
+        // 调整点一：初始化代码前增加setAuth调用
+//        var isPrivacyReady = false // app根据是否已弹窗获取隐私授权来赋值
+//        if (!isPrivacyReady) {
+//            JCollectionAuth.setAuth(this, true) // 后续初始化过程将被拦截
+//        }
+        JCollectionAuth.setAuth(this, true)
+        JPushInterface.init(this)
+
         if (isDebugARouter) {
             ARouter.openLog()
             ARouter.openDebug()

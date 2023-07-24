@@ -24,12 +24,10 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding>: BottomSheetDialogF
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         initView()
 
         subscribeBack()
     }
-
 
     abstract fun getResLayoutId():Int
 

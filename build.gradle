@@ -2,19 +2,20 @@
 //Gradle 推荐在 plugins 块之前只放置 buildscript{} 和 pluginManagement {}
 
 buildscript {
-
     ext.kotlin_version = "1.7.20"
     repositories {
         maven { url 'https://jitpack.io' }
+        maven { url 'https://developer.huawei.com/repo/'}
+
         google()
-        jcenter()
         mavenCentral()
 
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+        // hms，若不集成华为厂商通道，可直接跳过
+        classpath 'com.huawei.agconnect:agcp:1.9.1.300'
     }
 }
 
@@ -26,8 +27,6 @@ plugins {
 }
 
 apply from: "dependextend.gradle"
-
-
 
 task clean(type: Delete) {
     delete rootProject.buildDir

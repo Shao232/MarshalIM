@@ -38,5 +38,11 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.MINE_SETTING_PAGE).navigation(mContext)
         }
+
+        binding?.btnToAboutVersion?.setOnClickListener {
+            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(AppRouterPath.ABOUT_APP_PAGE).navigation(mContext)
+        }
+
     }
 }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.marshal">
+
+    <uses-sdk tools:overrideLibrary="      cn.jpush.android.thirdpush.fcm     ,cn.jpush.android.thirdpush.huawei     ,cn.jpush.android.thirdpush.meizu     ,cn.jpush.android.thirdpush.oppo     ,cn.jpush.android.thirdpush.vivo     ,cn.jpush.android.thirdpush.xiaomi     ,com.google.firebase.firebase_core     ,com.google.firebase.messaging     ,com.google.firebase.analytics.connector.impl     ,com.google.firebase.measurement     ,com.google.android.gms.measurement.api     ,com.google.firebase.measurement_impl     ,com.google.firebase.iid     ,com.google.firebase     ,com.google.firebase.iid.internal     ,com.google.android.gms.base     ,com.google.android.gms.tasks     ,com.google.firebase.analytics.connector     ,com.google.android.gms.stats     ,com.google.android.gms.ads_identifier     ,com.google.android.gms.common     ,com.google.android.gms.measurement_base     ,com.huawei.android.hms.openid     ,com.huawei.agconnect.core     ,com.huawei.hmf.tasks     ,com.huawei.hms.framework.network.grs     ,com.huawei.hms.framework.common     ,com.huawei.android.hms.base     ,com.huawei.android.hms.push     ,android.support.mediacompat     ,android.support.fragment     ,android.support.coreutils     ,android.support.coreui     ,android.support.compat     ,android.arch.lifecycle" />
     <!-- 允许读取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许读取wifi网络状态 -->
@@ -25,7 +28,16 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" /> <!-- 录音权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 前台服务 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- When targeting Android 13 or higher, posting a permission requires holding the POST_NOTIFICATIONS permission -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- 震动功能 -->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 获取任务信息，目的是防止sdk被频繁唤醒 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+
+    <permission android:name="com.marshal.permission.JOPERATE_MESSAGE" />
+    <permission
+        android:name="com.marshal.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
         android:name=".base_common.MApplication"
@@ -40,6 +52,75 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".mine.AboutAppActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="3f6401486374f034584ca603" />
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=108782249" />
+
+        <service
+            android:name=".MainService"
+            android:exported="false" />
+        <service
+            android:name=".music.BgMusicService"
+            android:exported="false" />
+        <service
+            android:name=".PushIntentService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service> <!-- Required since 3.0.7 -->
+        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
+        <!-- 3.3.0开始所有事件将通过该类回调 -->
+        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
+        <receiver
+            android:name=".MainReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
+                <category android:name="com.marshal" />
+            </intent-filter>
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
+                <category android:name="com.marshal" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.marshal.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <provider
+            android:name="cn.jpush.android.service.InitProvider"
+            android:authorities="com.marshal.jiguang.InitProvider"
+            android:exported="false"
+            tools:node="remove" />
+
+        <activity
             android:name=".StoreDataActivity"
             android:exported="false" />
         <activity
@@ -51,29 +132,9 @@
         <activity
             android:name=".roomdata.RoomDataActivity"
             android:exported="false" />
-
-        <service
-            android:name=".MainService"
-            android:exported="false" />
-
         <activity
             android:name=".mine.open.OpenQuestionBankActivity"
             android:exported="false" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.marshal.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
-        <service
-            android:name=".music.BgMusicService"
-            android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

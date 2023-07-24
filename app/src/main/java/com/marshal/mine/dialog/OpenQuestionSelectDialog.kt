@@ -1,18 +1,14 @@
 package com.marshal.mine.dialog
 
 import NoShakeBtnUtil
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.marshal.R
+import com.marshal.base_common.basedialog.BaseBottomSheetDialogFragment
 import com.marshal.databinding.DialogSheetCommitLayoutBinding
 
-class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=""): BottomSheetDialogFragment() {
+class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=""):
+    BaseBottomSheetDialogFragment<DialogSheetCommitLayoutBinding>() {
 
-    private var rootView:View? = null
-    private var binding:DialogSheetCommitLayoutBinding? = null
     private var questionDialogClick:QuestionDialogClickListener? = null
 
     /**
@@ -26,20 +22,14 @@ class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=
         questionDialogClick = dialogClickListener
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        rootView = inflater.inflate(R.layout.dialog_sheet_commit_layout,container)
-        binding = DialogSheetCommitLayoutBinding.inflate(layoutInflater)
+    override fun getResLayoutId(): Int = R.layout.dialog_sheet_commit_layout
 
+    override fun getResLayoutBinding(): View? {
+        binding = DialogSheetCommitLayoutBinding.inflate(layoutInflater)
         return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initView() {
         binding?.buttonFirst?.text = firstTitle
         binding?.buttonSecond?.text =secondTitle
         binding?.buttonThird?.text = thirdTitle

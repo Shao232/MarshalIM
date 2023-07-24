@@ -21,8 +21,9 @@ object AppRouterPath {
     const val MINE_SETTING_PAGE = "/mine/setting/page"
     //学习协程页面
     const val HOME_COROUTINES="/home/coroutines"
-
+    //保存数据
     const val STORE_DATA_PAGE = "/store/data"
-
+    //关于app
+    const val ABOUT_APP_PAGE = "/about/app"
 
 }

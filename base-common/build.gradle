@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "kotlin-parcelize"
     id "kotlin-kapt"
+    id "com.huawei.agconnect"
 }
 
 android {
@@ -20,6 +21,8 @@ android {
                 arg("AROUTER_MODULE_NAME",  project.getName())
             }
         }
+
+
     }
 
     lintOptions {
@@ -93,7 +96,13 @@ dependencies {
     api deps.support.immersionbar
     api deps.support.immersionbar_ktx
 
+    api (deps.support.jiguang_sdk_jpush)
+    api deps.support.jiguang_sdk_huawei
+    api deps.support.huawei_hms_push
+
+
     debugImplementation deps.support.leakcanary_android
     releaseImplementation deps.support.leakcanary_android_no_op
 
 }
+

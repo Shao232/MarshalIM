@@ -12,7 +12,7 @@ import getAppFunctionMultipleData
 import getAppFunctionSingleData
 import getAppThoughtSingleData
 
-class MainService : Service() {
+class MainService :Service() {
 
     override fun onCreate() {
         super.onCreate()

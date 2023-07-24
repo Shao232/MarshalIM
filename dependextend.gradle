@@ -36,47 +36,54 @@ ext {
                       "lifecycle_extensions"      : "androidx.lifecycle:lifecycle-extensions:2.2.0",
                       //分multidex apk包
                       "multidex"                  : "androidx.multidex:multidex:2.0.1",
-                      "work_runtime": "androidx.work:work-runtime:2.7.1",
-                      "room_runtime":"androidx.room:room-runtime:$room_version",
-                      "room_compiler":"androidx.room:room-compiler:$room_version",
-                      "room_ktx" : "androidx.room:room-ktx:$room_version",
-                      "room_rxjava2": "androidx.room:room-rxjava2:$room_version",
-                      "room_guava" : "androidx.room:room-guava:$room_version"],
+                      "work_runtime"              : "androidx.work:work-runtime:2.7.1",
+                      "room_runtime"              : "androidx.room:room-runtime:$room_version",
+                      "room_compiler"             : "androidx.room:room-compiler:$room_version",
+                      "room_ktx"                  : "androidx.room:room-ktx:$room_version",
+                      "room_rxjava2"              : "androidx.room:room-rxjava2:$room_version",
+                      "room_guava"                : "androidx.room:room-guava:$room_version"],
             support: [
                     //gson 解析json
-                    "gson"                              : "com.google.code.gson:gson:2.8.9",
+                    "gson"                    : "com.google.code.gson:gson:2.8.9",
                     //glide 加载图片
-                    "glide"                             : "com.github.bumptech.glide:glide:4.11.0",
-                    "glide_compiler"                    : "com.github.bumptech.glide:compiler:4.11.0",
+                    "glide"                   : "com.github.bumptech.glide:glide:4.11.0",
+                    "glide_compiler"          : "com.github.bumptech.glide:compiler:4.11.0",
                     //EventBus事件发布订阅
-                    "eventbus"                          : "org.greenrobot:eventbus:3.0.0",
+                    "eventbus"                : "org.greenrobot:eventbus:3.0.0",
                     //okhttp3
-                    "okhttp3"                           : "com.squareup.okhttp3:okhttp:4.9.0",
-                    "logging_interceptor"               : "com.squareup.okhttp3:logging-interceptor:4.9.0",
+                    "okhttp3"                 : "com.squareup.okhttp3:okhttp:4.9.0",
+                    "logging_interceptor"     : "com.squareup.okhttp3:logging-interceptor:4.9.0",
                     //retrofit
-                    "retrofit"                          : "com.squareup.retrofit2:retrofit:$retrofit_version",
-                    "converter_scalars"                 : "com.squareup.retrofit2:converter-scalars:$retrofit_version",
-                    "converter_gson"                    : "com.squareup.retrofit2:converter-gson:$retrofit_version",
-                    "adapter_rxjava2"                   : "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
+                    "retrofit"                : "com.squareup.retrofit2:retrofit:$retrofit_version",
+                    "converter_scalars"       : "com.squareup.retrofit2:converter-scalars:$retrofit_version",
+                    "converter_gson"          : "com.squareup.retrofit2:converter-gson:$retrofit_version",
+                    "adapter_rxjava2"         : "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
                     //rxjava
-                    "rxjava"                            : "io.reactivex.rxjava2:rxjava:2.2.6",
-                    "rxandroid"                         : "io.reactivex.rxjava2:rxandroid:2.1.0",
+                    "rxjava"                  : "io.reactivex.rxjava2:rxjava:2.2.6",
+                    "rxandroid"               : "io.reactivex.rxjava2:rxandroid:2.1.0",
                     //refresh widget
-                    "refresh_layout_kernel"             : "io.github.scwang90:refresh-layout-kernel:$refresh_version",
+                    "refresh_layout_kernel"   : "io.github.scwang90:refresh-layout-kernel:$refresh_version",
                     //经典刷新头
-                    "refresh_header_classics"           : "io.github.scwang90:refresh-header-classics:$refresh_version",
+                    "refresh_header_classics" : "io.github.scwang90:refresh-header-classics:$refresh_version",
                     //经典加载脚布局
-                    "refresh_footer_classics"           : "io.github.scwang90:refresh-footer-classics:$refresh_version",
+                    "refresh_footer_classics" : "io.github.scwang90:refresh-footer-classics:$refresh_version",
                     //ARouter
-                    "arouter_api"                       : "com.alibaba:arouter-api:1.5.2",
-                    "arouter_compiler"                  : "com.alibaba:arouter-compiler:1.5.2",
+                    "arouter_api"             : "com.alibaba:arouter-api:1.5.2",
+                    "arouter_compiler"        : "com.alibaba:arouter-compiler:1.5.2",
                     //mmkv
-                    "mmkv"                              : "com.tencent:mmkv:1.2.14",
+                    "mmkv"                    : "com.tencent:mmkv:1.2.14",
                     //leakcanary
-                    "leakcanary_android"                : "com.squareup.leakcanary:leakcanary-android:2.7",
-                    "leakcanary_android_no_op"          : "com.squareup.leakcanary:leakcanary-android-no-op:1.6.3",
+                    "leakcanary_android"      : "com.squareup.leakcanary:leakcanary-android:2.7",
+                    "leakcanary_android_no_op": "com.squareup.leakcanary:leakcanary-android-no-op:1.6.3",
                     //statusBar 基础依赖包，必须要依赖
-                    "immersionbar"                      : "com.geyifeng.immersionbar:immersionbar:3.2.2",
+                    "immersionbar"            : "com.geyifeng.immersionbar:immersionbar:3.2.2",
                     //statusBar  kotlin扩展（可选）
-                    "immersionbar_ktx"                  : "com.geyifeng.immersionbar:immersionbar-ktx:3.2.2"]]
+                    "immersionbar_ktx"        : "com.geyifeng.immersionbar:immersionbar-ktx:3.2.2",
+                    //  // 此处以JPush 5.0.3 版本为例，注意：从 5.0.0 版本开始可以自动拉取 JCore 包，无需另外配置
+                    "jiguang_sdk_jpush"       : "cn.jiguang.sdk:jpush:5.0.3",
+                    "jiguang_sdk_huawei"      : "cn.jiguang.sdk.plugin:huawei:5.0.3",
+                    "huawei_hms_push"         : "com.huawei.hms:push:6.5.0.300",
+
+
+            ]]
 }

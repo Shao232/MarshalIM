@@ -1,12 +1,16 @@
 pluginManagement {
     repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://jitpack.io'
+        }
+
         flatDir {
             dirs 'libs'
         }
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+
     }
 }
 dependencyResolutionManagement {
@@ -14,6 +18,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {url 'https://developer.huawei.com/repo/'}
     }
 }
 rootProject.name = "MarshalIM"

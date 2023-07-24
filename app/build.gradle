@@ -29,8 +29,15 @@ android {
         ndk {
             //armeabi-v7a 兼容armeabi
             //目前适配的是绝大部分新老用户的手机和平板
-            abiFilters "armeabi-v7a", "arm64-v8a","x86_64","x86"
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86_64", "x86"
         }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "3f6401486374f034584ca603", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+
 
     }
 
@@ -56,7 +63,7 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled false
             zipAlignEnabled true
             debuggable = true
@@ -64,7 +71,7 @@ android {
         release {
             signingConfig signingConfigs.release
             debuggable = false
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -82,21 +89,25 @@ android {
 
     configurations {
         cleanedAnnotations
-        // implementation.exclude group: 'org.jetbrains' , module:'annotations'
-        implementation.exclude group: 'com.intellij' , module:'annotations'
+        implementation.exclude group: 'com.intellij', module: 'annotations'
     }
 
     sourceSets {
         main {//表示为main
-            jni.srcDirs =["src/main/jniLibs"]
+            jni.srcDirs = ["src/main/jniLibs"]
         }
     }
 
+
+
 }
 
+
+
 dependencies {
-    api fileTree(includes: ['*.jar'],dir: 'libs')
+    api fileTree(includes: ['*.jar'], dir: 'libs')
     implementation(fileTree("libs"))
+
     //依赖的模块
     implementation project(path: ":base-common")
     implementation project(':zz-excel-creator')
@@ -104,6 +115,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
+
     kapt deps.support.arouter_compiler
 
 
