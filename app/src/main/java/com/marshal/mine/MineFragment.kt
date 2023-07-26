@@ -28,20 +28,20 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
         val currentUser = getAppAppLoginUserAccount()
         binding?.tvNickNameMine?.text = currentUser
 
-        binding?.btnToBlueTooth?.setOnClickListener {
-            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(AppRouterPath.MINE_TO_BLUE_TOOTH).navigation(mContext)
-        }
-
-        binding?.btnToUpd?.setOnClickListener {
-            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(AppRouterPath.MINE_TO_CONNECT_UDP).navigation(mContext)
-        }
-
-        binding?.btnToReadQuestion?.setOnClickListener {
-            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-            ARouter.getInstance().build(AppRouterPath.OPEN_QUESTION_BANK).navigation(mContext)
-        }
+//        binding?.btnToBlueTooth?.setOnClickListener {
+//            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+//            ARouter.getInstance().build(AppRouterPath.MINE_TO_BLUE_TOOTH).navigation(mContext)
+//        }
+//
+//        binding?.btnToUpd?.setOnClickListener {
+//            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+//            ARouter.getInstance().build(AppRouterPath.MINE_TO_CONNECT_UDP).navigation(mContext)
+//        }
+//
+//        binding?.btnToReadQuestion?.setOnClickListener {
+//            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+//            ARouter.getInstance().build(AppRouterPath.OPEN_QUESTION_BANK).navigation(mContext)
+//        }
 
         binding?.ivSettingMine?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener

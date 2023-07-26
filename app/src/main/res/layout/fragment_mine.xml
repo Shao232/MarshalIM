@@ -58,53 +58,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/btn_to_blue_tooth"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="蓝牙连接"
-                android:textColor="@color/text_color_black"
-                android:textSize="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="start|center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/iv_user_profile"
-                app:layout_constraintStart_toStartOf="@id/iv_user_profile"
-                android:layout_marginTop="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="0dp"/>
-
-            <TextView
-                android:id="@+id/btn_to_upd"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="UDP连接"
-                android:textColor="@color/text_color_black"
-                android:textSize="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="start|center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/iv_user_profile"
-                app:layout_constraintStart_toStartOf="@id/iv_user_profile"
-                android:layout_marginTop="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="0dp"/>
-
-            <TextView
-                android:id="@+id/btn_to_read_question"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="开大题库(仅供学习)"
-                android:textColor="@color/text_color_black"
-                android:textSize="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="start|center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/iv_user_profile"
-                app:layout_constraintStart_toStartOf="@id/iv_user_profile"
-                android:layout_marginTop="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="0dp"/>
 
             <TextView
                 android:id="@+id/btn_to_about_version"

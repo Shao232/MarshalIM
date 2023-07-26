@@ -23,12 +23,17 @@ import kotlinx.coroutines.launch
 @Route(path = APP_LOGIN_PAGE)
 class LoginActivity : BaseViewActivity<ActivityLoginBinding>() {
 
+    override fun hasToolbar(): Boolean =true
+
     override fun getResLayoutBinding(): View? {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         return binding?.root
     }
 
     override fun initView() {
+        if(hasIncludeToolbar) {
+            setTitle("登录")
+        }
 
         binding?.btnLogin?.setOnClickListener {
             val loginAccount = binding?.editUserNameLogin?.text.toString()

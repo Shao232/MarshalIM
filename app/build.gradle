@@ -111,6 +111,9 @@ dependencies {
     implementation project(path: ":base-common")
     implementation project(':zz-excel-creator')
     implementation project(':driving-school')
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     kapt deps.support.arouter_compiler
 
 

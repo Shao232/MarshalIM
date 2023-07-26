@@ -135,7 +135,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         if (appRunningService != null) {
             Log.println(Log.DEBUG, "TAG", "appRunningService: " + appRunningService.size)
             for (aProcess: ActivityManager.RunningServiceInfo in appRunningService) {
-                Log.d("TAG", "package Name:" + aProcess.service.getPackageName());
+                Log.d("TAG", "package Name:" + aProcess.service.packageName);
                 Log.d("TAG", "process:" + aProcess.process);
             }
         }

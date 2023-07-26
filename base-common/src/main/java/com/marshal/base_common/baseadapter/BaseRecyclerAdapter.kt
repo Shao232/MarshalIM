@@ -17,7 +17,7 @@ abstract class BaseRecyclerAdapter<T: BaseRecyclerViewHolder,E>: RecyclerView.Ad
         mContext = MApplication.getInstance().applicationContext
     }
 
-    fun setAdapterItemOnClickListener(clickListener: AdapterItemOnClickListener<E>){
+    open fun setAdapterItemOnClickListener(clickListener: AdapterItemOnClickListener<E>){
         itemOnClickListener = clickListener
     }
 

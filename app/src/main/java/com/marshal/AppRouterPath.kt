@@ -26,5 +26,7 @@ object AppRouterPath {
     const val STORE_DATA_PAGE = "/store/data"
     //关于app
     const val ABOUT_APP_PAGE = "/about/app"
+    //金刚页
+    const val APP_FUNCTION_PAGE = "${APP_PATH}/function"
 
 }
