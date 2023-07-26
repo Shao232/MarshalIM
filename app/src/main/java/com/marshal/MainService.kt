@@ -10,29 +10,30 @@ import com.marshal.mine.open.works.OpenReadQuestionsWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData
+import getAppProgramSingleData
 import getAppThoughtSingleData
 
-class MainService :Service() {
+class MainService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("TAG","service:onCreate")
+        Log.d("TAG", "service:onCreate")
 
         if (getAppFunctionSingleData()?.isEmpty() == true
             || getAppFunctionMultipleData()?.isEmpty() == true
             || getAppFunctionEstimateData()?.isEmpty() == true
-        ){
+        ) {
             Thread(OpenReadQuestionsWork()).start()
         }
 
-        if(getAppThoughtSingleData()?.isEmpty() == true) {
+        if (getAppThoughtSingleData()?.isEmpty() == true) {
             Thread(OpenReadQuestionThoughtWork()).start()
         }
 
-        /*if(getAppProgramSingleData()?.isEmpty() == true) {
+        if (getAppProgramSingleData()?.isEmpty() == true) {
             Thread(OpenReadQuestionProgramDesignWork()).start()
-        }*/
-        Thread(OpenReadQuestionProgramDesignWork()).start()
+        }
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -50,6 +51,7 @@ class MainService :Service() {
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
     }
 

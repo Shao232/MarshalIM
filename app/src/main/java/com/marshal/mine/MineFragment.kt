@@ -1,11 +1,17 @@
 package com.marshal.mine
 
 import NoShakeBtnUtil
+import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
+import com.hyphenate.EMCallBack
+import com.hyphenate.chat.EMClient
 import com.marshal.AppRouterPath
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewFragment
+import com.marshal.base_common.store.getAppAppLoginUserAccount
+import com.marshal.base_common.store.putAppLoginUserAccount
+import com.marshal.base_common.store.putAppLoginUserPwd
 import com.marshal.databinding.FragmentMineBinding
 
 class MineFragment : BaseViewFragment<FragmentMineBinding>() {
@@ -19,29 +25,48 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
 
     override fun initView() {
 
+        val currentUser = getAppAppLoginUserAccount()
+        binding?.tvNickNameMine?.text = currentUser
+
         binding?.btnToBlueTooth?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.MINE_TO_BLUE_TOOTH).navigation(mContext)
         }
 
         binding?.btnToUpd?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.MINE_TO_CONNECT_UDP).navigation(mContext)
         }
 
         binding?.btnToReadQuestion?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.OPEN_QUESTION_BANK).navigation(mContext)
         }
 
         binding?.ivSettingMine?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.MINE_SETTING_PAGE).navigation(mContext)
         }
 
         binding?.btnToAboutVersion?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.ABOUT_APP_PAGE).navigation(mContext)
+        }
+
+        binding?.btnToLogout?.setOnClickListener {
+            EMClient.getInstance().logout(true, object : EMCallBack {
+                override fun onSuccess() {
+                    putAppLoginUserAccount("")
+                    putAppLoginUserPwd("")
+
+                    showToast("退出登录成功")
+                }
+
+                override fun onError(code: Int, error: String?) {
+                    Log.e("TAG", "code:${code}, error:${error}")
+                }
+
+            })
         }
 
     }

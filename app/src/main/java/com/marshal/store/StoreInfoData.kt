@@ -1,15 +1,18 @@
 
-
 /**
  * 设置app的日夜切换 true为白天 false为夜间
  */
 const val appLightModeKey:String = "appLightMode"
+// ============= 开大考题 start =======================================
 const val appFunctionSingleDataKey:String = "app_function_single_data"
 const val appFunctionMultipleDataKey:String = "app_function_multiple_data"
 const val appFunctionEstimateDataKey:String = "app_function_Estimate_data"
 const val appThoughtSingleDataKey:String = "app_thought_single_data"
 const val appProgramSingleDataKey:String = "app_program_single_data"
+// ============== 开大考题 end ======================================
 const val appTestDataKey:String = "app_test_data"
+
+
 
 fun putAppLightMode(value:Boolean){
     StoreManager.putData(appLightModeKey,value)
@@ -64,6 +67,5 @@ fun putAppTestData(value: String){
 }
 
 fun getAppTestData():String? = StoreManager.getData(appTestDataKey,"")
-
 
 

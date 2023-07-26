@@ -33,6 +33,7 @@
     <color name="white_mode">#FFFBFB</color>
     <color name="bg_mode_white">#EAE9E9</color>
     <color name="gray_line">#c3c3c3</color>
+    <color name="text_color_gray_hint">#B5B4B4</color>
     <color name="text_color_black">#FF000000</color>
 
 

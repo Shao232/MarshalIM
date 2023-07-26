@@ -83,6 +83,8 @@ ext {
                     "jiguang_sdk_jpush"       : "cn.jiguang.sdk:jpush:5.0.3",
                     "jiguang_sdk_huawei"      : "cn.jiguang.sdk.plugin:huawei:5.0.3",
                     "huawei_hms_push"         : "com.huawei.hms:push:6.5.0.300",
+                    //集成 环信IM
+                    "hyphenate_chat"          : "io.hyphenate:hyphenate-chat:4.0.3"
 
 
             ]]

@@ -12,7 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayoutMediator
+import com.hyphenate.EMCallBack
+import com.hyphenate.EMConnectionListener
+import com.hyphenate.chat.EMClient
 import com.marshal.base_common.baseview.BaseViewActivity
+import com.marshal.base_common.store.getAppAppLoginUserAccount
+import com.marshal.base_common.store.getAppAppLoginUserPwd
 import com.marshal.databinding.ActivityMainBinding
 import com.marshal.https.IMService
 import com.marshal.mainadapter.MainFragmentAdapter
@@ -93,6 +98,35 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
         initServer()
 
+        initChat()
+    }
+
+    private fun initChat(){
+        if(EMClient.getInstance().currentUser.isEmpty() || !EMClient.getInstance().isLoggedIn) {
+            val loginAccount = getAppAppLoginUserAccount()
+            val loginPwd = getAppAppLoginUserPwd()
+            EMClient.getInstance().login(loginAccount, loginPwd, object : EMCallBack {
+                override fun onSuccess() {
+                    Log.d("TAG", "MainActivity 登录成功")
+                }
+
+                override fun onError(code: Int, error: String?) {
+                    Log.e("TAG", "MainActivity msg:${error},errorCode:${code}")
+                }
+            })
+        }else {
+            Log.d("TAG", "mainService 用户已经登录")
+        }
+
+        EMClient.getInstance().addConnectionListener(object : EMConnectionListener {
+            override fun onConnected() {
+                Log.d("TAG","MainActivity EMConnectionListener 已连接")
+            }
+
+            override fun onDisconnected(errorCode: Int) {
+                Log.d("TAG","MainActivity EMConnectionListener error:${errorCode}")
+            }
+        })
     }
 
     private fun initServer() {

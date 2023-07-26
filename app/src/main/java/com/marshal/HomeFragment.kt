@@ -24,6 +24,12 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
         binding?.tvChat?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+
+            if(!checkLogin()) {
+                ARouter.getInstance().build(AppRouterPath.APP_LOGIN_PAGE).navigation()
+                return@setOnClickListener
+            }
+
             ARouter.getInstance().build(AppRouterPath.CHAT_PATH).navigation()
         }
 

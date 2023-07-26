@@ -5,8 +5,9 @@ package com.marshal
  */
 object AppRouterPath {
 
-    private const val APP_PATH = "/app"
+    private const val APP_PATH = "/home"
 
+    const val APP_LOGIN_PAGE = "${APP_PATH}/login"
     //聊天页面
     const val CHAT_PATH = "/chat/page"
     //连接蓝牙页

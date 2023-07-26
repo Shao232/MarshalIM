@@ -22,10 +22,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
     <uses-feature android:name="android.hardware.telephony" />
-
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" /> <!-- 录音权限 -->
+    <!-- 麦克风权限，用于语音消息时录制语音，不使用录制语音可以移除 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 前台服务 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- When targeting Android 13 or higher, posting a permission requires holding the POST_NOTIFICATIONS permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- 震动功能 -->
@@ -33,6 +32,15 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+
+    <!-- 相机权限，用于图片消息时拍摄图片，不使用拍照可以移除 -->
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 获取运营商信息，用于获取网络状态 -->
+    <!-- 获取读存储权限，用于附件等的获取 -->
+    <!-- 访问 GPS 定位，用于定位消息，如果不用定位相关可以移除 -->
+    <!-- 允许程序在手机屏幕关闭后后台进程仍然运行 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <permission android:name="com.marshal.permission.JOPERATE_MESSAGE" />
     <permission
@@ -51,9 +59,6 @@
         android:theme="@style/appStyle"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".mine.AboutAppActivity"
-            android:exported="false" />
 
         <meta-data
             android:name="JPUSH_CHANNEL"
@@ -64,6 +69,8 @@
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="appid=108782249" />
+        <meta-data android:name="EASEMOB_APPKEY"
+            android:value="150136#marshalim" />
 
         <service
             android:name=".MainService"
@@ -83,7 +90,18 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
-        </service> <!-- Required since 3.0.7 -->
+        </service>
+
+        <!-- 声明 SDK 所需的 service 的核心功能-->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <service
+            android:name="com.hyphenate.chat.EMJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- Required since 3.0.7 -->
         <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
         <!-- 3.3.0开始所有事件将通过该类回调 -->
         <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
@@ -120,6 +138,9 @@
             android:exported="false"
             tools:node="remove" />
 
+        <activity
+            android:name=".mine.AboutAppActivity"
+            android:exported="false" />
         <activity
             android:name=".StoreDataActivity"
             android:exported="false" />

@@ -11,6 +11,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewbinding.ViewBinding
 import com.marshal.base_common.R
+import com.marshal.base_common.store.getAppAppLoginUserAccount
+import com.marshal.base_common.store.getAppAppLoginUserPwd
 
 abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
@@ -73,11 +75,6 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
         subscribeBack()
     }
 
-    open fun showToast(toast:String){
-        Toast.makeText(context,toast,Toast.LENGTH_SHORT).show()
-    }
-
-
     abstract fun getResLayoutBinding(): View?
 
     open fun hasToolbar():Boolean = false
@@ -90,6 +87,18 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
     fun setTitle(title:String){
         tvTitle?.text = title
+    }
+
+    open fun showToast(toast:String){
+        runOnUiThread {
+            Toast.makeText(context,toast,Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun checkLogin():Boolean {
+        val account = getAppAppLoginUserAccount()
+        val pwd = getAppAppLoginUserPwd()
+        return account?.isNotEmpty() == true && pwd?.isNotEmpty() == true
     }
 
 }

@@ -2,9 +2,11 @@ package com.marshal.base_common.baseview
 import NoShakeBtnUtil
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -12,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.marshal.base_common.R
+import com.marshal.base_common.store.getAppAppLoginUserAccount
+import com.marshal.base_common.store.getAppAppLoginUserPwd
 
 abstract class BaseViewFragment<T: ViewBinding>:Fragment() {
 
@@ -94,6 +98,18 @@ abstract class BaseViewFragment<T: ViewBinding>:Fragment() {
 
     fun setTitle(title:String){
         tvTitle?.text = title
+    }
+
+    open fun showToast(toast:String){
+        (mContext as? AppCompatActivity)?.runOnUiThread {
+            Toast.makeText(context,toast, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun checkLogin():Boolean {
+        val account = getAppAppLoginUserAccount()
+        val pwd = getAppAppLoginUserPwd()
+        return account?.isNotEmpty() == true && pwd?.isNotEmpty() == true
     }
 
 }

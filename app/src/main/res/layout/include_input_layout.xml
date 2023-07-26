@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/imMiddlewareET"
+            android:id="@+id/editMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -38,8 +38,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/im_chat_et_style"
-            android:imeOptions="actionSend"
             android:importantForAutofill="no"
+            android:imeOptions="actionSend"
             android:inputType="text"
             android:minHeight="40dp"
             android:paddingStart="5dp"
@@ -81,6 +81,7 @@
             android:checked="true"
             android:background="@drawable/im_chat_edit_expression_selector"
             android:button="@null"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/imMiddlewareAdd"
             app:layout_constraintTop_toTopOf="parent" />
@@ -91,10 +92,23 @@
             android:layout_height="32dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
+            android:visibility="visible"
             android:src="@drawable/icon_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:text="发送"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="12dp"-->
+<!--            android:visibility="visible"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -99,7 +99,7 @@ dependencies {
     api (deps.support.jiguang_sdk_jpush)
     api deps.support.jiguang_sdk_huawei
     api deps.support.huawei_hms_push
-
+    api deps.support.hyphenate_chat
 
     debugImplementation deps.support.leakcanary_android
     releaseImplementation deps.support.leakcanary_android_no_op
