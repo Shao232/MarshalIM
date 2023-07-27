@@ -26,7 +26,6 @@ public class FileUtils {
       String dbPath = "data/data/"+context.getPackageName()+"/"+dbName;
 
 
-
         if (!(new File(dbPath)).exists()) {
 //            new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/databases/").mkdirs();
             try {

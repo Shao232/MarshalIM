@@ -36,6 +36,7 @@ object FileUtils {
         myOutput.flush()
         myInput.close()
         myOutput.close()
+        MApplication.getInstance().applicationContext.assets.close()
 
         if(!dbf.exists()) {
             Log.e("TAG","文件没有创建成功,请检查")

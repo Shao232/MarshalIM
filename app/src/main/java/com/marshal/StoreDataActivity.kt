@@ -1,6 +1,5 @@
 package com.marshal
 
-import StoreManager
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route

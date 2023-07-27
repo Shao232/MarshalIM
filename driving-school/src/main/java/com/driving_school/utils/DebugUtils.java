@@ -11,7 +11,7 @@ public class DebugUtils {
     private static Boolean isDebug = null;
 
     public static boolean isDEBUG(){
-        return isDebug ==null ? false: isDebug;
+        return isDebug != null && isDebug;
     }
 
     public static void syncIsDebug(Context context){

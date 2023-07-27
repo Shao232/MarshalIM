@@ -12,8 +12,6 @@ const val appProgramSingleDataKey:String = "app_program_single_data"
 // ============== 开大考题 end ======================================
 const val appTestDataKey:String = "app_test_data"
 
-
-
 fun putAppLightMode(value:Boolean){
     StoreManager.putData(appLightModeKey,value)
 }

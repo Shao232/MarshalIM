@@ -17,7 +17,7 @@
             android:lineSpacingExtra="@dimen/dp_10"
             android:textColor="@color/black_333333"
             android:textSize="@dimen/text_size_18"
-            tools:text="111111111111111111111111111111111111111111" />
+            tools:text="这个标志是何含义？" />
 
         <ImageView
             android:id="@+id/iv_judge_subject"
@@ -54,7 +54,7 @@
                 android:paddingLeft="@dimen/dp_8"
                 android:textColor="@color/color_3f3f3f"
                 android:textSize="@dimen/text_size_14"
-                tools:text="11111111111111111111111" />
+                tools:text="正确" />
 
         </LinearLayout>
 
@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/dp_8"
                 android:textColor="@color/color_3f3f3f"
                 android:textSize="@dimen/text_size_14"
-                tools:text="11111111111111111111111" />
+                tools:text="错误" />
 
         </LinearLayout>
 
@@ -101,7 +101,8 @@
             android:paddingRight="@dimen/dp_30"
             android:paddingBottom="@dimen/dp_45"
             android:visibility="gone"
-            tools:text="1" />
+            tools:visibility="gone"
+            tools:text="此为机动车车道，比多乘员车辆专用车道少俩人。" />
 
     </LinearLayout>
 

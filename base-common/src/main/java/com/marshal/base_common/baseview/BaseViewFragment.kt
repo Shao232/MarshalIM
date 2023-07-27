@@ -2,7 +2,6 @@ package com.marshal.base_common.baseview
 import NoShakeBtnUtil
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,7 +105,7 @@ abstract class BaseViewFragment<T: ViewBinding>:Fragment() {
         }
     }
 
-    fun checkLogin():Boolean {
+    fun checkLoginInfo():Boolean {
         val account = getAppAppLoginUserAccount()
         val pwd = getAppAppLoginUserPwd()
         return account?.isNotEmpty() == true && pwd?.isNotEmpty() == true

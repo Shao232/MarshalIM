@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:hb="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
         <ImageView
             android:id="@+id/iv_radio_subject"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_100"
+            android:layout_height="@dimen/dp_120"
             android:layout_margin="@dimen/dp_8"
             android:scaleType="fitCenter"
             android:src="@drawable/defult_img" />
@@ -42,7 +41,7 @@
                 android:layout_width="@dimen/dp_30"
                 android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_8"
                 android:scaleType="centerInside"
                 android:src="@drawable/radio_defult_img" />
 
@@ -72,7 +71,7 @@
                 android:layout_width="@dimen/dp_30"
                 android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_8"
                 android:scaleType="centerInside"
                 android:src="@drawable/radio_defult_img" />
 
@@ -103,7 +102,7 @@
                 android:layout_width="@dimen/dp_30"
                 android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_8"
                 android:scaleType="centerInside"
                 android:src="@drawable/radio_defult_img" />
 
@@ -133,7 +132,7 @@
                 android:layout_width="@dimen/dp_30"
                 android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_8"
                 android:scaleType="centerInside"
                 android:src="@drawable/radio_defult_img" />
 
@@ -168,4 +167,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

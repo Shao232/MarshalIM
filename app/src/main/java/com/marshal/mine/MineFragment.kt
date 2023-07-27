@@ -3,20 +3,24 @@ package com.marshal.mine
 import NoShakeBtnUtil
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import com.alibaba.android.arouter.launcher.ARouter
 import com.hyphenate.EMCallBack
-import com.hyphenate.chat.EMClient
 import com.marshal.AppRouterPath
+import com.marshal.EMClientUtils
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.base_common.store.getAppAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserPwd
 import com.marshal.databinding.FragmentMineBinding
+import com.marshal.main.MainViewModel
 
 class MineFragment : BaseViewFragment<FragmentMineBinding>() {
 
     override fun getResLayoutId(): Int = R.layout.fragment_mine
+
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun getResLayoutBinding(): View? {
         binding = FragmentMineBinding.inflate(layoutInflater)
@@ -25,23 +29,9 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
 
     override fun initView() {
 
-        val currentUser = getAppAppLoginUserAccount()
-        binding?.tvNickNameMine?.text = currentUser
-
-//        binding?.btnToBlueTooth?.setOnClickListener {
-//            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(AppRouterPath.MINE_TO_BLUE_TOOTH).navigation(mContext)
-//        }
-//
-//        binding?.btnToUpd?.setOnClickListener {
-//            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(AppRouterPath.MINE_TO_CONNECT_UDP).navigation(mContext)
-//        }
-//
-//        binding?.btnToReadQuestion?.setOnClickListener {
-//            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(AppRouterPath.OPEN_QUESTION_BANK).navigation(mContext)
-//        }
+        viewModel.sendLoginInfo.observe(this) {
+            binding?.tvNickNameMine?.text = getAppAppLoginUserAccount()
+        }
 
         binding?.ivSettingMine?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
@@ -54,10 +44,11 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
         }
 
         binding?.btnToLogout?.setOnClickListener {
-            EMClient.getInstance().logout(true, object : EMCallBack {
+            EMClientUtils.setEMLogout(object : EMCallBack {
                 override fun onSuccess() {
                     putAppLoginUserAccount("")
                     putAppLoginUserPwd("")
+                    viewModel.setSendLoginSuccessInfo(false)
 
                     showToast("退出登录成功")
                 }

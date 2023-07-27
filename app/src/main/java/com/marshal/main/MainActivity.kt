@@ -1,0 +1,236 @@
+package com.marshal.main
+
+import android.Manifest
+import android.app.ActivityManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.util.Log
+import android.view.View
+import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.tabs.TabLayoutMediator
+import com.marshal.EMClientUtils
+import com.marshal.HomeFragment
+import com.marshal.base_common.baseview.BaseViewActivity
+import com.marshal.base_common.store.putAppLoginUserAccount
+import com.marshal.base_common.store.putAppLoginUserPwd
+import com.marshal.databinding.ActivityMainBinding
+import com.marshal.https.IMService
+import com.marshal.main.mainadapter.MainFragmentAdapter
+import com.marshal.mine.MineFragment
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
+
+/**
+ *
+ ImmersionBar.with(this)
+.statusBarColor(com.gamebox.common.R.color.gamebox_only_black)
+.fitsSystemWindows(true)//解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+.init()
+
+全局广播 使用registerReceiver 进行注册
+本地广播 使用localBroadcastReceiver 进行注册
+localBroadcastReceiver = LocalBroadcastManager.getInstance(this)
+mainBroadcastReceiver = MainBroadcastReceiver()
+val intentFilter = IntentFilter()
+intentFilter.addAction("com.marshal.login.user")
+registerReceiver(mainBroadcastReceiver, intentFilter)
+localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver?:return,intentFilter)
+
+
+ *
+ */
+class MainActivity : BaseViewActivity<ActivityMainBinding>() {
+
+    private var fm: FragmentManager? = null
+    private var ft: FragmentTransaction? = null
+
+    private var mainAdapter: MainFragmentAdapter? = null
+    private var mainFragmentArray: ArrayList<Fragment> = arrayListOf()
+    private val mainArray: Array<String> = arrayOf("首页", "我的")
+
+    private var homeFragment: HomeFragment? = null
+    private var mineFragment: MineFragment? = null
+
+    private var intentStartMainService: Intent? = null
+
+    private var permissionArray: Array<String> = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
+    private var mainBroadcastReceiver: MainBroadcastReceiver? = null
+    private var localBroadcastReceiver:LocalBroadcastManager? = null
+    private val mainViewModel:MainViewModel by viewModels()
+
+
+    override fun getResLayoutBinding(): View? {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        return binding?.root
+    }
+
+    override fun initView() {
+        initAny()
+
+        mainFragmentArray.add(homeFragment ?: return)
+        mainFragmentArray.add(mineFragment ?: return)
+        mainAdapter?.itemList?.add(mainFragmentArray[0])
+        mainAdapter?.itemList?.add(mainFragmentArray[1])
+
+        binding?.viewPager2?.adapter = mainAdapter
+        //TabLayoutMediator  连接tablayout和viewpage2的中介人
+        TabLayoutMediator(binding?.tabLayout ?: return, binding?.viewPager2 ?: return)
+        { tab, position ->
+            tab.text = mainArray[position]
+        }.attach()
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.d("TAG", "请求读写权限")
+
+            ActivityCompat.requestPermissions(this, permissionArray, 12)
+        } else {
+            intentStartMainService = Intent(this, MainService::class.java)
+            startService(intentStartMainService)
+        }
+
+        initHttp()
+
+        initServer()
+
+        initChat()
+
+        localBroadcastReceiver = LocalBroadcastManager.getInstance(this)
+        mainBroadcastReceiver = MainBroadcastReceiver()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("com.marshal.login.user")
+        registerReceiver(mainBroadcastReceiver, intentFilter)
+        localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver?:return,intentFilter)
+    }
+
+    private fun initChat() {
+        if(EMClientUtils.checkEMLogin()) {
+            Log.d("TAG", "MainActivity 用户已经登录")
+            mainViewModel.setSendLoginSuccessInfo(true)
+        }else {
+            Log.d("TAG", "MainActivity 未登录状态")
+            putAppLoginUserAccount("")
+            putAppLoginUserPwd("")
+            mainViewModel.setSendLoginSuccessInfo(false)
+        }
+
+        EMClientUtils.setEMConnectionListener()
+    }
+
+    private fun initServer() {
+        val aManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val appRunningService = aManager.getRunningServices(Integer.MAX_VALUE);
+        if (appRunningService != null) {
+            Log.println(Log.DEBUG, "TAG", "appRunningService: " + appRunningService.size)
+            for (aProcess: ActivityManager.RunningServiceInfo in appRunningService) {
+                Log.d("TAG", "package Name:" + aProcess.service.packageName);
+                Log.d("TAG", "process:" + aProcess.process);
+            }
+        }
+    }
+
+    private fun initHttp() {
+        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
+
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .writeTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl("https://www.marshalim.club")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val api = retrofit.create(IMService::class.java)
+        api.getData().enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Log.d("TAG", "call: ${call.request()}")
+                Log.d("TAG", "response: $response")
+                Log.d("TAG", "response: ${response.body()}")
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("TAG", "call: ${call.request()}")
+                t.printStackTrace()
+            }
+        })
+    }
+
+
+    private fun initAny() {
+        fm = supportFragmentManager
+        ft = fm?.beginTransaction()
+        homeFragment = HomeFragment()
+        mineFragment = MineFragment()
+        mainAdapter = MainFragmentAdapter(this)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 12) {
+            val dataResults = grantResults.filter { it == PackageManager.PERMISSION_GRANTED }
+            Log.d("TAG", "permissions: ${permissions.forEach { Log.d("TAG", it) }}")
+            if (dataResults.isNotEmpty()) {
+                Log.d("TAG", "权限请求成功!!!!!")
+                intentStartMainService = Intent(this, MainService::class.java)
+                startService(intentStartMainService)
+            } else {
+                Log.d("TAG", "dataResults is empty ")
+            }
+        }
+    }
+
+    inner class MainBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            //当登录成功 登录界面会发送登录成功的广播
+            //在主页收到登录成功的广播发送viewmodel字段post
+            //刷新ui
+            if (intent?.action == "com.marshal.login.user") {
+                Log.d("TAG", "登录成功发送的广播")
+                mainViewModel.setSendLoginSuccessInfo(true)
+            }
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        localBroadcastReceiver?.unregisterReceiver(mainBroadcastReceiver?:return)
+    }
+
+
+}

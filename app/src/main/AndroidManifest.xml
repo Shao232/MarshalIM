@@ -77,13 +77,13 @@
             android:value="150136#marshalim" />
 
         <service
-            android:name=".MainService"
+            android:name=".main.MainService"
             android:exported="false" />
         <service
             android:name=".music.BgMusicService"
             android:exported="false" />
         <service
-            android:name=".PushIntentService"
+            android:name=".main.PushIntentService"
             android:enabled="true"
             android:exported="false"
             android:process=":pushcore">
@@ -106,7 +106,7 @@
         <!-- 3.3.0开始所有事件将通过该类回调 -->
         <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
         <receiver
-            android:name=".MainReceiver"
+            android:name=".main.MainJPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -167,7 +167,7 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
@@ -184,7 +184,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

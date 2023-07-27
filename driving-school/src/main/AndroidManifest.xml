@@ -3,8 +3,13 @@
 
     <application>
         <activity
-            android:name=".DrivingSchoolHomeActivity"
-            android:exported="false" />
+            android:name=".home.PracticeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".home.DrivingSchoolHomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

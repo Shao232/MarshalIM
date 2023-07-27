@@ -10,20 +10,31 @@ import java.io.Serializable;
  * Created by 11470 on 2017/10/17.
  */
 
+/**
+ {"id":"1",
+ "question":"这个标志是何含义？",
+ "answer":"4",
+ "item1":"小型车车道",
+ "item2":"小型车专用车道",
+ "item3":"多乘员车辆专用车道",
+ "item4":"机动车车道",
+ "explains":"此为机动车车道，比多乘员车辆专用车道少俩人。",
+ "url":"https:\/\/images.juheapi.com\/jztk\/c1c2subject1\/1.jpg"}
+
+
+ */
+
 public class QuestionsBean implements Serializable{
 
     private String id;
+    private String question;
     private String answer;//答案
-    private String explains;//题目
     private String item1;//答案 1
     private String item2;//答案 2
     private String item3;//答案 3
     private String item4;//答案 4
-    private String question;//问题
-    private String type;// 1 单选 2 判断 3 多选
+    private String explains;//题目
     private String url;
-    private String myAnswer;
-    private String time;
 
     @Override
     public String toString() {
@@ -36,35 +47,8 @@ public class QuestionsBean implements Serializable{
                 ", item3='" + item3 + '\'' +
                 ", item4='" + item4 + '\'' +
                 ", question='" + question + '\'' +
-                ", type='" + type + '\'' +
                 ", url='" + url + '\'' +
-                ", myAnswer='" + myAnswer + '\'' +
-                ", time='" + time + '\'' +
                 '}';
-    }
-
-    public String getMyAnswer() {
-        return myAnswer;
-    }
-
-    public void setMyAnswer(String myAnswer) {
-        this.myAnswer = myAnswer;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getId() {
@@ -142,88 +126,4 @@ public class QuestionsBean implements Serializable{
     public QuestionsBean() {
     }
 
-//    public static ContentValues getContentValues(QuestionsBean bean){
-//        ContentValues values = new ContentValues();
-//        values.put(QuestionsMetaData.MetaData.ID,bean.getId());
-//        values.put(QuestionsMetaData.MetaData.ANSWER,bean.getAnswer());
-//        values.put(QuestionsMetaData.MetaData.EXPLAINS,bean.getExplains());
-//        values.put(QuestionsMetaData.MetaData.ITEM1,bean.getItem1());
-//        values.put(QuestionsMetaData.MetaData.ITEM2,bean.getItem2());
-//        values.put(QuestionsMetaData.MetaData.ITEM3,bean.getItem3());
-//        values.put(QuestionsMetaData.MetaData.ITEM4,bean.getItem4());
-//        values.put(QuestionsMetaData.MetaData.QUESTION,bean.getQuestion());
-//        values.put(QuestionsMetaData.MetaData.TYPE,bean.getType());
-//        values.put(QuestionsMetaData.MetaData.URL,bean.getUrl());
-//        return values;
-//    }
-//
-//    public static ContentValues getContentValues(QuestionsBean bean,String time,String myAnswer){
-//        ContentValues values = new ContentValues();
-//        values.put(QuestionsMetaData.MetaData.ID,bean.getId());
-//        values.put(QuestionsMetaData.MetaData.ANSWER,bean.getAnswer());
-//        values.put(QuestionsMetaData.MetaData.EXPLAINS,bean.getExplains());
-//        values.put(QuestionsMetaData.MetaData.ITEM1,bean.getItem1());
-//        values.put(QuestionsMetaData.MetaData.ITEM2,bean.getItem2());
-//        values.put(QuestionsMetaData.MetaData.ITEM3,bean.getItem3());
-//        values.put(QuestionsMetaData.MetaData.ITEM4,bean.getItem4());
-//        values.put(QuestionsMetaData.MetaData.QUESTION,bean.getQuestion());
-//        values.put(QuestionsMetaData.MetaData.TYPE,bean.getType());
-//        values.put(QuestionsMetaData.MetaData.TIME,time);
-//        values.put(QuestionsMetaData.MetaData.MYANSWER,myAnswer);
-//        values.put(QuestionsMetaData.MetaData.URL,bean.getUrl());
-//        return values;
-//    }
-//
-//    public static QuestionsBean getQuestionsBean(Cursor cursor){
-//        int idColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.ID);
-//        int answerColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.ANSWER);
-//        int explainsColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.EXPLAINS);
-//        int item1Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM1);
-//        int item2Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM2);
-//        int item3Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM3);
-//        int item4Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM4);
-//        int questionColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.QUESTION);
-//        int urlColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.URL);
-//        int typeColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.TYPE);
-//        QuestionsBean bean = new QuestionsBean();
-//        bean.setId(cursor.getString(idColumn));
-//        bean.setAnswer(cursor.getString(answerColumn));
-//        bean.setExplains(cursor.getString(explainsColumn));
-//        bean.setItem1(cursor.getString(item1Column));
-//        bean.setItem2(cursor.getString(item2Column));
-//        bean.setItem3(cursor.getString(item3Column));
-//        bean.setItem4(cursor.getString(item4Column));
-//        bean.setQuestion(cursor.getString(questionColumn));
-//        bean.setType(cursor.getString(typeColumn));
-//        bean.setUrl(cursor.getString(urlColumn));
-////        MyLog.i("数据>>>>"+bean.toString());
-//        return bean;
-//    }
-//
-//    public static QuestionsBean getErrorQuestionsBean(Cursor cursor){
-//        int idColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.ID);
-//        int answerColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.ANSWER);
-//        int explainsColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.EXPLAINS);
-//        int item1Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM1);
-//        int item2Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM2);
-//        int item3Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM3);
-//        int item4Column = cursor.getColumnIndex(QuestionsMetaData.MetaData.ITEM4);
-//        int questionColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.QUESTION);
-//        int urlColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.URL);
-//        int myAnswerColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.MYANSWER);
-//        int typeColumn = cursor.getColumnIndex(QuestionsMetaData.MetaData.TYPE);
-//        QuestionsBean bean = new QuestionsBean();
-//        bean.setId(cursor.getString(idColumn));
-//        bean.setAnswer(cursor.getString(answerColumn));
-//        bean.setExplains(cursor.getString(explainsColumn));
-//        bean.setItem1(cursor.getString(item1Column));
-//        bean.setItem2(cursor.getString(item2Column));
-//        bean.setItem3(cursor.getString(item3Column));
-//        bean.setItem4(cursor.getString(item4Column));
-//        bean.setQuestion(cursor.getString(questionColumn));
-//        bean.setType(cursor.getString(typeColumn));
-//        bean.setUrl(cursor.getString(urlColumn));
-//        bean.setMyAnswer(cursor.getString(myAnswerColumn));
-//        return bean;
-//    }
 }

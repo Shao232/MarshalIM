@@ -24,7 +24,7 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
         binding?.tvChat?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
 
-            if(!checkLogin()) {
+            if(!EMClientUtils.checkEMLogin()) {
                 ARouter.getInstance().build(AppRouterPath.APP_LOGIN_PAGE).navigation()
                 return@setOnClickListener
             }
@@ -34,29 +34,9 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
 
         binding?.tvToFunction?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-
             ARouter.getInstance().build(AppRouterPath.APP_FUNCTION_PAGE).navigation(mContext)
         }
 
-//        binding?.tvQuestion?.setOnClickListener {
-//            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(AppRouterPath.OPEN_QUESTION_BANK).navigation(mContext)
-//        }
-//
-//        binding?.tvCoroutines?.setOnClickListener {
-//            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(AppRouterPath.HOME_COROUTINES).navigation(mContext)
-//        }
-//
-//        binding?.tvDrivingSchool?.setOnClickListener {
-//            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(DrivingRouterPath.Driving_HOME_PATH).navigation(mContext)
-//        }
-//
-//        binding?.tvStoreData?.setOnClickListener {
-//            if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-//            ARouter.getInstance().build(AppRouterPath.STORE_DATA_PAGE).navigation(mContext)
-//        }
 
     }
 

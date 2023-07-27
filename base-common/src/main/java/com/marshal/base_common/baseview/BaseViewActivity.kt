@@ -14,25 +14,25 @@ import com.marshal.base_common.R
 import com.marshal.base_common.store.getAppAppLoginUserAccount
 import com.marshal.base_common.store.getAppAppLoginUserPwd
 
-abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
+abstract class BaseViewActivity<T : ViewBinding> : AppCompatActivity() {
 
     /**
      * 通过子类实现getActivityLayoutId方法创建对象
      */
-    var binding:T? = null
+    var binding: T? = null
 
     var context: Context? = null
 
-    var hasIncludeToolbar:Boolean =false
+    var hasIncludeToolbar: Boolean = false
 
     /**
      * toolbar
      */
     var ivBackBar: AppCompatImageView? = null
     var tvTitle: AppCompatTextView? = null
-    var ivMenu:AppCompatImageView? = null
-    var clnTitleLayout:ConstraintLayout? = null
-    var ivDown:AppCompatImageView? = null
+    var ivMenu: AppCompatImageView? = null
+    var clnTitleLayout: ConstraintLayout? = null
+    var ivDown: AppCompatImageView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +40,13 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
         context = this
 
-        val view:View? = getResLayoutBinding()
-        if(view != null) {
+        val view: View? = getResLayoutBinding()
+        if (view != null) {
             setContentView(view)
         }
         hasIncludeToolbar = hasToolbar()
 
-        if(hasIncludeToolbar) {
+        if (hasIncludeToolbar) {
             clnTitleLayout = findViewById(R.id.cln_center_title_layout)
             ivBackBar = findViewById(R.id.iv_back_toolbar)
             tvTitle = findViewById(R.id.tv_title_toolbar)
@@ -55,14 +55,14 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
             ivBackBar?.visibility = View.VISIBLE
 
             ivBackBar?.setOnClickListener {
-                if(NoShakeBtnUtil.isFastDoubleClick(it)){
+                if (NoShakeBtnUtil.isFastDoubleClick(it)) {
                     return@setOnClickListener
                 }
 
                 finish()
             }
             ivMenu?.setOnClickListener {
-                if(NoShakeBtnUtil.isFastDoubleClick(it)){
+                if (NoShakeBtnUtil.isFastDoubleClick(it)) {
                     return@setOnClickListener
                 }
 
@@ -77,25 +77,25 @@ abstract class BaseViewActivity<T:ViewBinding> :AppCompatActivity(){
 
     abstract fun getResLayoutBinding(): View?
 
-    open fun hasToolbar():Boolean = false
+    open fun hasToolbar(): Boolean = false
 
     abstract fun initView()
 
-    open fun subscribeBack(){}
+    open fun subscribeBack() {}
 
-    open fun onClickMenu(view:View){}
+    open fun onClickMenu(view: View) {}
 
-    fun setTitle(title:String){
+    fun setTitle(title: String) {
         tvTitle?.text = title
     }
 
-    open fun showToast(toast:String){
+    open fun showToast(toast: String) {
         runOnUiThread {
-            Toast.makeText(context,toast,Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, toast, Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun checkLogin():Boolean {
+    fun checkLoginInfo(): Boolean {
         val account = getAppAppLoginUserAccount()
         val pwd = getAppAppLoginUserPwd()
         return account?.isNotEmpty() == true && pwd?.isNotEmpty() == true
