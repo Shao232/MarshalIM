@@ -1,8 +1,7 @@
 package com.driving_school.bean;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 
@@ -25,7 +24,6 @@ import java.io.Serializable;
  */
 
 public class QuestionsBean implements Serializable{
-
     private String id;
     private String question;
     private String answer;//答案
@@ -36,19 +34,40 @@ public class QuestionsBean implements Serializable{
     private String explains;//题目
     private String url;
 
+    //开始动画
+    private boolean startAnim = false;
+
+    //是否回答正确
+    private boolean answerCorrect;
+    private int answerFrequency = 0;
+
     @Override
     public String toString() {
-        return "QuestionsBean{" +
-                "id='" + id + '\'' +
-                ", answer='" + answer + '\'' +
-                ", explains='" + explains + '\'' +
-                ", item1='" + item1 + '\'' +
-                ", item2='" + item2 + '\'' +
-                ", item3='" + item3 + '\'' +
-                ", item4='" + item4 + '\'' +
-                ", question='" + question + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        return new Gson().toJson(this);
+    }
+
+    public void setAnswerFrequency(int answerFrequency) {
+        this.answerFrequency = answerFrequency;
+    }
+
+    public int getAnswerFrequency() {
+        return answerFrequency;
+    }
+
+    public void setAnswerCorrect(boolean answerCorrect) {
+        this.answerCorrect = answerCorrect;
+    }
+
+    public boolean isAnswerCorrect() {
+        return answerCorrect;
+    }
+
+    public void setStartAnim(boolean startAnim) {
+        this.startAnim = startAnim;
+    }
+
+    public boolean isStartAnim() {
+        return startAnim;
     }
 
     public String getId() {

@@ -8,5 +8,4 @@ data class DrivingBean(
     val reason:String,
     val result:ArrayList<QuestionsBean>? = ArrayList(),
     val error_code:Int
-) : Parcelable {
-}
+) : Parcelable

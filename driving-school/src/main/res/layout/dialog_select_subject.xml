@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white_mode">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_r24_white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_touch_select_subject"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:src="@drawable/touch_img"
+            android:scaleType="fitCenter"
+            android:paddingLeft="@dimen/dp_30"
+            android:paddingRight="@dimen/dp_30"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/gray_dddddd"
+            />
+
+         <TextView
+             android:id="@+id/tv_subject_one_select_item"
+             android:layout_width="match_parent"
+             android:layout_height="50dp"
+             tools:text="c1 科目1(1000道)"
+             android:textColor="@color/text_color_black"
+             android:textSize="18dp"
+             android:gravity="center"
+             android:background="@drawable/selector_default_click"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/gray_dddddd"
+            />
+
+        <TextView
+            android:id="@+id/tv_subject_four_select_item"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            tools:text="c1 科目4(1000道)"
+            android:textColor="@color/text_color_black"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:background="@drawable/selector_default_click"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

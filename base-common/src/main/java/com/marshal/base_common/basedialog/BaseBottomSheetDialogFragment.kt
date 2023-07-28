@@ -10,14 +10,12 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding>: BottomSheetDialogF
 
     var rootView:View? = null
     var binding:T? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         rootView = inflater.inflate(getResLayoutId(), container)
-
         return getResLayoutBinding()
     }
 

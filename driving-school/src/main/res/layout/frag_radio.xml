@@ -2,12 +2,15 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:hb="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="false"
+    android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -33,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/white_ffffff"
+            android:background="@drawable/selector_default_click"
             android:orientation="horizontal">
 
             <ImageView
@@ -63,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_2"
-            android:background="@color/white_ffffff"
+            android:background="@drawable/selector_default_click"
             android:orientation="horizontal">
 
             <ImageView
@@ -94,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_2"
-            android:background="@color/white_ffffff"
+            android:background="@drawable/selector_default_click"
             android:orientation="horizontal">
 
             <ImageView
@@ -124,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_2"
-            android:background="@color/white_ffffff"
+            android:background="@drawable/selector_default_click"
             android:orientation="horizontal">
 
             <ImageView
@@ -153,17 +156,51 @@
             android:id="@+id/tv_radio_explain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_marginBottom="@dimen/dp_55"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginEnd="@dimen/dp_15"
             android:background="@drawable/radio_answer_img"
             android:paddingLeft="@dimen/dp_30"
             android:paddingTop="@dimen/dp_30"
             android:paddingRight="@dimen/dp_30"
             android:paddingBottom="@dimen/dp_45"
             android:visibility="gone"
-            tools:text="1" />
+            tools:text="1"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:layout_marginBottom="15dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_before_question"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_next_question_click"
+                android:gravity="center"
+                android:text="上一题"
+                android:textColor="@color/white_mode"
+                android:textSize="18dp"
+                android:visibility="gone"
+                android:layout_marginEnd="20dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_next_question"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_next_question_click"
+                android:gravity="center"
+                android:text="下一题"
+                android:textColor="@color/white_mode"
+                android:textSize="18dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
