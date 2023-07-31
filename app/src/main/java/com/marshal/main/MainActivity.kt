@@ -122,7 +122,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         initChat()
 
         localBroadcastReceiver = LocalBroadcastManager.getInstance(this)
-        mainBroadcastReceiver = MainBroadcastReceiver()
+        mainBroadcastReceiver = MainBroadcastReceiver(this)
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.marshal.login.user")
         registerReceiver(mainBroadcastReceiver, intentFilter)
@@ -214,14 +214,15 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         }
     }
 
-    inner class MainBroadcastReceiver : BroadcastReceiver() {
+    class MainBroadcastReceiver(private val activity: MainActivity) : BroadcastReceiver() {
+
         override fun onReceive(context: Context?, intent: Intent?) {
             //当登录成功 登录界面会发送登录成功的广播
             //在主页收到登录成功的广播发送viewmodel字段post
             //刷新ui
             if (intent?.action == "com.marshal.login.user") {
                 Log.d("TAG", "登录成功发送的广播")
-                mainViewModel.setSendLoginSuccessInfo(true)
+                activity.mainViewModel.setSendLoginSuccessInfo(true)
             }
         }
     }

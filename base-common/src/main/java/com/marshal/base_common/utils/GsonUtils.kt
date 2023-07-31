@@ -13,6 +13,10 @@ object GsonUtils {
        return gson.toJson(str)
     }
 
+    fun objToJson(obj: Any):String{
+        return gson.toJson(obj)
+    }
+
     fun streamToJson(input:InputStream):String{
         return gson.toJson(input)
     }

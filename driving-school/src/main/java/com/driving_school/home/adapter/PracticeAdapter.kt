@@ -1,6 +1,7 @@
 package com.driving_school.home.adapter
 
 import android.animation.ValueAnimator
+import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
@@ -17,29 +18,14 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
     }
 
     override fun onViewHolder(parent: ViewGroup, viewType: Int): PracticeViewHolder {
-        return PracticeViewHolder(mContext, parent)
+        return PracticeViewHolder(parent)
     }
 
     override fun bindViewHolderData(holder: PracticeViewHolder, position: Int) {
         val bean = itemList[position]
         holder.tvRadioSubject?.text = bean.question
 
-        if(bean.item1.isNotEmpty()) {
-            holder.lvnSelectItem1?.visibility = View.VISIBLE
-            holder.tvRadioItem1?.text = bean.item1
-        }
-
-        if(bean.item2.isNotEmpty()) {
-            holder.lvnSelectItem2?.visibility = View.VISIBLE
-            holder.tvRadioItem2?.text = bean.item2
-        }
-
-        if(bean.item3.isNotEmpty()) {
-            holder.lvnSelectItem3?.visibility = View.VISIBLE
-            holder.tvRadioItem3?.text = bean.item3
-        }else {
-            holder.lvnSelectItem3?.visibility = View.GONE
-        }
+        setAnswerStatus(bean, holder)
 
         if(bean.url.isNotEmpty()){
             holder.ivShowImg?.visibility = View.VISIBLE
@@ -47,16 +33,7 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
         }else {
             holder.ivShowImg?.visibility = View.GONE
         }
-
-        if(bean.item4.isNotEmpty()) {
-            holder.lvnSelectItem4?.visibility = View.VISIBLE
-            holder.tvRadioItem4?.text = bean.item4
-        }else {
-            holder.lvnSelectItem4?.visibility = View.GONE
-        }
-
-        holder.tvRadioExplain?.text = bean.explains
-
+        holder.tvRadioExplain?.text = Html.fromHtml(bean.explains)
         val count = if(itemCount == 0) 0 else  itemCount - 1
         if(position == count) {
             holder.btnNextQuestion?.text = "完成"
@@ -64,39 +41,109 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
             holder.btnNextQuestion?.text = "下一题"
         }
 
-        updateInitStatus(holder)
+        //判断当前题目是不是回答完毕
+        if(bean.isCompleteAnswer) {
+            //如果完成当前题目，题库未完成，更改当前题目的样式
+            setAnswerUpdate(position, bean.selectItemAnswer.toInt(), holder, bean)
+            setSelectItemClickEnable(holder,false)
+
+        }else {
+            //如果没有回答，显示初始化ui
+            updateInitStatus(holder)
+            setSelectItemClickEnable(holder,true)
+        }
 
         holder.lvnSelectItem1?.setOnClickListener {
-            setAnswerUpdate(position,1, holder, bean)
-            val correct = bean.answer == "1"
-            nextQuestionSelectClick?.onItemTwoSelectQuestion(position,correct)
+            itemAnswerClick(bean, position,1, holder)
+            setSelectItemClickEnable(holder,false)
         }
 
         holder.lvnSelectItem2?.setOnClickListener {
-            setAnswerUpdate(position,2, holder, bean)
-            val correct = bean.answer == "2"
-            nextQuestionSelectClick?.onItemTwoSelectQuestion(position,correct)
+            itemAnswerClick(bean, position,2, holder)
+            setSelectItemClickEnable(holder,false)
         }
 
         holder.lvnSelectItem3?.setOnClickListener {
-            setAnswerUpdate(position,3, holder, bean)
-            val correct = bean.answer == "3"
-            nextQuestionSelectClick?.onItemTwoSelectQuestion(position,correct)
+            itemAnswerClick(bean, position,3, holder)
+            setSelectItemClickEnable(holder,false)
         }
 
         holder.lvnSelectItem4?.setOnClickListener {
-            setAnswerUpdate(position,4, holder, bean)
-            val correct = bean.answer == "4"
-            nextQuestionSelectClick?.onItemTwoSelectQuestion(position,correct)
+            itemAnswerClick(bean, position,4, holder)
+            setSelectItemClickEnable(holder,false)
         }
 
         holder.btnBeforeQuestion?.setOnClickListener {
+            //点击上一题触发onItemOneSelectClick
             nextQuestionSelectClick?.onItemOneSelectClick(position,1)
         }
 
         holder.btnNextQuestion?.setOnClickListener {
+            //点击下一题触发onItemOneSelectClick
             nextQuestionSelectClick?.onItemOneSelectClick(position,2)
         }
+    }
+
+    /**
+     * 当当前答案选择后，全部设置为不可点击
+     */
+    private fun setSelectItemClickEnable(holder: PracticeViewHolder,isEnable:Boolean = true) {
+        holder.lvnSelectItem1?.isEnabled = isEnable
+        holder.lvnSelectItem2?.isEnabled = isEnable
+        holder.lvnSelectItem3?.isEnabled = isEnable
+        holder.lvnSelectItem4?.isEnabled = isEnable
+    }
+
+    private fun setAnswerStatus(
+        bean: QuestionsBean,
+        holder: PracticeViewHolder
+    ) {
+        if (bean.item1.isNotEmpty()) {
+            holder.lvnSelectItem1?.visibility = View.VISIBLE
+            holder.tvRadioItem1?.text = bean.item1
+        }
+
+        if (bean.item2.isNotEmpty()) {
+            holder.lvnSelectItem2?.visibility = View.VISIBLE
+            holder.tvRadioItem2?.text = bean.item2
+        }
+
+        if (bean.item3.isNotEmpty()) {
+            holder.lvnSelectItem3?.visibility = View.VISIBLE
+            holder.tvRadioItem3?.text = bean.item3
+        } else {
+            holder.lvnSelectItem3?.visibility = View.GONE
+        }
+
+        if (bean.item4.isNotEmpty()) {
+            holder.lvnSelectItem4?.visibility = View.VISIBLE
+            holder.tvRadioItem4?.text = bean.item4
+        } else {
+            holder.lvnSelectItem4?.visibility = View.GONE
+        }
+    }
+
+    /**
+     * 设置点击答案
+     */
+    private fun itemAnswerClick(
+        bean: QuestionsBean,
+        position: Int,
+        itemType: Int,
+        holder: PracticeViewHolder
+    ) {
+        //当当前题目回答后，设置已经回答过，过滤掉点击事件
+        if (bean.isCompleteAnswer) {
+            return
+        }
+
+        val strItemType =  itemType.toString()
+        //更新ui
+        setAnswerUpdate(position, itemType, holder, bean)
+        bean.isCompleteAnswer = true
+        bean.selectItemAnswer =  itemType.toString()
+        val correct = bean.answer == strItemType
+        nextQuestionSelectClick?.onItemTwoSelectQuestion(position, correct)
     }
 
     private fun updateInitStatus(holder: PracticeViewHolder){
@@ -109,6 +156,13 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
         holder.btnBeforeQuestion?.visibility = View.GONE
     }
 
+    /**
+     * 设置当前界面view的样式
+     * @params position 当前条目位置
+     * @param  itemType 当前选择的答案 1,2,3,4
+     * @param  holder   当前view
+     * @param  bean     当前条目的数据源
+     */
     private fun setAnswerUpdate(position: Int,itemType: Int, holder: PracticeViewHolder, bean: QuestionsBean) {
         val answerParams = itemType.toString()
         holder.tvRadioExplain?.visibility = View.VISIBLE
@@ -184,7 +238,7 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
 
     interface PracticeItemSelectClick {
         /**
-         * 当点击下一题button时
+         * 当点击下一题button时和点击上一题button
          * position item条目
          * direction 方向 1 上一题 2 下一题
          */

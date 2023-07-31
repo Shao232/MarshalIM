@@ -2,13 +2,14 @@ package com.marshal.function
 
 import SizeUtils
 import android.view.ViewGroup
+import com.marshal.R
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
 import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 import com.marshal.pojo.FunctionBean
 
 class FunctionAdapter : BaseRecyclerAdapter<FunctionViewHolder, FunctionBean>() {
     override fun onViewHolder(parent: ViewGroup, viewType: Int): FunctionViewHolder {
-        return FunctionViewHolder(context = mContext, parent)
+        return FunctionViewHolder(context = mContext, R.layout.item_fun_layout, parent)
     }
 
     override fun setAdapterItemOnClickListener(clickListener: AdapterItemOnClickListener<FunctionBean>) {
@@ -18,7 +19,7 @@ class FunctionAdapter : BaseRecyclerAdapter<FunctionViewHolder, FunctionBean>() 
     override fun bindViewHolderData(holder: FunctionViewHolder, position: Int) {
         val bean = itemList[position]
         //设置条目的外间距
-        val layoutParams = holder.tvFunction.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams = holder.tvFunction?.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.width = SizeUtils.dip2px(mContext,100f)
         layoutParams.height = SizeUtils.dip2px(mContext,100f)
         val positionIndex = position +1
@@ -28,8 +29,8 @@ class FunctionAdapter : BaseRecyclerAdapter<FunctionViewHolder, FunctionBean>() 
         }else {
             layoutParams.setMargins(SizeUtils.dip2px(mContext,8f),SizeUtils.dip2px(mContext,8f),0,0)
         }
-        holder.tvFunction.layoutParams = layoutParams
-        holder.tvFunction.text = bean.functionName
+        holder.tvFunction?.layoutParams = layoutParams
+        holder.tvFunction?.text = bean.functionName
 
     }
 }

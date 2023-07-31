@@ -1,16 +1,16 @@
 package com.marshal.mine.open.adapter
 
-import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.marshal.R
+import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 
 class OpenQuestionViewHolder(context: Context?, resId:Int,
                               parent: ViewGroup
-): BaseRecyclerViewHolder(context, resId, parent)  {
+): BaseRecyclerViewHolder(resId, parent)  {
 
     var clnRootViewLayout:ConstraintLayout? = null
     var tvQuestionTitle: TextView? = null

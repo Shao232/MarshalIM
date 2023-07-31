@@ -8,7 +8,7 @@ import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 
 class BlueToothCustomViewHolder(context: Context?, resId:Int,
                                 parent: ViewGroup
-): BaseRecyclerViewHolder(context, resId, parent) {
+): BaseRecyclerViewHolder(resId, parent) {
 
     var tvStr:TextView? = null
 

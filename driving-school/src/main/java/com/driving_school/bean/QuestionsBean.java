@@ -35,39 +35,41 @@ public class QuestionsBean implements Serializable{
     private String url;
 
     //开始动画
-    private boolean startAnim = false;
+    private boolean isStartAnim;
 
-    //是否回答正确
-    private boolean answerCorrect;
-    private int answerFrequency = 0;
+    //用户选择的答案
+    private String selectItemAnswer;
+
+    //是否完成回答
+    private boolean completeAnswer;
 
     @Override
     public String toString() {
         return new Gson().toJson(this);
     }
 
-    public void setAnswerFrequency(int answerFrequency) {
-        this.answerFrequency = answerFrequency;
-    }
-
-    public int getAnswerFrequency() {
-        return answerFrequency;
-    }
-
-    public void setAnswerCorrect(boolean answerCorrect) {
-        this.answerCorrect = answerCorrect;
-    }
-
-    public boolean isAnswerCorrect() {
-        return answerCorrect;
-    }
-
     public void setStartAnim(boolean startAnim) {
-        this.startAnim = startAnim;
+        isStartAnim = startAnim;
     }
 
     public boolean isStartAnim() {
-        return startAnim;
+        return isStartAnim;
+    }
+
+    public void setSelectItemAnswer(String selectItemAnswer) {
+        this.selectItemAnswer = selectItemAnswer;
+    }
+
+    public String getSelectItemAnswer() {
+        return selectItemAnswer;
+    }
+
+    public void setCompleteAnswer(boolean completeAnswer) {
+        this.completeAnswer = completeAnswer;
+    }
+
+    public boolean isCompleteAnswer() {
+        return completeAnswer;
     }
 
     public String getId() {

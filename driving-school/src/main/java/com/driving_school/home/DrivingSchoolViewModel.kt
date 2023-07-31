@@ -4,10 +4,10 @@ import com.driving_school.bean.DrivingBean
 import com.google.gson.Gson
 import com.marshal.base_common.MApplication
 import com.marshal.base_common.baseview.BaseViewModel
-import getDrivingSubjectFour
-import getDrivingSubjectOne
-import putDrivingSubjectFour
-import putDrivingSubjectOne
+import com.driving_school.getDrivingSubjectFour
+import com.driving_school.getDrivingSubjectOne
+import com.driving_school.putDrivingSubjectFour
+import com.driving_school.putDrivingSubjectOne
 import java.io.InputStream
 
 class DrivingSchoolViewModel:BaseViewModel() {

@@ -1,6 +1,5 @@
 package com.driving_school.home.adapter
 
-import android.content.Context
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -10,8 +9,7 @@ import androidx.core.widget.NestedScrollView
 import com.driving_school.R
 import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 
-class PracticeViewHolder(context: Context?, parent: ViewGroup):BaseRecyclerViewHolder(context,
-R.layout.frag_radio,parent) {
+class PracticeViewHolder(parent: ViewGroup):BaseRecyclerViewHolder(R.layout.frag_radio,parent) {
 
     var scrollView:NestedScrollView? = null
     var tvRadioSubject:TextView? = null

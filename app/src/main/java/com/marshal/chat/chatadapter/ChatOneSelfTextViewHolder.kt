@@ -8,7 +8,7 @@ import com.marshal.R
 import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 
 class ChatOneSelfTextViewHolder(context: Context?, resId:Int,
-                                parent: ViewGroup): BaseRecyclerViewHolder(context, resId, parent) {
+                                parent: ViewGroup): BaseRecyclerViewHolder(resId, parent) {
 
     var oneSelfProfile:ImageView? = null
     var tvTextContent:TextView? = null

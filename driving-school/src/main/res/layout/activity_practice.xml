@@ -22,19 +22,18 @@
         android:layout_height="65dp"
         android:background="@color/white_ffffff"
         android:orientation="horizontal"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewpager_subject"
         tools:visibility="visible">
 
         <LinearLayout
             android:id="@+id/lvn_time_subject"
-            android:layout_width="@dimen/dp_0"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <ImageView
                 android:layout_width="@dimen/dp_25"
@@ -55,25 +54,27 @@
 
         <LinearLayout
             android:id="@+id/lvn_collection_subject"
-            android:layout_width="@dimen/dp_0"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:minWidth="80dp"
+            android:orientation="horizontal"
+            android:layout_marginEnd="10dp"
             android:visibility="gone"
             tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_collection_subject"
                 android:layout_width="@dimen/dp_25"
-                android:layout_height="@dimen/dp_25"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_5"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="6dp"
                 android:src="@drawable/my_collections_img" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:text="收藏"
                 android:textColor="@color/color_545454"
                 android:textSize="@dimen/text_size_16" />
@@ -82,23 +83,24 @@
 
         <LinearLayout
             android:id="@+id/lvn_test_correct_subject"
-            android:layout_width="@dimen/dp_0"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:minWidth="80dp"
             android:orientation="horizontal"
+            android:layout_marginEnd="10dp"
             android:visibility="gone"
             tools:visibility="visible">
 
             <ImageView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
                 android:src="@drawable/subject_ok_img" />
 
             <TextView
                 android:id="@+id/tv_yes_subject"
-                android:layout_width="@dimen/dp_0"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
@@ -110,31 +112,45 @@
 
         <LinearLayout
             android:id="@+id/lvn_test_error_subject"
-            android:layout_width="@dimen/dp_0"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:minWidth="80dp"
             android:orientation="horizontal"
+            android:layout_marginEnd="10dp"
             android:visibility="gone"
             tools:visibility="visible">
 
             <ImageView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
                 android:src="@drawable/subject_no_img" />
 
             <TextView
                 android:id="@+id/tv_no_subject"
-                android:layout_width="@dimen/dp_0"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textColor="@color/color_f4011f"
                 android:textSize="@dimen/text_size_16"
-                tools:text="1" />
+                tools:text="1011" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_question_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="80dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textStyle="bold"
+            android:textColor="@color/black_000000"
+            android:textSize="@dimen/text_size_16"
+            tools:text="1/1120" />
+
 
     </LinearLayout>
 
