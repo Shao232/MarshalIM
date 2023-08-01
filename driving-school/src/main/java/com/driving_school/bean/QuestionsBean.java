@@ -43,9 +43,20 @@ public class QuestionsBean implements Serializable{
     //是否完成回答
     private boolean completeAnswer;
 
+    //收藏题目
+    private boolean hasCollection = false;
+
     @Override
     public String toString() {
         return new Gson().toJson(this);
+    }
+
+    public void setHasCollection(boolean hasCollection) {
+        this.hasCollection = hasCollection;
+    }
+
+    public boolean isHasCollection() {
+        return hasCollection;
     }
 
     public void setStartAnim(boolean startAnim) {

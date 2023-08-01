@@ -11,8 +11,11 @@ const val drivingSubjectFourKey: String = "driving_subject_four"
 const val drivingCollectQuestionListKey: String = "driving_collect_question_list"
 //错题集
 const val drivingErrorQuestionListKey: String = "driving_error_question_list"
-//回答正确集
+//回答正确集合
 const val drivingCorrectQuestionListKey: String = "driving_correct_question_list"
+//科目4错题集+回答正确集合
+const val drivingErrorQuestionFourListKey:String = "driving_error_question_four_list"
+const val drivingCorrectQuestionFourListKey:String = "driving_correct_question_four_list"
 //练习时当前页面位置
 const val drivingTestCurrentPositionKey: String = "driving_test_current_position"
 
@@ -65,4 +68,18 @@ fun getDrivingTestCurrentPosition(): Int {
     return StoreManager.getData(drivingTestCurrentPositionKey, 0)
 }
 
+fun putDrivingErrorQuestionFourList(value:String){
+    StoreManager.putData(drivingErrorQuestionFourListKey,value)
+}
 
+fun getDrivingErrorQuestionFourList():String{
+    return StoreManager.getData(drivingErrorQuestionFourListKey,"")?:""
+}
+
+fun putDrivingCorrectQuestionFourList(value:String){
+    StoreManager.putData(drivingCorrectQuestionFourListKey,value)
+}
+
+fun getDrivingCorrectQuestionFourList():String{
+    return StoreManager.getData(drivingCorrectQuestionFourListKey,"")?:""
+}
