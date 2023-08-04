@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:layout_width="@dimen/dp_25"
@@ -42,11 +42,12 @@
                 android:layout_marginTop="@dimen/dp_5"
                 android:src="@drawable/subject_time_img" />
 
-            <Chronometer
-                android:id="@+id/chronometer"
+            <TextView
+                android:id="@+id/tv_timer_exam"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                tools:text="60:00"
                 android:textColor="@color/color_545454"
                 android:textSize="@dimen/text_size_16" />
 

@@ -9,7 +9,7 @@ import com.driving_school.R
 import com.driving_school.bean.QuestionsBean
 import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 
-class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>() {
+class PracticeAdapter(private  val testOrExam:Int = 0) : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>() {
 
     var nextQuestionSelectClick:PracticeItemSelectClick? = null
 
@@ -45,7 +45,7 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
         if(bean.isCompleteAnswer) {
             //如果完成当前题目，题库未完成，更改当前题目的样式
             setAnswerUpdate(position, bean.selectItemAnswer.toInt(), holder, bean)
-            setSelectItemClickEnable(holder,false)
+            setSelectItemClickEnable(holder, testOrExam != 0)
 
         }else {
             //如果没有回答，显示初始化ui
@@ -55,22 +55,22 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
 
         holder.lvnSelectItem1?.setOnClickListener {
             itemAnswerClick(bean, position,1, holder)
-            setSelectItemClickEnable(holder,false)
+            setSelectItemClickEnable(holder,testOrExam != 0)
         }
 
         holder.lvnSelectItem2?.setOnClickListener {
             itemAnswerClick(bean, position,2, holder)
-            setSelectItemClickEnable(holder,false)
+            setSelectItemClickEnable(holder,testOrExam != 0)
         }
 
         holder.lvnSelectItem3?.setOnClickListener {
             itemAnswerClick(bean, position,3, holder)
-            setSelectItemClickEnable(holder,false)
+            setSelectItemClickEnable(holder,testOrExam != 0)
         }
 
         holder.lvnSelectItem4?.setOnClickListener {
             itemAnswerClick(bean, position,4, holder)
-            setSelectItemClickEnable(holder,false)
+            setSelectItemClickEnable(holder,testOrExam != 0)
         }
 
         holder.btnBeforeQuestion?.setOnClickListener {
@@ -121,6 +121,14 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
         } else {
             holder.lvnSelectItem4?.visibility = View.GONE
         }
+
+        if(bean.item1.isEmpty() && bean.item2.isEmpty() && bean.item3.isEmpty() && bean.item4.isEmpty()){
+            holder.tvRadioItem1?.text ="正确"
+            holder.tvRadioItem2?.text ="错误"
+            holder.lvnSelectItem1?.visibility = View.VISIBLE
+            holder.lvnSelectItem2?.visibility = View.VISIBLE
+        }
+
     }
 
     /**
@@ -133,7 +141,7 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
         holder: PracticeViewHolder
     ) {
         //当当前题目回答后，设置已经回答过，过滤掉点击事件
-        if (bean.isCompleteAnswer) {
+        if (bean.isCompleteAnswer&& testOrExam == 0) {
             return
         }
 
@@ -165,7 +173,7 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
      */
     private fun setAnswerUpdate(position: Int,itemType: Int, holder: PracticeViewHolder, bean: QuestionsBean) {
         val answerParams = itemType.toString()
-        holder.tvRadioExplain?.visibility = View.VISIBLE
+        holder.tvRadioExplain?.visibility = if(testOrExam == 0) View.VISIBLE else View.GONE
         holder.btnNextQuestion?.visibility = View.VISIBLE
         holder.btnBeforeQuestion?.visibility = if(position == 0) View.GONE else View.VISIBLE
         holder.btnNextQuestion?.postDelayed({
@@ -189,51 +197,71 @@ class PracticeAdapter : BaseRecyclerAdapter<PracticeViewHolder, QuestionsBean>()
 
         when (itemType) {
             1 -> {
-                if (bean.answer == answerParams) {
-                    holder.ivRadioItem1?.setImageResource(R.drawable.radio_yes_img)
-                } else {
-                    holder.ivRadioItem1?.setImageResource(R.drawable.radio_fail_img)
+                //区分练习和考试
+                if(testOrExam ==0) {
+                    if (bean.answer == answerParams) {
+                        holder.ivRadioItem1?.setImageResource(R.drawable.radio_yes_img)
+                    } else {
+                        holder.ivRadioItem1?.setImageResource(R.drawable.radio_fail_img)
+                    }
+                }else {
+                    holder.ivRadioItem1?.setImageResource(R.drawable.radio_bg_img)
                 }
+
                 holder.ivRadioItem2?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem3?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem4?.setImageResource(R.drawable.radio_defult_img)
             }
 
             2 -> {
-                if (bean.answer == answerParams) {
-                    holder.ivRadioItem2?.setImageResource(R.drawable.radio_yes_img)
-                } else {
-                    holder.ivRadioItem2?.setImageResource(R.drawable.radio_fail_img)
+                if(testOrExam ==0) {
+                    if (bean.answer == answerParams) {
+                        holder.ivRadioItem2?.setImageResource(R.drawable.radio_yes_img)
+                    } else {
+                        holder.ivRadioItem2?.setImageResource(R.drawable.radio_fail_img)
+                    }
+                }else {
+                    holder.ivRadioItem2?.setImageResource(R.drawable.radio_bg_img)
                 }
+
                 holder.ivRadioItem1?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem3?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem4?.setImageResource(R.drawable.radio_defult_img)
             }
 
             3 -> {
-                if (bean.answer == answerParams) {
-                    holder.ivRadioItem3?.setImageResource(R.drawable.radio_yes_img)
-                } else {
-                    holder.ivRadioItem3?.setImageResource(R.drawable.radio_fail_img)
+
+                if(testOrExam ==0) {
+                    if (bean.answer == answerParams) {
+                        holder.ivRadioItem3?.setImageResource(R.drawable.radio_yes_img)
+                    } else {
+                        holder.ivRadioItem3?.setImageResource(R.drawable.radio_fail_img)
+                    }
+                }else {
+                    holder.ivRadioItem3?.setImageResource(R.drawable.radio_bg_img)
                 }
+
                 holder.ivRadioItem1?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem2?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem4?.setImageResource(R.drawable.radio_defult_img)
             }
 
             4 -> {
-                if (bean.answer == answerParams) {
-                    holder.ivRadioItem4?.setImageResource(R.drawable.radio_yes_img)
-                } else {
-                    holder.ivRadioItem4?.setImageResource(R.drawable.radio_fail_img)
+                if(testOrExam ==0) {
+                    if (bean.answer == answerParams) {
+                        holder.ivRadioItem4?.setImageResource(R.drawable.radio_yes_img)
+                    } else {
+                        holder.ivRadioItem4?.setImageResource(R.drawable.radio_fail_img)
+                    }
+                }else {
+                    holder.ivRadioItem4?.setImageResource(R.drawable.radio_bg_img)
                 }
+
                 holder.ivRadioItem1?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem2?.setImageResource(R.drawable.radio_defult_img)
                 holder.ivRadioItem3?.setImageResource(R.drawable.radio_defult_img)
             }
         }
-
-
     }
 
     interface PracticeItemSelectClick {

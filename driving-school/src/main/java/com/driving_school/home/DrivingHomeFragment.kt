@@ -35,12 +35,16 @@ class DrivingHomeFragment : BaseViewFragment<FragSubjectOneBinding>() {
 
         binding?.lvnCollection?.setOnClickListener {
             //收藏
-
+            ARouter.getInstance().build(DrivingRouterPath.Driving_Collection_Error_Path)
+                .withInt("collectionOrError", 2)
+                .navigation()
         }
 
         binding?.lvnError?.setOnClickListener {
             //错题
-
+            ARouter.getInstance().build(DrivingRouterPath.Driving_Collection_Error_Path)
+                .withInt("collectionOrError", 3)
+                .navigation()
         }
 
     }

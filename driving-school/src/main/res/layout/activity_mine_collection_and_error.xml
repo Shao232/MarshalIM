@@ -8,5 +8,32 @@
 
     <include layout="@layout/include_toolbar"/>
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_subject"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_f4f4f4"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
+        app:layout_constraintBottom_toTopOf="@+id/driving_button_my_collection"/>
+
+    <com.driving_school.widgets.DrivingButtonWidget
+        android:id="@+id/driving_button_my_collection"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white_mode"/>
+
+    <TextView
+        android:id="@+id/tv_collection_error_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white_mode"
+        android:textColor="@color/text_color_black"
+        android:textSize="18dp"
+        android:text="暂无题目"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

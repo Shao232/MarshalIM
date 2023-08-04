@@ -1,9 +1,12 @@
 package com.driving_school.home
 
 import android.annotation.SuppressLint
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
+import com.driving_school.DrivingRouterPath
 import com.driving_school.DrivingRouterPath.Driving_Practice_PATH
 import com.driving_school.R
 import com.driving_school.bean.DrivingBean
@@ -37,8 +40,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
     /**
      * 0 练习
      * 1 考试
-     * 2 收藏集
-     * 3 错题集
      */
     private var receiveType = 0
     private var adapter: PracticeAdapter? = null
@@ -72,6 +73,26 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
     //科四错题集
     private var errorQuestionFourList: ArrayList<QuestionsBean>? = ArrayList()
 
+
+    //59分59秒 * 60秒 * 1000毫秒 + 59秒 = 3150秒，每隔1秒执行一次onTick方法
+    private var timer = object : CountDownTimer(60 * 60 * 1000, 1000L) {
+        override fun onTick(millisUntilFinished: Long) {
+            val minutes = (millisUntilFinished / (60 * 1000)) % 60
+            val seconds = (millisUntilFinished % (60 * 1000)) / 1000
+            Log.d("TAG", "minutes = $minutes")
+            Log.d("TAG", "seconds = $seconds")
+            binding?.tvTimerExam?.text = "${minutes}:${seconds}"
+
+        }
+
+        override fun onFinish() {
+            Log.d("TAG", "考试结束 <<<<<<<<")
+            //完成时 处理逻辑
+            examResult()
+        }
+
+    }
+
     override fun hasToolbar(): Boolean {
         return true
     }
@@ -96,7 +117,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
 
         if (hasIncludeToolbar) {
-
             val title = when (receiveType) {
                 0 -> "顺序练习"
                 1 -> "模拟考试"
@@ -120,8 +140,14 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             binding?.tvQuestionCount?.visibility = View.VISIBLE
         }
 
-        adapter = PracticeAdapter()
+        if (receiveType == 1) {
+            //模拟考试
+            timer.start()
+        }
+
+        adapter = PracticeAdapter(receiveType)
         setSubjectData()
+
         binding?.viewpagerSubject?.adapter = adapter
         //禁止用户滑动
         binding?.viewpagerSubject?.isUserInputEnabled = false
@@ -152,14 +178,10 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
                     binding?.viewpagerSubject?.currentItem =
                         if (beforePosition <= 0) 0 else beforePosition
                 } else {
-                    if (position >= count) {
-                        //如果是最后一题，完成全部练习
-                    } else {
-                        val nextPosition = position + 1
-                        //点击切换到下一题
-                        binding?.viewpagerSubject?.currentItem =
-                            if (nextPosition >= count) position else nextPosition
-                    }
+                    val nextPosition = position + 1
+                    binding?.viewpagerSubject?.currentItem =
+                        if (nextPosition > count) position else nextPosition
+
                 }
                 val currentItemPosition = binding?.viewpagerSubject?.currentItem ?: 0
                 putDrivingTestCurrentPosition(currentItemPosition)
@@ -170,9 +192,19 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
                 } else {
                     binding?.ivCollectionSubject?.setImageResource(R.drawable.my_collections_img)
                 }
+
+                //完成时 处理逻辑
+                if (position == count) {
+                    if (receiveType == 1) {
+                        timer.cancel()
+                        examResult()
+                    }
+                }
             }
 
             override fun onItemTwoSelectQuestion(position: Int, correct: Boolean) {
+                //如果是考试，不需要保存
+                if (receiveType == 1) return
                 val bean = adapter?.itemList?.get(position)
                 //当每一题判断是否回答正确
                 if (subjectType == 1) {
@@ -198,17 +230,46 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             val position = binding?.viewpagerSubject?.currentItem ?: 0
             val bean = adapter?.itemList?.get(position)
             bean?.isHasCollection = bean?.isHasCollection == false
+            Log.d("TAG", "处理前 collect:${collectQuestionList?.size}")
             if (bean?.isHasCollection == true) {
                 binding?.ivCollectionSubject?.setImageResource(R.drawable.collectionsed_img)
                 addCollectionList(bean)
             } else {
                 binding?.ivCollectionSubject?.setImageResource(R.drawable.my_collections_img)
-                collectQuestionList?.remove(bean)
+                val collectionListFindBean = collectQuestionList?.find {
+                    it.question == bean?.question && it.explains == bean?.explains
+                }
+                collectQuestionList?.remove(collectionListFindBean)
                 val collectionJson = GsonUtils.objToJson(collectQuestionList ?: "")
-                Log.d("TAG", "collect:${collectionJson}")
                 putDrivingCollectQuestion(collectionJson)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
+    }
+
+    private fun examResult() {
+        var examCount = 0
+        adapter?.itemList?.forEach {
+            var success = false
+            if (it.selectItemAnswer.isNotEmpty()) {
+               success = it.answer == it.selectItemAnswer
+            }
+            if(success){
+                examCount++
+            }
+        }
+        adapter?.itemList?.forEach {
+            Log.d("TAG","结果数据源:${it}")
+        }
+        Log.d("TAG","测试结果: ${examCount}")
+        ARouter.getInstance().build(DrivingRouterPath.Driving_Exam_Result_Path)
+            .withInt("resultScore", examCount)
+            .navigation()
+        finish()
     }
 
     @SuppressLint("SetTextI18n")
@@ -220,7 +281,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
     /**
      * 添加收藏集
      */
-    private fun addCollectionList(bean: QuestionsBean?){
+    private fun addCollectionList(bean: QuestionsBean?) {
         var addSuccess = false
         if (collectQuestionList.isNullOrEmpty() && bean?.isHasCollection == true) {
             addSuccess = true
@@ -418,6 +479,19 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             questionList?.let { adapter?.itemList?.addAll(it) }
         }
 
+        //如果是考试，随机取100道题目，后续操作取消
+        if (receiveType == 1) {
+            val randomList = adapter?.itemList?.shuffled()?.take(100)
+            adapter?.itemList?.clear()
+            randomList?.let { adapter?.itemList?.addAll(it) }
+            //统计总数
+            answerCount = adapter?.itemCount ?: 0
+            return
+        } else {
+            //统计总数
+            answerCount = adapter?.itemCount ?: 0
+        }
+
         //初始化数据 + 正确和错误回答的融合
         if (subjectType == 1) {
             if (correctQuestionList?.isNotEmpty() == true) {
@@ -466,7 +540,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
 
         //如果收藏不为空，设置题目为收藏状态
-        if(collectQuestionList?.isNotEmpty() == true) {
+        if (collectQuestionList?.isNotEmpty() == true) {
             adapter?.itemList?.forEach { allData ->
                 val hasCollectionItem = collectQuestionList?.find { it.id == allData.id }
                 if (hasCollectionItem != null) {
@@ -476,8 +550,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
 
         Log.d("TAG", "全数据源 all->${adapter?.itemList?.toString()}")
-        answerCount = adapter?.itemCount ?: 0
     }
-
 
 }
