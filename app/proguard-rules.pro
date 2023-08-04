@@ -27,7 +27,6 @@
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
 
-
 -ignorewarnings
 -keepattributes *Annotation*
 -keepattributes Exceptions
@@ -45,3 +44,19 @@
 }
 -keep class com.hyphenate.** {*;}
 -dontwarn  com.hyphenate.**
+
+-keep class retrofit2.** { *; }
+-keepattributes *Annotation*
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+
+-keep public class com.alibaba.android.arouter.routes.**{*;}
+-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
+
+# 如果使用了 byType 的方式获取 Service，需添加下面规则，保护接口
+-keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
+
+# 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
+-keep class * implements com.alibaba.android.arouter.facade.template.IProvider

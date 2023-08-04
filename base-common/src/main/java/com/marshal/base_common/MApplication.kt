@@ -1,5 +1,6 @@
 package com.marshal.base_common
 
+import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDexApplication
 import cn.jiguang.api.utils.JCollectionAuth
 import cn.jpush.android.api.JPushInterface
@@ -11,7 +12,7 @@ import com.tencent.mmkv.MMKV
 class MApplication : MultiDexApplication() {
 
     //ARouter debug开关：true-open;false-close
-    private val isDebugARouter = true
+    private val isDebugARouter = BuildConfig.DEBUG
 
     companion object {
         private lateinit var mApplication: MApplication
@@ -48,7 +49,6 @@ class MApplication : MultiDexApplication() {
         options.appKey = "150136#marshalim"
         options.autoLogin = true
         EMClient.getInstance().init(this, options)
-
 
     }
 

@@ -25,7 +25,6 @@ class DrivingResultActivity : BaseViewActivity<ActivityExplainBinding>() {
             setTitle("模拟结果")
         }
 
-
         binding?.tvExamExplainScore?.text = "${examScore}分"
         when(examScore) {
             90->{

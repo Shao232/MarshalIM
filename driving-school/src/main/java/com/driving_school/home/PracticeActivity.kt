@@ -79,10 +79,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         override fun onTick(millisUntilFinished: Long) {
             val minutes = (millisUntilFinished / (60 * 1000)) % 60
             val seconds = (millisUntilFinished % (60 * 1000)) / 1000
-            Log.d("TAG", "minutes = $minutes")
-            Log.d("TAG", "seconds = $seconds")
             binding?.tvTimerExam?.text = "${minutes}:${seconds}"
-
         }
 
         override fun onFinish() {
@@ -158,13 +155,15 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             if (testCurrentPosition != 0) {
                 binding?.viewpagerSubject?.currentItem = testCurrentPosition
             }
-            val bean = adapter?.itemList?.get(testCurrentPosition)
-            if (bean?.isHasCollection == true) {
-                binding?.ivCollectionSubject?.setImageResource(R.drawable.collectionsed_img)
-            } else {
-                binding?.ivCollectionSubject?.setImageResource(R.drawable.my_collections_img)
+            if(adapter?.itemList?.isNotEmpty() == true) {
+                val bean = adapter?.itemList?.get(testCurrentPosition)
+                if (bean?.isHasCollection == true) {
+                    binding?.ivCollectionSubject?.setImageResource(R.drawable.collectionsed_img)
+                } else {
+                    binding?.ivCollectionSubject?.setImageResource(R.drawable.my_collections_img)
+                }
+                setShowQuestionCount(testCurrentPosition)
             }
-            setShowQuestionCount(testCurrentPosition)
         } else {
             binding?.viewpagerSubject?.currentItem = 0
             binding?.tvQuestionCount?.text = "$examCurrentPosition/$answerCount"
@@ -261,9 +260,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             if(success){
                 examCount++
             }
-        }
-        adapter?.itemList?.forEach {
-            Log.d("TAG","结果数据源:${it}")
         }
         Log.d("TAG","测试结果: ${examCount}")
         ARouter.getInstance().build(DrivingRouterPath.Driving_Exam_Result_Path)
