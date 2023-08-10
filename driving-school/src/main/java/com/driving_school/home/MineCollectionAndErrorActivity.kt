@@ -9,6 +9,7 @@ import com.driving_school.databinding.ActivityMineCollectionAndErrorBinding
 import com.driving_school.getDrivingCollectQuestion
 import com.driving_school.getDrivingErrorQuestion
 import com.driving_school.getDrivingErrorQuestionFourList
+import com.driving_school.getDrivingErrorQuestionThreeList
 import com.driving_school.home.adapter.PracticeAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -33,6 +34,8 @@ class MineCollectionAndErrorActivity : BaseViewActivity<ActivityMineCollectionAn
 
     //科四错题集
     private var errorQuestionFourList: ArrayList<QuestionsBean>? = ArrayList()
+    //c3错题集
+    private var errorQuestionThreeList: ArrayList<QuestionsBean>? = ArrayList()
 
     private var currentPosition = 0
 
@@ -128,8 +131,10 @@ class MineCollectionAndErrorActivity : BaseViewActivity<ActivityMineCollectionAn
     private fun loadErrorQuestionData() {
         parseErrorQuestionList()
         parseErrorQuestionListFour()
+        parseErrorQuestionListThree()
         errorQuestionList?.let { adapter?.itemList?.addAll(it) }
         errorQuestionFourList?.let { adapter?.itemList?.addAll(it) }
+        errorQuestionThreeList?.let { adapter?.itemList?.addAll(it) }
     }
 
     private fun parseCollectQuestionList() {
@@ -163,6 +168,17 @@ class MineCollectionAndErrorActivity : BaseViewActivity<ActivityMineCollectionAn
         val dataList: ArrayList<QuestionsBean> = gson.fromJson(errorQuestionJson, type)
         errorQuestionFourList?.clear()
         errorQuestionFourList?.addAll(dataList)
+    }
+
+    private fun parseErrorQuestionListThree() {
+        val errorQuestionJson = getDrivingErrorQuestionThreeList()
+        if (errorQuestionJson.isEmpty()) return
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<QuestionsBean>>() {}.type
+        val dataList: ArrayList<QuestionsBean> = gson.fromJson(errorQuestionJson, type)
+        errorQuestionThreeList?.clear()
+        errorQuestionThreeList?.addAll(dataList)
+
     }
 
 }
