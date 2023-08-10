@@ -27,13 +27,16 @@ class PracticeAdapter(private  val testOrExam:Int = 0) : BaseRecyclerAdapter<Pra
 
         setAnswerStatus(bean, holder)
 
-        if(bean.url.isNotEmpty()){
+        if(bean.url!= null && bean.url.isNotEmpty()){
             holder.ivShowImg?.visibility = View.VISIBLE
             Glide.with(mContext ?: return).load(bean.url).into(holder.ivShowImg ?: return)
         }else {
             holder.ivShowImg?.visibility = View.GONE
         }
-        holder.tvRadioExplain?.text = Html.fromHtml(bean.explains)
+        if(bean.explains !=null && bean.explains.isNotEmpty()){
+            holder.tvRadioExplain?.text = Html.fromHtml(bean.explains)
+        }
+
         val count = if(itemCount == 0) 0 else  itemCount - 1
         if(position == count) {
             holder.btnNextQuestion?.text = "完成"
@@ -173,7 +176,11 @@ class PracticeAdapter(private  val testOrExam:Int = 0) : BaseRecyclerAdapter<Pra
      */
     private fun setAnswerUpdate(position: Int,itemType: Int, holder: PracticeViewHolder, bean: QuestionsBean) {
         val answerParams = itemType.toString()
-        holder.tvRadioExplain?.visibility = if(testOrExam == 0) View.VISIBLE else View.GONE
+        holder.tvRadioExplain?.visibility = if(testOrExam == 0) {
+            if (bean.explains?.isNotEmpty() == true) View.VISIBLE else View.GONE
+        } else {
+            View.GONE
+        }
         holder.btnNextQuestion?.visibility = View.VISIBLE
         holder.btnBeforeQuestion?.visibility = if(position == 0) View.GONE else View.VISIBLE
         holder.btnNextQuestion?.postDelayed({

@@ -46,6 +46,22 @@
             />
 
         <TextView
+            android:id="@+id/tv_subject_three_select_item"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            tools:text="c3 练习题(2000道)"
+            android:textColor="@color/text_color_black"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:background="@drawable/selector_default_click"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/gray_dddddd"
+            />
+
+        <TextView
             android:id="@+id/tv_subject_four_select_item"
             android:layout_width="match_parent"
             android:layout_height="50dp"

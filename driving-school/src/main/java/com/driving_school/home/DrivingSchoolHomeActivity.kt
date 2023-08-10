@@ -28,6 +28,16 @@ class DrivingSchoolHomeActivity : BaseViewActivity<ActivityDrivingSchoolHomeBind
         }
         viewModel.initSubjectData()
 
+        viewModel.drivingSubjectAllSuccess.observe(this){
+            if (!it){
+                showProgressDialog()
+            }else {
+                viewModel.iniSubjectOneData()
+                viewModel.initSubjectFourData()
+                viewModel.initSubjectThreeData()
+            }
+        }
+
         homeFragment = DrivingHomeFragment()
         if(homeFragment?.isAdded == false) {
             supportFragmentManager.beginTransaction().add(R.id.fln_driving_main,homeFragment?:return,

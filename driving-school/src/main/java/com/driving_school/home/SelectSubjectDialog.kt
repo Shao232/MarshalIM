@@ -1,5 +1,6 @@
 package com.driving_school.home
 
+import android.annotation.SuppressLint
 import android.view.View
 import com.driving_school.R
 import com.driving_school.databinding.DialogSelectSubjectBinding
@@ -11,6 +12,7 @@ class SelectSubjectDialog : BaseBottomSheetDialogFragment<DialogSelectSubjectBin
 
     private var drivingSubjectOneSize:Int = 0
     private var drivingSubjectFourSize:Int = 0
+    private var drivingSubjectThreeSize:Int = 0
 
     fun setOnSelectSubjectItemClick(selectSubjectClick:SelectSubjectClick){
         this.onSelectSubjectClick = selectSubjectClick
@@ -23,10 +25,12 @@ class SelectSubjectDialog : BaseBottomSheetDialogFragment<DialogSelectSubjectBin
         return binding?.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
 
         binding?.tvSubjectOneSelectItem?.text = "c1 科目1(${drivingSubjectOneSize}道)"
         binding?.tvSubjectFourSelectItem?.text = "c1 科目4(${drivingSubjectFourSize}道)"
+        binding?.tvSubjectThreeSelectItem?.text = "c3 练习题(${drivingSubjectThreeSize}道)"
 
         binding?.tvSubjectOneSelectItem?.setOnClickListener {
             onSelectSubjectClick?.onSelectSubjectClick(1)
@@ -37,6 +41,12 @@ class SelectSubjectDialog : BaseBottomSheetDialogFragment<DialogSelectSubjectBin
             onSelectSubjectClick?.onSelectSubjectClick(4)
             dismiss()
         }
+
+        binding?.tvSubjectThreeSelectItem?.setOnClickListener {
+            onSelectSubjectClick?.onSelectSubjectClick(3)
+            dismiss()
+        }
+
     }
 
     fun setSubjectOneContent(size:Int):SelectSubjectDialog{
@@ -46,6 +56,11 @@ class SelectSubjectDialog : BaseBottomSheetDialogFragment<DialogSelectSubjectBin
 
     fun setSubjectFourContent(size:Int):SelectSubjectDialog{
         this.drivingSubjectFourSize = size
+        return this
+    }
+
+    fun setSubjectThreeContent(size:Int):SelectSubjectDialog{
+        this.drivingSubjectThreeSize = size
         return this
     }
 

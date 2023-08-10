@@ -33,7 +33,6 @@ class MainService : Service() {
         if (getAppProgramSingleData()?.isEmpty() == true) {
             Thread(OpenReadQuestionProgramDesignWork()).start()
         }
-
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

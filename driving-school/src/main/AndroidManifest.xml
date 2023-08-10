@@ -9,7 +9,7 @@
             android:name=".home.MineCollectionAndErrorActivity"
             android:exported="false" />
         <activity
-            android:name=".home.PracticeActivity"
+            android:name=".home.practice.PracticeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

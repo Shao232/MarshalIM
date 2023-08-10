@@ -20,8 +20,6 @@ class DrivingHomeFragment : BaseViewFragment<FragSubjectOneBinding>() {
     }
 
     override fun initView() {
-        viewModel.iniSubjectOneData()
-        viewModel.initSubjectFourData()
 
         binding?.lvnExam?.setOnClickListener {
             //模拟考试
@@ -53,6 +51,7 @@ class DrivingHomeFragment : BaseViewFragment<FragSubjectOneBinding>() {
         val dialog = SelectSubjectDialog()
             .setSubjectOneContent(viewModel.drivingSubjectOneSize)
             .setSubjectFourContent(viewModel.drivingSubjectFourSize)
+            .setSubjectThreeContent(viewModel.drivingSubjectThreeSize)
         dialog.setOnSelectSubjectItemClick(object : SelectSubjectDialog.SelectSubjectClick {
             override fun onSelectSubjectClick(subjectType: Int) {
                 when (subjectType) {
@@ -62,8 +61,13 @@ class DrivingHomeFragment : BaseViewFragment<FragSubjectOneBinding>() {
                             .withInt("subjectType",subjectType)
                             .navigation()
                     }
-
                     4 -> {
+                        ARouter.getInstance().build(DrivingRouterPath.Driving_Practice_PATH)
+                            .withInt("testOrExam", textOrExam)
+                            .withInt("subjectType",subjectType)
+                            .navigation()
+                    }
+                    3 -> {
                         ARouter.getInstance().build(DrivingRouterPath.Driving_Practice_PATH)
                             .withInt("testOrExam", textOrExam)
                             .withInt("subjectType",subjectType)

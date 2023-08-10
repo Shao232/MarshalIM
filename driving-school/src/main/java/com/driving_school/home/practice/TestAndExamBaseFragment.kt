@@ -1,81 +1,78 @@
-package com.driving_school.home
+package com.driving_school.home.practice
 
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.driving_school.DrivingRouterPath
-import com.driving_school.DrivingRouterPath.Driving_Practice_PATH
 import com.driving_school.R
-import com.driving_school.bean.DrivingBean
 import com.driving_school.bean.QuestionsBean
-import com.driving_school.databinding.ActivityPracticeBinding
+import com.driving_school.databinding.FragPracticeTestExamBinding
 import com.driving_school.getDrivingCollectQuestion
 import com.driving_school.getDrivingCorrectQuestion
 import com.driving_school.getDrivingCorrectQuestionFourList
+import com.driving_school.getDrivingCorrectQuestionThreeList
 import com.driving_school.getDrivingErrorQuestion
 import com.driving_school.getDrivingErrorQuestionFourList
-import com.driving_school.getDrivingSubjectFour
-import com.driving_school.getDrivingSubjectOne
-import com.driving_school.getDrivingTestCurrentPosition
+import com.driving_school.getDrivingErrorQuestionThreeList
 import com.driving_school.home.adapter.PracticeAdapter
 import com.driving_school.putDrivingCollectQuestion
 import com.driving_school.putDrivingCorrectQuestion
+import com.driving_school.putDrivingCorrectQuestionFourList
+import com.driving_school.putDrivingCorrectQuestionThreeList
 import com.driving_school.putDrivingErrorQuestion
 import com.driving_school.putDrivingErrorQuestionFourList
-import com.driving_school.putDrivingTestCurrentPosition
+import com.driving_school.putDrivingErrorQuestionThreeList
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.marshal.base_common.baseview.BaseViewActivity
+import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.base_common.utils.GsonUtils
 
-/**
- * 顺序练习
- */
-@Route(path = Driving_Practice_PATH)
-class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
+abstract class TestAndExamBaseFragment: BaseViewFragment<FragPracticeTestExamBinding>() {
 
     /**
      * 0 练习
      * 1 考试
      */
-    private var receiveType = 0
-    private var adapter: PracticeAdapter? = null
+    var receiveType = 0
+    /**
+     * 1 科目1 4 科目4
+     */
+    var subjectType = 0
 
-    // 1 科目1 4 科目4
-    private var subjectType = 0
+    var adapter: PracticeAdapter? = null
 
     //answerCorrect 正确回答的数量 answerError 错误回答的数量
-    private var answerCorrect: Int = 0
-    private var answerError: Int = 0
+    var answerCorrect: Int = 0
+    var answerError: Int = 0
 
     //总题目数量
-    private var answerCount: Int = 0
+    var answerCount: Int = 0
 
     //当前练习时的位置
-    private var testCurrentPosition = 1
-    private var examCurrentPosition = 1
+    var testCurrentPosition = 0
+    var examCurrentPosition = 1
 
     //收藏集
-    private var collectQuestionList: ArrayList<QuestionsBean>? = ArrayList()
-
+    var collectQuestionList: ArrayList<QuestionsBean>? = ArrayList()
     //正确集
-    private var correctQuestionList: ArrayList<QuestionsBean>? = ArrayList()
-
+    var correctQuestionList: ArrayList<QuestionsBean>? = ArrayList()
     //科四正确集合
-    private var correctQuestionFourList: ArrayList<QuestionsBean>? = ArrayList()
-
-    //错题集
-    private var errorQuestionList: ArrayList<QuestionsBean>? = ArrayList()
-
+    var correctQuestionFourList: ArrayList<QuestionsBean>? = ArrayList()
+    //科目1错题集
+    var errorQuestionList: ArrayList<QuestionsBean>? = ArrayList()
     //科四错题集
-    private var errorQuestionFourList: ArrayList<QuestionsBean>? = ArrayList()
+    var errorQuestionFourList: ArrayList<QuestionsBean>? = ArrayList()
+    //c3 正确集
+    var correctQuestionThreeList:ArrayList<QuestionsBean>? = ArrayList()
+    //c3 错题集
+    var errorQuestionThreeList:ArrayList<QuestionsBean>? = ArrayList()
+
 
 
     //59分59秒 * 60秒 * 1000毫秒 + 59秒 = 3150秒，每隔1秒执行一次onTick方法
-    private var timer = object : CountDownTimer(60 * 60 * 1000, 1000L) {
+    var timer = object : CountDownTimer(60 * 60 * 1000, 1000L) {
         override fun onTick(millisUntilFinished: Long) {
             val minutes = (millisUntilFinished / (60 * 1000)) % 60
             val seconds = (millisUntilFinished % (60 * 1000)) / 1000
@@ -87,41 +84,17 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             //完成时 处理逻辑
             examResult()
         }
-
     }
 
-    override fun hasToolbar(): Boolean {
-        return true
-    }
+
+    override fun getResLayoutId(): Int? = R.layout.frag_practice_test_exam
 
     override fun getResLayoutBinding(): View? {
-        binding = ActivityPracticeBinding.inflate(layoutInflater)
+        binding = FragPracticeTestExamBinding.inflate(layoutInflater)
         return binding?.root
     }
 
-    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun initView() {
-        receiveType = intent.getIntExtra("testOrExam", 0)
-        subjectType = intent.getIntExtra("subjectType", 0)
-
-        if (receiveType == 0) {
-            testCurrentPosition = getDrivingTestCurrentPosition()
-            parseErrorQuestionList()
-            parseErrorQuestionListFour()
-            parseCorrectQuestionList()
-            parseCorrectQuestionListFour()
-            parseCollectQuestionList()
-        }
-
-        if (hasIncludeToolbar) {
-            val title = when (receiveType) {
-                0 -> "顺序练习"
-                1 -> "模拟考试"
-                else -> ""
-            }
-            setTitle(title)
-        }
-
         if (receiveType == 0) {
             //练习 倒计时隐藏
             binding?.lvnTimeSubject?.visibility = View.GONE
@@ -129,8 +102,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
             binding?.lvnTestCorrectSubject?.visibility = View.VISIBLE
             binding?.lvnTestErrorSubject?.visibility = View.VISIBLE
             binding?.tvQuestionCount?.visibility = View.VISIBLE
-            binding?.tvYesSubject?.text = "$answerCorrect"
-            binding?.tvNoSubject?.text = "$answerError"
 
         } else {
             binding?.lvnTimeSubject?.visibility = View.VISIBLE
@@ -143,31 +114,10 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
 
         adapter = PracticeAdapter(receiveType)
-        setSubjectData()
-
         binding?.viewpagerSubject?.adapter = adapter
         //禁止用户滑动
         binding?.viewpagerSubject?.isUserInputEnabled = false
         binding?.viewpagerSubject?.offscreenPageLimit = 5
-        //receiveType 0 练习时
-        if (receiveType == 0) {
-            //如果是练习 从缓存中获取用户当前做的题目位置
-            if (testCurrentPosition != 0) {
-                binding?.viewpagerSubject?.currentItem = testCurrentPosition
-            }
-            if(adapter?.itemList?.isNotEmpty() == true) {
-                val bean = adapter?.itemList?.get(testCurrentPosition)
-                if (bean?.isHasCollection == true) {
-                    binding?.ivCollectionSubject?.setImageResource(R.drawable.collectionsed_img)
-                } else {
-                    binding?.ivCollectionSubject?.setImageResource(R.drawable.my_collections_img)
-                }
-                setShowQuestionCount(testCurrentPosition)
-            }
-        } else {
-            binding?.viewpagerSubject?.currentItem = 0
-            binding?.tvQuestionCount?.text = "$examCurrentPosition/$answerCount"
-        }
 
         adapter?.setOnNextQuestionSelect(object : PracticeAdapter.PracticeItemSelectClick {
             override fun onItemOneSelectClick(position: Int, direction: Int) {
@@ -183,7 +133,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
 
                 }
                 val currentItemPosition = binding?.viewpagerSubject?.currentItem ?: 0
-                putDrivingTestCurrentPosition(currentItemPosition)
                 setShowQuestionCount(currentItemPosition)
                 val bean = adapter?.itemList?.get(currentItemPosition)
                 if (bean?.isHasCollection == true) {
@@ -197,6 +146,9 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
                     if (receiveType == 1) {
                         timer.cancel()
                         examResult()
+                    }else {
+                        //练习完成时 重新开始练习 将所有的数据已完成的状态改成未完成
+
                     }
                 }
             }
@@ -206,18 +158,22 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
                 if (receiveType == 1) return
                 val bean = adapter?.itemList?.get(position)
                 //当每一题判断是否回答正确
-                if (subjectType == 1) {
-                    if (correct) addCorrectQuestion(bean) else addErrorQuestion(bean)
-                } else {
-                    if (correct) addCorrectQuestionFour(bean) else addErrorQuestionFour(bean)
-                }
-
-                if (subjectType == 1) {
-                    answerCorrect = correctQuestionList?.size ?: 0
-                    answerError = errorQuestionList?.size ?: 0
-                } else {
-                    answerCorrect = errorQuestionFourList?.size ?: 0
-                    answerError = errorQuestionFourList?.size ?: 0
+                when(subjectType){
+                    1->{
+                        if (correct) addCorrectQuestion(bean) else addErrorQuestion(bean)
+                        answerCorrect = correctQuestionList?.size ?: 0
+                        answerError = errorQuestionList?.size ?: 0
+                    }
+                    4->{
+                        if (correct) addCorrectQuestionFour(bean) else addErrorQuestionFour(bean)
+                        answerCorrect = correctQuestionFourList?.size ?: 0
+                        answerError = errorQuestionFourList?.size ?: 0
+                    }
+                    3->{
+                        if (correct) addCorrectQuestionThree(bean) else addErrorQuestionThree(bean)
+                        answerCorrect = correctQuestionThreeList?.size ?: 0
+                        answerError = errorQuestionThreeList?.size ?: 0
+                    }
                 }
 
                 binding?.tvYesSubject?.text = "$answerCorrect"
@@ -226,6 +182,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         })
 
         binding?.lvnCollectionSubject?.setOnClickListener {
+            //点击收藏时
             val position = binding?.viewpagerSubject?.currentItem ?: 0
             val bean = adapter?.itemList?.get(position)
             bean?.isHasCollection = bean?.isHasCollection == false
@@ -243,6 +200,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
                 putDrivingCollectQuestion(collectionJson)
             }
         }
+
     }
 
     override fun onDestroy() {
@@ -250,12 +208,18 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         timer.cancel()
     }
 
+    @SuppressLint("SetTextI18n")
+    protected fun setShowQuestionCount(currentItemPosition: Int) {
+        val showPosition = currentItemPosition + 1
+        binding?.tvQuestionCount?.text = "$showPosition/$answerCount"
+    }
+
     private fun examResult() {
         var examCount = 0
         adapter?.itemList?.forEach {
             var success = false
             if (it.selectItemAnswer.isNotEmpty()) {
-               success = it.answer == it.selectItemAnswer
+                success = it.answer == it.selectItemAnswer
             }
             if(success){
                 examCount++
@@ -265,19 +229,14 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         ARouter.getInstance().build(DrivingRouterPath.Driving_Exam_Result_Path)
             .withInt("resultScore", examCount)
             .navigation()
-        finish()
+        (mContext as? PracticeActivity)?.finish()
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setShowQuestionCount(currentItemPosition: Int) {
-        val showPosition = currentItemPosition + 1
-        binding?.tvQuestionCount?.text = "$showPosition/$answerCount"
-    }
 
     /**
      * 添加收藏集
      */
-    private fun addCollectionList(bean: QuestionsBean?) {
+    protected fun addCollectionList(bean: QuestionsBean?) {
         var addSuccess = false
         if (collectQuestionList.isNullOrEmpty() && bean?.isHasCollection == true) {
             addSuccess = true
@@ -302,7 +261,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
     /**
      * 添加科目1的正确题目
      */
-    private fun addCorrectQuestion(bean: QuestionsBean?) {
+    protected fun addCorrectQuestion(bean: QuestionsBean?) {
         var addSuccess = false
         if (correctQuestionList.isNullOrEmpty()) {
             addSuccess = true
@@ -324,7 +283,10 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
     }
 
-    private fun addCorrectQuestionFour(bean: QuestionsBean?) {
+    /**
+     * 添加科四的正确题目
+     */
+    protected fun addCorrectQuestionFour(bean: QuestionsBean?) {
         var addSuccess = false
         if (correctQuestionFourList.isNullOrEmpty()) {
             addSuccess = true
@@ -341,7 +303,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         if (addSuccess) {
             if (correctQuestionFourList?.isNotEmpty() == true) {
                 val correctJson = GsonUtils.objToJson(correctQuestionFourList ?: "")
-                putDrivingCorrectQuestion(correctJson)
+                putDrivingCorrectQuestionFourList(correctJson)
             }
         }
     }
@@ -351,7 +313,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
      * 添加错题到错题集
      * 判断是否有重复
      */
-    private fun addErrorQuestion(bean: QuestionsBean?) {
+    protected fun addErrorQuestion(bean: QuestionsBean?) {
         var addSuccess = false
         if (errorQuestionList.isNullOrEmpty()) {
             addSuccess = true
@@ -373,7 +335,7 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
     }
 
-    private fun addErrorQuestionFour(bean: QuestionsBean?) {
+    protected fun addErrorQuestionFour(bean: QuestionsBean?) {
         var addSuccess = false
         if (errorQuestionFourList.isNullOrEmpty()) {
             addSuccess = true
@@ -395,10 +357,55 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         }
     }
 
+    protected fun addCorrectQuestionThree(bean: QuestionsBean?) {
+        var addSuccess = false
+        if (correctQuestionThreeList.isNullOrEmpty()) {
+            addSuccess = true
+            bean?.let { correctQuestionThreeList?.add(it) }
+        } else {
+            val hasErrorBean =
+                correctQuestionThreeList?.find { it.question == bean?.question && it.explains == bean?.explains }
+            if (hasErrorBean == null) {
+                addSuccess = true
+                bean?.let { correctQuestionThreeList?.add(it) }
+            }
+        }
+
+        if (addSuccess) {
+            if (correctQuestionThreeList?.isNotEmpty() == true) {
+                val correctJson = GsonUtils.objToJson(correctQuestionThreeList ?: "")
+                putDrivingCorrectQuestionThreeList(correctJson)
+            }
+        }
+    }
+
+    protected fun addErrorQuestionThree(bean: QuestionsBean?) {
+        var addSuccess = false
+        if (errorQuestionThreeList.isNullOrEmpty()) {
+            addSuccess = true
+            bean?.let { errorQuestionThreeList?.add(it) }
+        } else {
+            val hasErrorBean =
+                errorQuestionThreeList?.find { it.question == bean?.question && it.explains == bean?.explains }
+            if (hasErrorBean == null) {
+                addSuccess = true
+                bean?.let { errorQuestionThreeList?.add(it) }
+            }
+        }
+
+        if (addSuccess) {
+            if (errorQuestionThreeList?.isNotEmpty() == true) {
+                val errorJson = GsonUtils.objToJson(errorQuestionThreeList ?: "")
+                putDrivingErrorQuestionThreeList(errorJson)
+            }
+        }
+    }
+
+
     /**
      * 解析正确题的集合
      */
-    private fun parseCorrectQuestionList() {
+    protected fun parseCorrectQuestionList() {
         val correctJson = getDrivingCorrectQuestion()
         if (correctJson.isEmpty()) return
         val gson = Gson()
@@ -407,9 +414,10 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         correctQuestionList?.clear()
         correctQuestionList?.addAll(dataList)
         answerCorrect = correctQuestionList?.size ?: 0
+        binding?.tvYesSubject?.text = "$answerCorrect"
     }
 
-    private fun parseCorrectQuestionListFour() {
+    protected fun parseCorrectQuestionListFour() {
         val correctJson = getDrivingCorrectQuestionFourList()
         if (correctJson.isEmpty()) return
         val gson = Gson()
@@ -418,12 +426,13 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         correctQuestionFourList?.clear()
         correctQuestionFourList?.addAll(dataList)
         answerCorrect = correctQuestionFourList?.size ?: 0
+        binding?.tvYesSubject?.text = "$answerCorrect"
     }
 
     /**
      * 解析错题集
      */
-    private fun parseErrorQuestionList() {
+    protected fun parseErrorQuestionList() {
         val errorQuestionJson = getDrivingErrorQuestion()
         if (errorQuestionJson.isEmpty()) return
         val gson = Gson()
@@ -432,9 +441,10 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         errorQuestionList?.clear()
         errorQuestionList?.addAll(dataList)
         answerError = errorQuestionList?.size ?: 0
+        binding?.tvNoSubject?.text = "$answerError"
     }
 
-    private fun parseErrorQuestionListFour() {
+    protected fun parseErrorQuestionListFour() {
         val errorQuestionJson = getDrivingErrorQuestionFourList()
         if (errorQuestionJson.isEmpty()) return
         val gson = Gson()
@@ -443,12 +453,37 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         errorQuestionFourList?.clear()
         errorQuestionFourList?.addAll(dataList)
         answerError = errorQuestionFourList?.size ?: 0
+        binding?.tvNoSubject?.text = "$answerError"
+    }
+
+    protected fun parseCorrectQuestionListThree() {
+        val correctJson = getDrivingCorrectQuestionThreeList()
+        if (correctJson.isEmpty()) return
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<QuestionsBean>>() {}.type
+        val dataList: ArrayList<QuestionsBean> = gson.fromJson(correctJson, type)
+        correctQuestionThreeList?.clear()
+        correctQuestionThreeList?.addAll(dataList)
+        answerCorrect = correctQuestionThreeList?.size ?: 0
+        binding?.tvYesSubject?.text = "$answerCorrect"
+    }
+
+    protected fun parseErrorQuestionListThree() {
+        val errorQuestionJson = getDrivingErrorQuestionThreeList()
+        if (errorQuestionJson.isEmpty()) return
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<QuestionsBean>>() {}.type
+        val dataList: ArrayList<QuestionsBean> = gson.fromJson(errorQuestionJson, type)
+        errorQuestionThreeList?.clear()
+        errorQuestionThreeList?.addAll(dataList)
+        answerError = errorQuestionThreeList?.size ?: 0
+        binding?.tvNoSubject?.text = "$answerError"
     }
 
     /**
      * 解析收藏集
      */
-    private fun parseCollectQuestionList() {
+    protected fun parseCollectQuestionList() {
         val collectJson = getDrivingCollectQuestion()
         if (collectJson.isEmpty()) return
         val gson = Gson()
@@ -456,96 +491,6 @@ class PracticeActivity : BaseViewActivity<ActivityPracticeBinding>() {
         val dataList: ArrayList<QuestionsBean> = gson.fromJson(collectJson, type)
         collectQuestionList?.clear()
         collectQuestionList?.addAll(dataList)
-    }
-
-    private fun setSubjectData() {
-        if (subjectType == 1) {
-            val subjectOneJson = getDrivingSubjectOne()
-            val gson = Gson()
-            val data = gson.fromJson(subjectOneJson, DrivingBean::class.java)
-            val questionList = data.result
-            adapter?.itemList?.clear()
-            questionList?.let { adapter?.itemList?.addAll(it) }
-        } else {
-            val subjectOneJson = getDrivingSubjectFour()
-            val gson = Gson()
-            val data = gson.fromJson(subjectOneJson, DrivingBean::class.java)
-            val questionList = data.result
-            adapter?.itemList?.clear()
-            questionList?.let { adapter?.itemList?.addAll(it) }
-        }
-
-        //如果是考试，随机取100道题目，后续操作取消
-        if (receiveType == 1) {
-            val randomList = adapter?.itemList?.shuffled()?.take(100)
-            adapter?.itemList?.clear()
-            randomList?.let { adapter?.itemList?.addAll(it) }
-            //统计总数
-            answerCount = adapter?.itemCount ?: 0
-            return
-        } else {
-            //统计总数
-            answerCount = adapter?.itemCount ?: 0
-        }
-
-        //初始化数据 + 正确和错误回答的融合
-        if (subjectType == 1) {
-            if (correctQuestionList?.isNotEmpty() == true) {
-                adapter?.itemList?.forEach { allData ->
-                    val correctHasBean =
-                        correctQuestionList?.find { it.question == allData.question && it.explains == allData.explains }
-                    if (correctHasBean != null) {
-                        allData.isCompleteAnswer = correctHasBean.isCompleteAnswer
-                        allData.selectItemAnswer = correctHasBean.selectItemAnswer
-                    }
-                }
-            }
-
-            if (errorQuestionList?.isNotEmpty() == true) {
-                adapter?.itemList?.forEach { allData ->
-                    val errorHasBean =
-                        errorQuestionList?.find { it.question == allData.question && it.explains == allData.explains }
-                    if (errorHasBean != null) {
-                        allData.isCompleteAnswer = errorHasBean.isCompleteAnswer
-                        allData.selectItemAnswer = errorHasBean.selectItemAnswer
-                    }
-                }
-            }
-        } else {
-            if (correctQuestionFourList?.isNotEmpty() == true) {
-                adapter?.itemList?.forEach { allData ->
-                    val correctHasBean =
-                        correctQuestionFourList?.find { it.question == allData.question && it.explains == allData.explains }
-                    if (correctHasBean != null) {
-                        allData.isCompleteAnswer = correctHasBean.isCompleteAnswer
-                        allData.selectItemAnswer = correctHasBean.selectItemAnswer
-                    }
-                }
-            }
-
-            if (errorQuestionFourList?.isNotEmpty() == true) {
-                adapter?.itemList?.forEach { allData ->
-                    val errorHasBean =
-                        errorQuestionFourList?.find { it.question == allData.question && it.explains == allData.explains }
-                    if (errorHasBean != null) {
-                        allData.isCompleteAnswer = errorHasBean.isCompleteAnswer
-                        allData.selectItemAnswer = errorHasBean.selectItemAnswer
-                    }
-                }
-            }
-        }
-
-        //如果收藏不为空，设置题目为收藏状态
-        if (collectQuestionList?.isNotEmpty() == true) {
-            adapter?.itemList?.forEach { allData ->
-                val hasCollectionItem = collectQuestionList?.find { it.id == allData.id }
-                if (hasCollectionItem != null) {
-                    allData.isHasCollection = hasCollectionItem.isHasCollection
-                }
-            }
-        }
-
-        Log.d("TAG", "全数据源 all->${adapter?.itemList?.toString()}")
     }
 
 }

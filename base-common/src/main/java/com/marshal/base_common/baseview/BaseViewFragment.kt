@@ -111,4 +111,10 @@ abstract class BaseViewFragment<T: ViewBinding>:Fragment() {
         return account?.isNotEmpty() == true && pwd?.isNotEmpty() == true
     }
 
+    fun showProgressDialog(){
+        showToast("加载中,请稍等")
+    }
+
+
+
 }

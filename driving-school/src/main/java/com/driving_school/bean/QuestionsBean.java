@@ -24,15 +24,15 @@ import java.io.Serializable;
  */
 
 public class QuestionsBean implements Serializable{
-    private String id;
-    private String question;
-    private String answer;//答案
-    private String item1;//答案 1
-    private String item2;//答案 2
-    private String item3;//答案 3
-    private String item4;//答案 4
-    private String explains;//题目
-    private String url;
+    private String id= null;
+    private String question= null;
+    private String answer= null;//答案
+    private String item1= null;//答案 1
+    private String item2= null;//答案 2
+    private String item3= null;//答案 3
+    private String item4= null;//答案 4
+    private String explains = null;//题目
+    private String url = null;
 
     //开始动画
     private boolean isStartAnim;
