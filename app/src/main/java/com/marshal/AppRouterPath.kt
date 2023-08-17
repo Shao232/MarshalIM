@@ -28,5 +28,8 @@ object AppRouterPath {
     const val ABOUT_APP_PAGE = "/about/app"
     //金刚页
     const val APP_FUNCTION_PAGE = "${APP_PATH}/function"
+    //ai聊天页
+    const val APP_AI_CHAT = "/ai/xinghuo/chat"
+
 
 }

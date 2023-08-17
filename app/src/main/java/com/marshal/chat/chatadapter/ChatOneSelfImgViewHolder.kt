@@ -1,14 +1,11 @@
 package com.marshal.chat.chatadapter
 
-import android.content.Context
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.marshal.R
 import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
 
-class ChatOneSelfImgViewHolder(context: Context?, resId:Int,
-                               parent: ViewGroup
-): BaseRecyclerViewHolder(resId, parent) {
+class ChatOneSelfImgViewHolder(resId: Int, parent: ViewGroup): BaseRecyclerViewHolder(resId, parent) {
 
     var oneSelfProfile:ImageView? = null
     var oneSelfSendImg:ImageView? = null
@@ -17,9 +14,6 @@ class ChatOneSelfImgViewHolder(context: Context?, resId:Int,
         with(itemView) {
             oneSelfProfile = findViewById(R.id.one_self_profile)
             oneSelfSendImg = findViewById(R.id.sdvImg)
-
-
         }
     }
-
 }

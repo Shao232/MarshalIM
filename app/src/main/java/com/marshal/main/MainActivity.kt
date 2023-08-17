@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.EMClientUtils
-import com.marshal.HomeFragment
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.base_common.store.putAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserPwd
@@ -43,12 +42,12 @@ import java.util.concurrent.TimeUnit
 .init()
 
 全局广播 使用registerReceiver 进行注册
+registerReceiver(mainBroadcastReceiver, intentFilter)
 本地广播 使用localBroadcastReceiver 进行注册
 localBroadcastReceiver = LocalBroadcastManager.getInstance(this)
 mainBroadcastReceiver = MainBroadcastReceiver()
 val intentFilter = IntentFilter()
 intentFilter.addAction("com.marshal.login.user")
-registerReceiver(mainBroadcastReceiver, intentFilter)
 localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver?:return,intentFilter)
 
 
@@ -203,7 +202,8 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 12) {
             val dataResults = grantResults.filter { it == PackageManager.PERMISSION_GRANTED }
-            Log.d("TAG", "permissions: ${permissions.forEach { Log.d("TAG", it) }}")
+            permissions.forEach { Log.d("TAG", "permissions: $it")}
+
             if (dataResults.isNotEmpty()) {
                 Log.d("TAG", "权限请求成功!!!!!")
                 intentStartMainService = Intent(this, MainService::class.java)

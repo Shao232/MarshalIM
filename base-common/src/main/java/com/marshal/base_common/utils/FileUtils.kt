@@ -3,6 +3,7 @@ import android.util.Log
 import com.marshal.base_common.MApplication
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
@@ -67,6 +68,33 @@ object FileUtils {
         return file.absolutePath
     }
 
+    /**
+     * 获取星火文件夹 如果没有则创建
+     */
+    fun getXingHuoDirs():String{
+        val temp = "${app_cacheDir_path}xingHuo/"
+        val file = File(temp)
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+        return file.absolutePath
+    }
+
+    fun getXingHuoLogFile():String{
+        val file = File(getXingHuoDirs() + "log.txt")
+
+        return try {
+            var createFileSuccess = false
+            if (!file.exists()) {
+                createFileSuccess = file.createNewFile()
+            }
+            if (createFileSuccess) file.absolutePath else ""
+        }catch (e: IOException){
+            e.printStackTrace()
+            ""
+        }
+    }
+
     fun createRecordFile(): String {
         val recordPath = getRecordFilePath()
         return recordPath + "/${getRecordTime()}.m4a"
@@ -93,5 +121,7 @@ object FileUtils {
             }
         }
     }
+
+
 
 }

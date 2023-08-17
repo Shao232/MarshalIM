@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.marshal.R
 import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 import com.marshal.base_common.baseadapter.BaseRecyclerViewHolder
+import com.marshal.base_common.baseadapter.EmptyViewHolder
 import com.marshal.pojo.ChatUser
 
 class ChatAdapter : BaseRecyclerAdapter<BaseRecyclerViewHolder, ChatUser>() {
@@ -38,25 +39,24 @@ class ChatAdapter : BaseRecyclerAdapter<BaseRecyclerViewHolder, ChatUser>() {
     }
 
     override fun onViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder {
-        //自己 文字消息
-        val oneSelfTextHolder =
-            ChatOneSelfTextViewHolder(mContext, R.layout.im_chat_recycler_send_text_item, parent)
-        //自己 图片消息
-        val oneSelfImgHolder =
-            ChatOneSelfImgViewHolder(mContext,R.layout.im_chat_recycler_send_img_item,parent)
-        //对方 文字消息
-        val oppoSideTextHolder =
-            ChatOppoSideTextViewHolder(mContext,R.layout.im_chat_recycler_receive_text_item,parent)
-        //对方 图片数据
-        val oppoSideImgHolder =
-            ChatOppoSideImgViewHolder(mContext,R.layout.im_chat_recycler_receive_img_item,parent)
-
         return when(viewType) {
-            SHOW_ONE_SELF_TEXT -> oneSelfTextHolder
-            SHOW_ONE_SELF_IMG -> oneSelfImgHolder
-            SHOW_OPPO_SIDE_TEXT -> oppoSideTextHolder
-            SHOW_OPPO_SIDE_IMG -> oppoSideImgHolder
-            else -> oneSelfTextHolder
+            SHOW_ONE_SELF_TEXT -> {
+                //自己 文字消息
+                ChatOneSelfTextViewHolder(R.layout.im_chat_recycler_send_text_item, parent)
+            }
+            SHOW_ONE_SELF_IMG -> {
+                //自己 图片消息
+                ChatOneSelfImgViewHolder(R.layout.im_chat_recycler_send_img_item, parent)
+            }
+            SHOW_OPPO_SIDE_TEXT -> {
+                //对方 文字消息
+                ChatOppoSideTextViewHolder(R.layout.im_chat_recycler_receive_text_item, parent)
+            }
+            SHOW_OPPO_SIDE_IMG -> {
+                //对方 图片数据
+                ChatOppoSideImgViewHolder(R.layout.im_chat_recycler_receive_img_item, parent)
+            }
+            else -> EmptyViewHolder(parent = parent)
         }
     }
 
@@ -66,7 +66,7 @@ class ChatAdapter : BaseRecyclerAdapter<BaseRecyclerViewHolder, ChatUser>() {
         when (holder) {
             is ChatOneSelfTextViewHolder -> {
                 holder.oneSelfProfile?.setImageResource(bean.userProfileRes)
-                holder.tvTextContent?.text = bean.messageText
+                holder.tvTextContentSend?.text = bean.messageText
             }
 
             is ChatOneSelfImgViewHolder -> {
@@ -78,7 +78,7 @@ class ChatAdapter : BaseRecyclerAdapter<BaseRecyclerViewHolder, ChatUser>() {
 
             is ChatOppoSideTextViewHolder -> {
                 holder.oppoSideProfile?.setImageResource(bean.userProfileRes)
-                holder.tvTextContent?.text = bean.messageText
+                holder.tvTextContentRecycler?.text = bean.messageText
 
             }
 

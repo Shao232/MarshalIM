@@ -18,8 +18,6 @@ import com.marshal.pojo.FunctionBean
 @Route(path = APP_FUNCTION_PAGE)
 class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
 
-
-
     private var adapter: FunctionAdapter? = null
 
     override fun hasToolbar(): Boolean = true
@@ -55,5 +53,6 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
         adapter?.itemList?.add(FunctionBean("协程学习", AppRouterPath.HOME_COROUTINES))
         adapter?.itemList?.add(FunctionBean("驾校模拟", DrivingRouterPath.Driving_HOME_PATH))
         adapter?.itemList?.add(FunctionBean("保存数据", AppRouterPath.STORE_DATA_PAGE))
+        adapter?.itemList?.add(FunctionBean("讯飞星火", AppRouterPath.APP_AI_CHAT))
     }
 }

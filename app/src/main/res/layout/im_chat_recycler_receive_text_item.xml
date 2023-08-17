@@ -37,8 +37,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvTextContent"
+            <com.marshal.widget.EmojiTextView
+                android:id="@+id/tvTextContent_recycler"
                 style="@style/message_tv_style_subtitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -50,7 +50,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="16dp"
                 android:textColor="@color/black"
-                tools:text="12ggggg" />
+                tools:text="12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg12ggggg" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
