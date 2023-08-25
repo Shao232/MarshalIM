@@ -1,7 +1,9 @@
-
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 
 
 /**
@@ -28,13 +30,13 @@ object AppUtils {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 longCode = info.longVersionCode
-            }else {
+            } else {
                 code = info.versionCode
             }
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-        return if(longCode != -1L) longCode.toInt() else code
+        return if (longCode != -1L) longCode.toInt() else code
     }
 
     /**
@@ -56,5 +58,18 @@ object AppUtils {
         }
         return name
     }
+
+    fun copyContent(context: Context, content: String) {
+        try {
+            val clipboardManager: ClipboardManager =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("label", content)
+            clipboardManager.setPrimaryClip(clipData)
+        }catch (e:Exception) {
+            Log.e("TAG","没有剪切板系统服务")
+        }
+
+    }
+
 
 }

@@ -10,12 +10,12 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:dividerPadding="4dp"
+        android:orientation="vertical"
         app:divider="@color/gray_line"
-        app:showDividers="beginning|middle|end"
-        android:orientation="vertical">
+        app:dividerPadding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
+        app:showDividers="beginning|middle|end">
         <!--
               none表示不展示分割线；beginning表示只在第一个子View的前面展示分割线；
               end表示只在最后一个子View的后面展示分割线；
@@ -51,6 +51,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" />
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -59,6 +60,7 @@
             android:textColor="@color/text_color_black"
             android:textSize="18dp"
             android:visibility="gone" />
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

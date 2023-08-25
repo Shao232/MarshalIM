@@ -9,6 +9,7 @@ import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.databinding.FragmentHomeBinding
 
+
 class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
     override fun getResLayoutId(): Int = R.layout.fragment_home
 
@@ -39,5 +40,6 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(AppRouterPath.APP_FUNCTION_PAGE).navigation(mContext)
         }
+
     }
 }
