@@ -59,16 +59,20 @@ object AppUtils {
         return name
     }
 
-    fun copyContent(context: Context, content: String) {
+    /**
+     * 拷贝文字到剪切板
+     */
+    fun copyContent(context: Context, content: String):Boolean {
         try {
             val clipboardManager: ClipboardManager =
                 context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("label", content)
+            val clipData = ClipData.newPlainText("label", content) ?: return false
             clipboardManager.setPrimaryClip(clipData)
+            return true
         }catch (e:Exception) {
             Log.e("TAG","没有剪切板系统服务")
+            return false
         }
-
     }
 
 

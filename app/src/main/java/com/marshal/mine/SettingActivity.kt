@@ -29,14 +29,21 @@ class SettingActivity : BaseViewActivity<ActivitySettingBinding>() {
             setTitle("设置页")
         }
 
+
         val appName = resources?.getString(R.string.app_name)
         binding?.tvLogoName?.text = "$appName  ${AppUtils.getVersionName(context ?: return)}"
-
         //极光 注册的id ===13065ffa4f15988d721
         val registrationId = JPushInterface.getRegistrationID(this)
         Log.d("TAG", "极光 注册的id ===${registrationId}")
         binding?.tvShowRegistrationId?.text = registrationId
 
+//        binding?.tvShowUrl?.setOnClickListener {
+//            val content = binding?.tvShowUrl?.text?.toString()?.trim()
+//            val success = AppUtils.copyContent(this@SettingActivity,content?:"")
+//            if(success) {
+//                showToast("复制成功")
+//            }
+//        }
 
     }
 }
