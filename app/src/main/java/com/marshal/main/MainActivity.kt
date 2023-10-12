@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.tabs.TabLayoutMediator
-import com.marshal.EMClientUtils
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.base_common.store.putAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserPwd
@@ -69,7 +68,9 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
     private var permissionArray: Array<String> = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.READ_CALENDAR,
+        Manifest.permission.WRITE_CALENDAR
     )
 
     private var mainBroadcastReceiver: MainBroadcastReceiver? = null
@@ -83,7 +84,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
-        initAny()
+        initFragment()
 
         mainFragmentArray.add(homeFragment ?: return)
         mainFragmentArray.add(mineFragment ?: return)
@@ -129,17 +130,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     private fun initChat() {
-        if(EMClientUtils.checkEMLogin()) {
-            Log.d("TAG", "MainActivity 用户已经登录")
-            mainViewModel.setSendLoginSuccessInfo(true)
-        }else {
-            Log.d("TAG", "MainActivity 未登录状态")
-            putAppLoginUserAccount("")
-            putAppLoginUserPwd("")
-            mainViewModel.setSendLoginSuccessInfo(false)
-        }
 
-        EMClientUtils.setEMConnectionListener()
     }
 
     private fun initServer() {
@@ -186,7 +177,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
 
-    private fun initAny() {
+    private fun initFragment() {
         fm = supportFragmentManager
         ft = fm?.beginTransaction()
         homeFragment = HomeFragment()
@@ -222,7 +213,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             //刷新ui
             if (intent?.action == "com.marshal.login.user") {
                 Log.d("TAG", "登录成功发送的广播")
-                activity.mainViewModel.setSendLoginSuccessInfo(true)
+
             }
         }
     }

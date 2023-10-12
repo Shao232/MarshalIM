@@ -55,5 +55,6 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
         adapter?.itemList?.add(FunctionBean("保存数据", AppRouterPath.STORE_DATA_PAGE))
         adapter?.itemList?.add(FunctionBean("讯飞星火", AppRouterPath.APP_AI_CHAT))
         adapter?.itemList?.add(FunctionBean("自定义View", AppRouterPath.APP_CUSTOM_VIEW_PAGE))
+        adapter?.itemList?.add(FunctionBean("添加日程", AppRouterPath.APP_ADD_EVENT_CALENDAR))
     }
 }

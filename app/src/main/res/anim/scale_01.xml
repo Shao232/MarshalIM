@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scale xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="800"
     android:fromXScale="0.0"
     android:fromYScale="0.0"
-    android:toXScale="2"
-    android:toYScale="2"
-    android:duration="800"
     android:pivotX="50%"
-    android:pivotY="50%">
+    android:pivotY="50%"
+    android:toXScale="2"
+    android:toYScale="2">
+    <!--  缩放动画
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:toXScale="2"
+        android:toYScale="2"
+        从原来view的大小，放大2倍
+        duration 动画时长
+          -->
 
 </scale>

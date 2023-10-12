@@ -29,7 +29,19 @@ plugins {
 apply from: "dependextend.gradle"
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+    println("********** clean build **********")
+    println("delete project dir: " + rootProject.buildDir)
+    rootProject.buildDir.deleteDir()
+    def dir = new File(new File(".").getAbsolutePath())
+    println("root dir: " + dir.getAbsolutePath())
+    dir.eachDirRecurse {
+        dir2 ->
+            dir2.eachDirMatch(~/build/) {
+                directory ->
+                    println("delete child dir:" + directory)
+                    directory.deleteDir()
+            }
+    }
 }
 
 

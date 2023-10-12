@@ -5,8 +5,6 @@ import androidx.multidex.MultiDexApplication
 import cn.jiguang.api.utils.JCollectionAuth
 import cn.jpush.android.api.JPushInterface
 import com.alibaba.android.arouter.launcher.ARouter
-import com.hyphenate.chat.EMClient
-import com.hyphenate.chat.EMOptions
 import com.tencent.mmkv.MMKV
 
 class MApplication : MultiDexApplication() {
@@ -44,11 +42,7 @@ class MApplication : MultiDexApplication() {
         ARouter.init(this)
         MMKV.initialize(this)
 
-        val options =  EMOptions()
-        //环信的appkey
-        options.appKey = "150136#marshalim"
-        options.autoLogin = true
-        EMClient.getInstance().init(this, options)
+
 
     }
 

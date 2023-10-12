@@ -1,13 +1,8 @@
 package com.marshal.login
 
-import android.content.Intent
-import android.util.Log
 import android.view.View
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.hyphenate.EMCallBack
 import com.marshal.AppRouterPath.APP_LOGIN_PAGE
-import com.marshal.EMClientUtils
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.base_common.store.putAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserPwd
@@ -58,22 +53,9 @@ class LoginActivity : BaseViewActivity<ActivityLoginBinding>() {
     }
 
     private fun login(loginAccount: String, loginPassword: String) {
-        EMClientUtils.setEMLogin(loginAccount, loginPassword, object : EMCallBack {
-            override fun onSuccess() {
-                Log.d("TAG", "登录成功")
-                showToast("登录成功")
-                //登录信息保存本地
-                putAppLoginUserAccount(loginAccount)
-                putAppLoginUserPwd(loginPassword)
+        putAppLoginUserAccount(loginAccount)
+        putAppLoginUserPwd(loginPassword)
 
-                val intent = Intent("com.marshal.login.user")
-                LocalBroadcastManager.getInstance(this@LoginActivity).sendBroadcast(intent)
-                finish()
-            }
-
-            override fun onError(code: Int, error: String?) {
-                Log.e("TAG", "msg:${error},errorCode:${code}")
-            }
-        })
+        finish()
     }
 }

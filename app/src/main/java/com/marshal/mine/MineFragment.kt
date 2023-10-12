@@ -5,9 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.alibaba.android.arouter.launcher.ARouter
-import com.hyphenate.EMCallBack
 import com.marshal.AppRouterPath
-import com.marshal.EMClientUtils
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.base_common.store.getAppAppLoginUserAccount
@@ -29,9 +27,7 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
 
     override fun initView() {
 
-        viewModel.sendLoginInfo.observe(this) {
-            binding?.tvNickNameMine?.text = getAppAppLoginUserAccount()
-        }
+        binding?.tvNickNameMine?.text = getAppAppLoginUserAccount()
 
         binding?.ivSettingMine?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
@@ -44,20 +40,9 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
         }
 
         binding?.btnToLogout?.setOnClickListener {
-            EMClientUtils.setEMLogout(object : EMCallBack {
-                override fun onSuccess() {
-                    putAppLoginUserAccount("")
-                    putAppLoginUserPwd("")
-                    viewModel.setSendLoginSuccessInfo(false)
-
-                    showToast("退出登录成功")
-                }
-
-                override fun onError(code: Int, error: String?) {
-                    Log.e("TAG", "code:${code}, error:${error}")
-                }
-
-            })
+            putAppLoginUserAccount("")
+            putAppLoginUserPwd("")
+            showToast("退出登录成功")
         }
 
     }

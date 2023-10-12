@@ -4,9 +4,9 @@ import NoShakeBtnUtil
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.marshal.AppRouterPath
-import com.marshal.EMClientUtils
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewFragment
+import com.marshal.base_common.store.getAppAppLoginUserAccount
 import com.marshal.databinding.FragmentHomeBinding
 
 
@@ -28,7 +28,7 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
         binding?.tvChat?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
 
-            if(!EMClientUtils.checkEMLogin()) {
+            if(getAppAppLoginUserAccount().isNullOrEmpty()) {
                 ARouter.getInstance().build(AppRouterPath.APP_LOGIN_PAGE).navigation()
                 return@setOnClickListener
             }
