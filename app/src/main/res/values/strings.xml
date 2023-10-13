@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">MarshalIM</string>
 
+    <string-array name="chinese_week_string_array">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+
     <string name="im_hold_and_speak">按住 说话</string>
     <string name="im_picture">图片</string>
     <string name="im_chat_cancel_send">手指上滑，取消发送</string>

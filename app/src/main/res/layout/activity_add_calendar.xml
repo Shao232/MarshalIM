@@ -4,68 +4,259 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".calendar.AddCalendarActivity">
+    tools:context=".calendar.CalendarActivity">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_input_event_title"
+    <include layout="@layout/include_toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_tool"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginStart="20dp"
+        android:layout_height="52dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/edit_default_bg"
-        android:hint="请输入你的事件内容"
-        android:inputType="textMultiLine"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/dp_18"
+        android:background="#fff"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_input_event_content"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/edit_default_bg"
-        android:hint="请输入你的事件内容"
-        android:inputType="textMultiLine"
-        android:maxLines="1"
-        android:padding="10dp"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/dp_18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_input_event_title"/>
+        <TextView
+            android:id="@+id/tv_month_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:textColor="#000000"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry"
+            tools:text="10月13日" />
 
-    <TextView
-        android:id="@+id/tv_select_date"
+        <TextView
+            android:id="@+id/tv_show_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/tv_month_day"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            tools:ignore="RtlSymmetry"
+            tools:text="2019年" />
+
+        <ImageView
+            android:id="@+id/iv_show_popup_window"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_func" />
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lvn_week_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="请选择合适的时间"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/dp_18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_input_event_content" />
+        android:layout_marginTop="2dp"
+        android:background="#fff"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/rl_tool">
 
-    <Button
-        android:id="@+id/btn_set_calendar"
+        <!--     <TextView-->
+        <!--         android:id="@+id/tv_show_month_view"-->
+        <!--         android:layout_width="0dp"-->
+        <!--         android:layout_height="match_parent"-->
+        <!--         android:layout_weight="1"-->
+        <!--         android:gravity="center"-->
+        <!--         android:text="月"-->
+        <!--         android:textSize="18dp"-->
+        <!--         android:textStyle="bold"-->
+        <!--         android:textColor="@color/text_color_black"/>-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv_show_week_view"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="周"-->
+        <!--            android:textSize="18dp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textColor="@color/text_color_black"/>-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv_show_day_view"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="日"-->
+        <!--            android:textSize="18dp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textColor="@color/text_color_black"/>-->
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fff">
+
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:id="@+id/tab_month"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="月" />-->
+
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:id="@+id/tab_week"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="周" />-->
+
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:id="@+id/tab_day"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="日" />-->
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </LinearLayout>
+
+    <com.haibin.calendarview.CalendarLayout
+        android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="#fff"
+        android:orientation="vertical"
+        app:calendar_content_view_id="@+id/frame_layout"
+        app:calendar_show_mode="both_month_week_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_select_date"
-        android:textColor="@color/text_color_black"
-        android:textSize="@dimen/dp_18"
-        android:text="确认日程"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/lvn_week_bar">
+
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            app:calendar_height="46dp"
+            app:calendar_padding="10dp"
+            app:current_month_lunar_text_color="#CFCFCF"
+            app:current_month_text_color="#333333"
+            app:lunar_text_size="10sp"
+            app:max_year="2099"
+            app:max_year_day="31"
+            app:max_year_month="12"
+            app:min_year="2000"
+            app:min_year_day="1"
+            app:min_year_month="1"
+            app:month_view="com.marshal.calendar.CustomMonthView"
+            app:other_month_lunar_text_color="#e1e1e1"
+            app:other_month_text_color="#e1e1e1"
+            app:scheme_text="假"
+            app:scheme_text_color="#333"
+            app:scheme_theme_color="#333"
+            app:selected_text_color="#fff"
+            app:selected_theme_color="#333"
+            app:week_background="#fff"
+            app:week_text_color="#111"
+            app:week_view="com.marshal.calendar.CustomWeekView"
+            app:year_view_day_text_color="#333333"
+            app:year_view_day_text_size="9sp"
+            app:year_view_month_text_color="#ff0000"
+            app:year_view_month_text_size="20sp"
+            app:year_view_scheme_color="#f17706" />
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white_mode">
+
+                <LinearLayout
+                    android:id="@+id/linearView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/read" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <FrameLayout
+                android:id="@+id/fln_show_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:background="@color/im_chat_sender_bubble_color"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="周视图或者日视图"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="18dp" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </com.haibin.calendarview.CalendarLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

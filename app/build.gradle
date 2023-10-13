@@ -112,6 +112,7 @@ dependencies {
     implementation project(":base-common")
     implementation project(':zz-excel-creator')
     implementation project(':driving-school')
+    implementation project(":calendarview")
     kapt deps.support.arouter_compiler
 
 }

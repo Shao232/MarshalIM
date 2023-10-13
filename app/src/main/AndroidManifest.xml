@@ -59,13 +59,13 @@
         android:icon="@drawable/icon_marshal_logo"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@drawable/icon_marshal_logo_round"
+        android:roundIcon="@drawable/icon_array_bottom"
         android:supportsRtl="true"
         android:theme="@style/appStyle"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".calendar.AddCalendarActivity"
+            android:name=".calendar.CalendarActivity"
             android:exported="false" />
 
         <meta-data
@@ -100,13 +100,7 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service> <!-- 声明 SDK 所需的 service 的核心功能 -->
-        <service
-            android:name="com.hyphenate.chat.EMChatService"
-            android:exported="true" />
-        <service
-            android:name="com.hyphenate.chat.EMJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- Required since 3.0.7 -->
+
         <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
         <!-- 3.3.0开始所有事件将通过该类回调 -->
         <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
