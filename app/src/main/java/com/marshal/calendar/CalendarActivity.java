@@ -16,13 +16,10 @@ import com.marshal.base_common.baseview.BaseViewActivity;
 import com.marshal.databinding.ActivityAddCalendarBinding;
 
 @Route(path = AppRouterPath.APP_ADD_EVENT_CALENDAR)
-public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding>{
+public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding> {
 
 
 
-    private CalendarView.OnYearChangeListener onYearListener = year -> {
-        getBinding().tvMonthDay.setText(String.valueOf(year));
-    };
 
     private CalendarView.OnCalendarSelectListener onCalendarSelectListener = new CalendarView.OnCalendarSelectListener() {
         @Override
@@ -32,8 +29,7 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
 
         @Override
         public void onCalendarSelect(Calendar calendar, boolean isClick) {
-            getBinding().tvShowYear.setText(calendar.getYear()+"年");
-            getBinding().tvMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+            getBinding().tvYearMonth.setText(calendar.getYear() + "年" +calendar.getMonth() + "月");
         }
     };
 
@@ -54,28 +50,21 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     @Override
     public void initView() {
 
-        if(getHasIncludeToolbar()) {
+        if (getHasIncludeToolbar()) {
             setTitle("显示日历");
         }
 
-        getBinding().tvShowYear.setText(getBinding().calendarView.getCurYear()+"年");
-        getBinding().tvMonthDay.setText(getBinding().calendarView.getCurMonth() + "月" + getBinding().calendarView.getCurDay() + "日");
+        getBinding().tvYearMonth.setText(getBinding().calendarView.getCurYear() + "年" + getBinding().calendarView.getCurMonth() + "月");
 
-        getBinding().calendarView.setOnYearChangeListener(onYearListener);
         getBinding().calendarView.setOnCalendarSelectListener(onCalendarSelectListener);
 
-        getBinding().ivShowPopupWindow.setOnClickListener(new View.OnClickListener() {
+        getBinding().ivShowPopupWindow.setOnClickListener(v -> DateSelectUtils.INSTANCE.showDateSelectDialog(CalendarActivity.this, new OnDatePickedListener() {
             @Override
-            public void onClick(View v) {
-                DateSelectUtils.INSTANCE.showDateSelectDialog(CalendarActivity.this, new OnDatePickedListener() {
-                    @Override
-                    public void onDatePicked(int year, int month, int day) {
+            public void onDatePicked(int year, int month, int day) {
 
-                        getBinding().calendarView.scrollToCalendar(year,month,day,false,true);
-                    }
-                });
+                getBinding().calendarView.scrollToCalendar(year, month, day, false, true);
             }
-        });
+        }));
 
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(1).setText("月"));
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(2).setText("周"));
@@ -96,46 +85,22 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
-//        getBinding().tabMonth.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switchScheduleView(true);
-//            }
-//        });
-//
-//        getBinding().tabWeek.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switchScheduleView(false);
-//            }
-//        });
-//
-//        getBinding().tabDay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switchScheduleView(false);
-//            }
-//        });
-
     }
 
 
-    private void switchScheduleView(boolean showMonth){
-        if(showMonth) {
+    private void switchScheduleView(boolean showMonth) {
+        if (showMonth) {
             getBinding().nestedScrollView.setVisibility(View.VISIBLE);
             getBinding().flnShowSchedule.setVisibility(View.GONE);
             getBinding().calendarLayout.setModeBothMonthWeekView();
             getBinding().calendarLayout.expand(150);
-        }else {
+        } else {
             getBinding().nestedScrollView.setVisibility(View.GONE);
             getBinding().flnShowSchedule.setVisibility(View.VISIBLE);
             getBinding().calendarLayout.setModeOnlyMonthView();

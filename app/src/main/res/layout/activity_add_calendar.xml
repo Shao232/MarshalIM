@@ -18,7 +18,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_custom">
 
         <TextView
-            android:id="@+id/tv_month_day"
+            android:id="@+id/tv_year_month"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -27,20 +27,7 @@
             android:textSize="26sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry"
-            tools:text="10月13日" />
-
-        <TextView
-            android:id="@+id/tv_show_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/tv_month_day"
-            android:gravity="center_vertical"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            tools:ignore="RtlSymmetry"
-            tools:text="2019年" />
+            tools:text="2023年10月" />
 
         <ImageView
             android:id="@+id/iv_show_popup_window"
