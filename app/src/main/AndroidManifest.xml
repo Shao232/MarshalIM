@@ -65,6 +65,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".calendar.AddCalendarScheduleActivity"
+            android:exported="false" />
+        <activity
             android:name=".calendar.CalendarActivity"
             android:exported="false" />
 
@@ -100,7 +103,6 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service> <!-- 声明 SDK 所需的 service 的核心功能 -->
-
         <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
         <!-- 3.3.0开始所有事件将通过该类回调 -->
         <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
