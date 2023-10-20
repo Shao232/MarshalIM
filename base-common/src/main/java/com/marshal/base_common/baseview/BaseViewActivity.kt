@@ -15,7 +15,7 @@ import com.marshal.base_common.R
 import com.marshal.base_common.store.getAppAppLoginUserAccount
 import com.marshal.base_common.store.getAppAppLoginUserPwd
 
-abstract class BaseViewActivity<T : ViewBinding> : AppCompatActivity() {
+abstract class BaseViewActivity<T : ViewBinding>() : AppCompatActivity() {
 
     /**
      * 通过子类实现getActivityLayoutId方法创建对象

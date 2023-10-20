@@ -2,6 +2,9 @@ package com.marshal.calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +20,27 @@ import com.haibin.calendarview.CalendarView;
 import com.marshal.AppRouterPath;
 import com.marshal.R;
 import com.marshal.base_common.baseview.BaseViewActivity;
+import com.marshal.base_common.utils.GsonUtils;
 import com.marshal.databinding.ActivityAddCalendarBinding;
+import com.marshal.https.HttpRequestFactory;
+import com.marshal.https.ScheduleService;
+
+import java.util.HashMap;
+
+import cn.jpush.android.service.AlarmReceiver;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 @Route(path = AppRouterPath.APP_ADD_EVENT_CALENDAR)
 public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding> {
+
+    /**
+     * 当前日历对应的时间戳
+     */
+    private long curTimeMillis;
+
 
     private CalendarWeekFragment weekFragment = new CalendarWeekFragment();
 
@@ -31,6 +51,7 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
 
         @Override
         public void onCalendarSelect(Calendar calendar, boolean isClick) {
+            curTimeMillis = calendar.getTimeInMillis();
             getBinding().tvYearMonth.setText(calendar.getYear() + "年" +calendar.getMonth() + "月");
             Log.d("TAG","日期:"+calendar.getYear()+", "+calendar.getMonth()+", "+calendar.getDay());
         }
@@ -62,6 +83,8 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(3).setText("日"));
         getBinding().tvYearMonth.setText(getBinding().calendarView.getCurYear() + "年" + getBinding().calendarView.getCurMonth() + "月");
         getBinding().calendarView.setOnCalendarSelectListener(onCalendarSelectListener);
+
+        curTimeMillis = getBinding().calendarView.getSelectedCalendar().getTimeInMillis();
 
         //设置fragment
         FragmentTransaction fragmentManager =  getSupportFragmentManager().beginTransaction();
@@ -104,6 +127,46 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        getScheduleData();
+
+        addAlarmManager();
+    }
+
+    /**
+     * 添加闹钟功能
+     */
+    private void addAlarmManager(){
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(2023,9,19,10,4);
+        Intent intent = new Intent(this, CalendarAlarmReceive.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+        Log.d("TAG","设置闹钟时间戳 :"+calendar.getTimeInMillis());
+    }
+
+    private void getScheduleData() {
+        //请求每日日程信息
+        Retrofit retrofit = HttpRequestFactory.INSTANCE.getScheduleRequest();
+        if (retrofit != null) {
+            ScheduleService service = retrofit.create(ScheduleService.class);
+            Log.d("TAG","当前时间戳 :"+curTimeMillis);
+            service.getScheduleDailyList(String.valueOf(curTimeMillis)).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Log.d("TAG","response : "+response.body());
+
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.e("TAG", "错误 :"+t.getMessage());
+                }
+            });
+        }
+
+
     }
 
     @Override

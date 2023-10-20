@@ -179,7 +179,6 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-
         </FrameLayout>
 
     </com.haibin.calendarview.CalendarLayout>

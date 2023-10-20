@@ -1,8 +1,10 @@
 package com.marshal.calendar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -29,6 +31,7 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         return getBinding().getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void initView() {
         switchAndShowView();
@@ -41,6 +44,27 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         getBinding().customWeekView.setSelectAddScheduleClick((startTime, endTime, weekInfo) -> {
             Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
             getActivity().startActivityForResult(intent, 1414);
+        });
+
+        getBinding().scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (viewType) {
+                    case 2:
+                        break;
+                    case 3:
+                       return getBinding().customCalendarView.setInterceptClickMoveEvent();
+                }
+
+                return true;
+            }
+        });
+
+        getBinding().ivAddScheduleShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("点击加号");
+            }
         });
 
     }

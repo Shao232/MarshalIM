@@ -9,24 +9,28 @@ object GsonUtils {
 
     private val gson = Gson()
 
-    fun stringToJson(str:String):String{
-       return gson.toJson(str)
+    fun stringToJson(str: String): String {
+        return gson.toJson(str)
     }
 
-    fun objToJson(obj: Any):String{
+    fun objToJson(obj: Any): String {
         return gson.toJson(obj)
     }
 
-    fun streamToJson(input:InputStream):String{
+    fun streamToJson(input: InputStream): String {
         return gson.toJson(input)
     }
 
-    fun stringFromJson(str:String,typeOfT: Type):Type{
-        return gson.fromJson(str,typeOfT)
+    fun stringFromJson(str: String, typeOfT: Type): Type {
+        return gson.fromJson(str, typeOfT)
     }
 
-    fun readerFromJson(reader: Reader):String{
-        return gson.fromJson(reader,String::class.java)
+    fun <T> stringFromJson(str: String, classOfT: Class<T>): T {
+        return gson.fromJson(str, classOfT)
+    }
+
+    fun readerFromJson(reader: Reader): String {
+        return gson.fromJson(reader, String::class.java)
     }
 
 }
