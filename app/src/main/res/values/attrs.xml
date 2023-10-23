@@ -9,4 +9,11 @@
         <attr name="widget_frame_viaIcon" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="Widget_DragRectView">
+        <attr name="rect_left" format="integer" />
+        <attr name="rect_top" format="integer"/>
+        <attr name="rect_right" format="integer"/>
+        <attr name="rect_bottom" format="integer"/>
+    </declare-styleable>
+
 </resources>

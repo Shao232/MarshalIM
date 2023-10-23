@@ -36,9 +36,17 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
     public void initView() {
         switchAndShowView();
 
-        getBinding().customCalendarView.setSelectAddScheduleClick((int startTime, int endTime) -> {
-            Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
-            getActivity().startActivityForResult(intent, 1413);
+//        getBinding().customCalendarView.setSelectAddScheduleClick((int startTime, int endTime) -> {
+//            Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
+//            getActivity().startActivityForResult(intent, 1413);
+//        });
+
+        getBinding().customCalendarView.setSelectAddScheduleClick(new CustomDayCalendarView.SelectAddScheduleClick() {
+            @Override
+            public void onAddScheduleClickListener(int startTime, int endTime) {
+                Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
+                getActivity().startActivityForResult(intent, 1413);
+            }
         });
 
         getBinding().customWeekView.setSelectAddScheduleClick((startTime, endTime, weekInfo) -> {
@@ -49,16 +57,10 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         getBinding().scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (viewType) {
-                    case 2:
-                        break;
-                    case 3:
-                       return getBinding().customCalendarView.setInterceptClickMoveEvent();
-                }
-
-                return true;
+                return getBinding().customCalendarView.setIntercept();
             }
         });
+
 
         getBinding().ivAddScheduleShow.setOnClickListener(new View.OnClickListener() {
             @Override

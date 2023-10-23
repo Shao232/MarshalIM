@@ -1,9 +1,12 @@
 package com.marshal.calendar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class CustomDayCalendarView extends View {
+public class CustomDayCalendarView extends View implements View.OnClickListener {
 
     private final Context mContext;
     /**
@@ -46,21 +49,12 @@ public class CustomDayCalendarView extends View {
      * 创建日程的画笔
      */
     private Paint mSchedulePaint;
-    /**
-     * 拖拽圆点的画笔
-     */
-    private Paint mMoreCirclePaint;
 
     //画框的高度
     private int heightSpaceSize;
     //统计绘制框的总高度
     private int drawCountHeight;
 
-    //设置圆的点击范围 顶部圆的范围对象
-    private RectF clickCircleUpRect;
-    ////设置圆的点击范围 底部圆的范围对象
-    private RectF clickCircleDownRect;
-    //是否创建日程
     private boolean isCreatingSchedule = false;
     private final String[] timeArray = {
             "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
@@ -91,18 +85,39 @@ public class CustomDayCalendarView extends View {
     //是否添加时间对应坐标轴数据成功,完成一次添加后就过滤
     private boolean addScheduleDataSuccess = false;
 
-    private boolean moveClickAreaCircleUp = false;
+    private static final int TOP = 0x21;
+    private static final int BOTTOM = 0x23;
+    private static final int CENTER = 0x25;
+    private final int offset = 50;
 
-    private final boolean moveClickAreaClickDown = false;
+    private int dragDirection;
+    private int lastX;
+    private int lastY;
 
+    // view的宽、高初始化
+    private int rectTop = 0;
+    private int rectLeft = 0;
+    private int rectRight = 0;
+    private int rectBottom = 0;
+    // 线条的宽度
+    private final int mLineSize = 3;
+    // 图片大小
+    private final int mRectSize = 50;
+    //添加日程蓝色点击区域
+    private Paint mAddScheduleBlueAreaPaint;
+    private Rect mRect;
+    private Paint.Style mStyle;
+    // 拉伸的view
+    private Bitmap mBottomBmp;
+    private Rect mBottomRect;
+    private Bitmap mTopBmp;
+    private Rect mTopRect;
+
+    private boolean moveBlueArea = false;
 
     private SelectAddScheduleClick selectAddScheduleClick;
     private String title = "添加日程";
 
-
-    public boolean setInterceptClickMoveEvent() {
-        return moveClickAreaCircleUp || moveClickAreaClickDown;
-    }
 
     public CustomDayCalendarView(Context context) {
         this(context, null);
@@ -116,6 +131,10 @@ public class CustomDayCalendarView extends View {
         super(context, attrs, defStyleAttr);
         mContext = context;
         init();
+    }
+
+    public boolean setIntercept(){
+        return isCreatingSchedule && moveBlueArea;
     }
 
     public void setSelectAddScheduleClick(SelectAddScheduleClick onSelectAddScheduleClick) {
@@ -143,7 +162,7 @@ public class CustomDayCalendarView extends View {
 
         mSchedulePaint = new Paint();
         mSchedulePaint.setAntiAlias(false);
-        mSchedulePaint.setColor(Color.BLUE);
+        mSchedulePaint.setColor(Color.TRANSPARENT);
         mSchedulePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         mAddSchedulePaint = new Paint();
@@ -153,67 +172,38 @@ public class CustomDayCalendarView extends View {
         mAddSchedulePaint.setStrokeWidth(1f);
         mAddSchedulePaint.setTextSize(dip2px(mContext, 12f));
 
-        mMoreCirclePaint = new Paint();
-        mMoreCirclePaint.setAntiAlias(false);
-        mMoreCirclePaint.setColor(getResources().getColor(R.color.im_chat_sender_bubble_color));
-        mMoreCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mMoreCirclePaint.setStrokeWidth(10f);
+        mAddScheduleBlueAreaPaint = new Paint();
+        mStyle = Paint.Style.FILL_AND_STROKE;
+        mAddScheduleBlueAreaPaint.setColor(getResources().getColor(R.color.select_schedule_bg));
+        mAddScheduleBlueAreaPaint.setAntiAlias(true);
+        mAddScheduleBlueAreaPaint.setStyle(mStyle);
+        mAddScheduleBlueAreaPaint.setStrokeWidth((float) mLineSize);
 
+        mTopBmp = BitmapFactory.decodeResource(getResources(), R.drawable.stretch_bottom);
+        mBottomBmp = BitmapFactory.decodeResource(getResources(), R.drawable.stretch_bottom);
+        mBottomRect = new Rect();
+        mTopRect = new Rect();
+        mRect = new Rect();
+
+
+        setOnClickListener(this);
+        setSelected(true);
         heightSpaceSize = dip2px(mContext, 36f); // 每个单元格的大小，可以根据需要调整
 
     }
-
-    private int downClickY = 0;
-    private int moveClickY = 0;
-    private final int minDistance = 5;
-    private int distance = 0;
-    private final int offsetY = 30;
-
-    private CalendarHandler handler = new CalendarHandler();
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //传入true拦截父视图的触摸事件，让子视图（这个自定义自身）进行触摸滑动
         int clickY = (int) Math.abs(event.getY());
-        int clickX = (int) Math.abs(event.getX());
-        Log.d("TAG", "click x,Y :" + clickX + " , " + clickY);
+
+        int action = event.getAction();
+        handleDrag(event, action);
+        invalidate();
 
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                //当选择了添加日程后
-                if (isCreatingSchedule) {
-                    downClickY = clickY;
-
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                //当选择了添加日程后
-                moveClickAreaCircleUp = true;
-                if (isCreatingSchedule) {
-                    moveClickY = clickY;
-                    Log.d("TAG", "downClickY :" + downClickY);
-                    Log.d("TAG", "moveClickY :" + moveClickY);
-                    Log.d("TAG", "up :" + clickCircleUpRect.toString());
-                    if (clickY >= clickCircleUpRect.top && clickY <= clickCircleUpRect.bottom) {
-                        getParent().requestDisallowInterceptTouchEvent(true);
-                        distance = moveClickY - downClickY;
-                        if (Math.abs(distance) > minDistance) {
-                            handler.sendEmptyMessageDelayed(200, 400);
-                            Log.d("TAG", "distance :" + distance);
-                        }
-
-                        invalidate();
-                    } else {
-                        getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                }
-
-
-                break;
             case MotionEvent.ACTION_UP:
-
-
+                dragDirection = 0;
                 // 检查触摸事件的坐标是否在屏幕范围内
                 if (clickY < 0 || clickY > getHeight()) {
                     // 如果超出屏幕范围，可以选择忽略这个事件或者进行相应的处理
@@ -250,23 +240,52 @@ public class CustomDayCalendarView extends View {
                         //点击了范围内的某个区间
                         clickRt = itemF;
                         isCreatingSchedule = true;
-                        invalidate();
                         break;
                     }
                 }
-
-                moveClickAreaCircleUp = false;
-
+                if (isCreatingSchedule) {
+                    invalidate();
+                }
                 break;
             case MotionEvent.ACTION_CANCEL:
-                moveClickAreaCircleUp = false;
+                dragDirection = 0;
                 break;
         }
 
-
         return true;
+    }
+
+    private void handleDrag(MotionEvent event, int action) {
+        if (action == MotionEvent.ACTION_DOWN) {
+            setSelected(true);
+            lastX = (int) event.getRawX();
+            lastY = (int) event.getRawY();
+            dragDirection = getDirection((int) event.getX(), (int) event.getY());
+        }
+
+        if (action == MotionEvent.ACTION_MOVE) {
+            moveBlueArea = isCreatingSchedule;
+
+            int dx = ((int) event.getRawX()) - lastX;
+            int dy = ((int) event.getRawY()) - lastY;
+            switch (dragDirection) {
+                case BOTTOM:
+                    bottom(dy);
+                    break;
+                case CENTER:
+                    break;
+                case TOP:
+                    top(dy);
+                    break;
+            }
+            lastX = (int) event.getRawX();
+            lastY = (int) event.getRawY();
+        } else {
+            moveBlueArea = false;
+        }
 
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -291,11 +310,37 @@ public class CustomDayCalendarView extends View {
 
         //如果添加日程
         if (isCreatingSchedule) {
+            canvas.save();
+
+            Log.d("TAG", "drag onDraw left :" + clickRt.left);
+            Log.d("TAG", "drag onDraw  top :" + clickRt.top);
+            Log.d("TAG", "drag onDraw  right :" + clickRt.right);
+            Log.d("TAG", "drag onDraw  bottom :" + clickRt.bottom);
+            rectLeft = (int) clickRt.left;
+            rectTop = (int) clickRt.top;
+            rectRight = (int) clickRt.right;
+            rectBottom = (int) clickRt.bottom;
+
+            mRect.set(rectLeft, rectTop, rectRight, rectBottom);
+            canvas.drawRect(mRect, mAddScheduleBlueAreaPaint);
+
+            canvas.restore();
+            if (isSelected()) {
+                //取right - left 就是整个长度，然后取值长度的一半，从left起点加上一半
+                int left = mRect.left + ((mRect.right - mRect.left) / 2);
+
+                mTopRect.set(left - (mRectSize / 2), mRect.top - (mRectSize / 2), left + (mRectSize / 2), mRect.top + (mRectSize / 2));
+                canvas.drawBitmap(mTopBmp, null, mTopRect, this.mAddScheduleBlueAreaPaint);
+
+                mBottomRect.set(left - (mRectSize / 2), mRect.bottom - (mRectSize / 2), left + (mRectSize / 2), mRect.bottom + (mRectSize / 2));
+                canvas.drawBitmap(mBottomBmp, null, mBottomRect, this.mAddScheduleBlueAreaPaint);
+            }
+
             //绘制添加日程的区域和文字
-            drawCreateScheduleRect(canvas);
+//            drawCreateScheduleRect(canvas);
             //设置添加日程区域顶部的top圆点
-            drawMoreScheduleUpCircle(canvas);
-            drawMoreScheduleDownCircle(canvas);
+//            drawMoreScheduleUpCircle(canvas);
+//            drawMoreScheduleDownCircle(canvas);
         }
     }
 
@@ -336,94 +381,78 @@ public class CustomDayCalendarView extends View {
 
     }
 
+
     /**
-     * 绘制第一个添加日程的点击区域
+     * 通过坐标和移动距离，确定移动方向
      *
-     * @param canvas
+     * @param x
+     * @param y
+     * @return
      */
-    private void drawCreateScheduleRect(Canvas canvas) {
-        canvas.drawRect(clickRt, mSchedulePaint);
-        float drawY = clickRt.top + dip2px(mContext, 22f);
-        float drawX = clickRt.right / 2;
-        canvas.drawText(title, drawX, drawY, mAddSchedulePaint);
-        handler.setMoveUpOffset(clickRt.top);
+    private int getDirection(int x, int y) {
+        int topTop = mTopRect.top;
+        int topBottom = mTopRect.bottom;
+
+        int upTop = mBottomRect.top;
+        int upBottom = mBottomRect.bottom;
+
+        if (y > (topTop - offset) && y < (topBottom + offset)) {
+            return TOP;
+        }
+
+        if (y > (upTop - offset) && y < (upBottom + offset)) {
+            return BOTTOM;
+        }
+        return CENTER;
+    }
+
+
+    /**
+     * 设置滑动顶部位置，位置的数值
+     *
+     * @param dy
+     */
+    private void top(int dy) {
+        Log.d("TAG", "...top... dy :" + dy);
+        Log.d("TAG", "...v.top...  :" + getTop());
+        rectTop += dy;
+        if (rectTop < getTop()) {
+            rectTop = getTop();
+        } else if (rectTop > (rectBottom - offset)) {
+            rectTop = rectBottom - offset;
+        }
     }
 
     /**
-     * 绘制向上扩展日程拖拽圆点
+     * 设置滑动底部位置，位置的数值
      *
-     * @param canvas
+     * @param dy
      */
-    private void drawMoreScheduleUpCircle(Canvas canvas) {
-        float clickTop = clickRt.top;
-        float clickRight = clickRt.right;
-        float drawRadius = 15f;
-        float drawArea = drawRadius + 5f;
-        //如果top是0,就是顶部第一个，不在上添加圆点
-
-        float drawCircleX = clickRight / 2 + dip2px(mContext, 24f);
-        float drawCircleY = Math.abs(clickTop);
-        clickCircleUpRect = new RectF(clickRt.left, clickTop - drawArea, clickRt.right, clickTop + heightSpaceSize - drawArea);
-
-        canvas.drawCircle(drawCircleX, drawCircleY, drawRadius, mMoreCirclePaint);
+    private void bottom(int dy) {
+        Log.d("TAG", "...bottom... dy :" + dy);
+        rectBottom += dy;
+        if (rectBottom < (rectTop + offset)) {
+            rectBottom = rectTop + offset;
+        } else if (rectBottom > getHeight() - offset) {
+            rectBottom = getHeight() - offset;
+        }
     }
 
-    /**
-     * 绘制点击区域的底部拖拽
-     *
-     * @param canvas
-     */
-    private void drawMoreScheduleDownCircle(Canvas canvas) {
-        float clickRight = clickRt.right;
-        float clickBottom = clickRt.bottom;
-        float drawRadius = 15f;
-        float drawArea = drawRadius + 5f;
-        //如果bottom是最后一个的底部，就不显示
-
-        float drawCircleX = clickRight / 2 + dip2px(mContext, 24f);
-        float drawCircleY = Math.abs(clickBottom);
-        clickCircleDownRect = new RectF(clickRt.left, clickBottom - heightSpaceSize + drawArea, clickRt.right, clickBottom + drawArea);
-
-        canvas.drawCircle(drawCircleX, drawCircleY, drawRadius, mMoreCirclePaint);
-    }
 
     private int dip2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return ((int) (dpValue * scale + 0.5f));
     }
 
+    @Override
+    public void onClick(View v) {
+    }
+
+
     public interface SelectAddScheduleClick {
+        //第二次点击添加日程时跳转界面
         void onAddScheduleClickListener(int startTime, int endTime);
     }
 
-    protected class CalendarHandler extends Handler {
-
-        public CalendarHandler() {
-            super(Looper.getMainLooper());
-        }
-
-        private float moveUpOffset;
-
-        public void setMoveUpOffset(float moveUpOffset) {
-            this.moveUpOffset = moveUpOffset;
-        }
-
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 200) {
-                Log.d("TAG", "handler massage ");
-                Log.d("TAG", "handler moveClickAreaCircleUp :"+moveClickAreaCircleUp);
-                if (moveClickAreaCircleUp) {
-                    moveUpOffset -= offsetY;
-                    Log.d("TAG", "moveClickAreaCircleUp ：" + moveUpOffset);
-                    if (clickRt.top - moveUpOffset > 0) {
-                        clickRt.top = moveUpOffset;
-                    }
-                }
-
-            }
-        }
-    }
 
 }
