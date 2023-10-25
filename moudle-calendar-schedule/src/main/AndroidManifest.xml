@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name="com.marshal.moudle.calendar.schedule.AddCalendarScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.marshal.moudle.calendar.schedule.CalendarActivity"
+            android:exported="false" />
+
+        <receiver android:name=".CalendarAlarmReceive"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_TICK"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

@@ -32,8 +32,6 @@ object AppRouterPath {
     const val APP_AI_CHAT = "/ai/xinghuo/chat"
     //自定义view界面
     const val APP_CUSTOM_VIEW_PAGE = "/custom/view/page"
-    //添加日程
-    const val APP_ADD_EVENT_CALENDAR = "/add/event/calendar"
-    const val APP_ADD_CALENDAR_SCHEDULE = "/add/calendar/schedule"
+
 
 }

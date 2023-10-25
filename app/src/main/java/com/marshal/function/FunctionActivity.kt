@@ -10,6 +10,7 @@ import com.marshal.AppRouterPath.APP_FUNCTION_PAGE
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityFunctionBinding
+import com.marshal.moudle.calendar.schedule.CalendarRouterPath
 import com.marshal.pojo.FunctionBean
 import getAppInfoToken
 
@@ -41,7 +42,7 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
 
         adapter?.setAdapterItemOnClickListener(object : AdapterItemOnClickListener<FunctionBean> {
             override fun onClick(view: View, bean: FunctionBean) {
-                if(bean.functionPath == AppRouterPath.APP_ADD_EVENT_CALENDAR
+                if(bean.functionPath == CalendarRouterPath.APP_ADD_EVENT_CALENDAR
                     && getAppInfoToken().isNullOrEmpty()) {
                     ARouter.getInstance().build(AppRouterPath.APP_LOGIN_PAGE).navigation(this@FunctionActivity)
                     return
@@ -62,6 +63,6 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
         adapter?.itemList?.add(FunctionBean("保存数据", AppRouterPath.STORE_DATA_PAGE))
         adapter?.itemList?.add(FunctionBean("讯飞星火", AppRouterPath.APP_AI_CHAT))
         adapter?.itemList?.add(FunctionBean("自定义View", AppRouterPath.APP_CUSTOM_VIEW_PAGE))
-        adapter?.itemList?.add(FunctionBean("添加日程", AppRouterPath.APP_ADD_EVENT_CALENDAR))
+        adapter?.itemList?.add(FunctionBean("添加日程", CalendarRouterPath.APP_ADD_EVENT_CALENDAR))
     }
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.marshal">
 
-    <uses-sdk tools:overrideLibrary="      cn.jpush.android.thirdpush.fcm     ,cn.jpush.android.thirdpush.huawei     ,cn.jpush.android.thirdpush.meizu     ,cn.jpush.android.thirdpush.oppo     ,cn.jpush.android.thirdpush.vivo     ,cn.jpush.android.thirdpush.xiaomi     ,com.google.firebase.firebase_core     ,com.google.firebase.messaging     ,com.google.firebase.analytics.connector.impl     ,com.google.firebase.measurement     ,com.google.android.gms.measurement.api     ,com.google.firebase.measurement_impl     ,com.google.firebase.iid     ,com.google.firebase     ,com.google.firebase.iid.internal     ,com.google.android.gms.base     ,com.google.android.gms.tasks     ,com.google.firebase.analytics.connector     ,com.google.android.gms.stats     ,com.google.android.gms.ads_identifier     ,com.google.android.gms.common     ,com.google.android.gms.measurement_base     ,com.huawei.android.hms.openid     ,com.huawei.agconnect.core     ,com.huawei.hmf.tasks     ,com.huawei.hms.framework.network.grs     ,com.huawei.hms.framework.common     ,com.huawei.android.hms.base     ,com.huawei.android.hms.push     ,android.support.mediacompat     ,android.support.fragment     ,android.support.coreutils     ,android.support.coreui     ,android.support.compat     ,android.arch.lifecycle" />
+    <uses-sdk tools:overrideLibrary="cn.jpush.android.thirdpush.fcm     ,cn.jpush.android.thirdpush.huawei     ,cn.jpush.android.thirdpush.meizu     ,cn.jpush.android.thirdpush.oppo     ,cn.jpush.android.thirdpush.vivo     ,cn.jpush.android.thirdpush.xiaomi     ,com.google.firebase.firebase_core     ,com.google.firebase.messaging     ,com.google.firebase.analytics.connector.impl     ,com.google.firebase.measurement     ,com.google.android.gms.measurement.api     ,com.google.firebase.measurement_impl     ,com.google.firebase.iid     ,com.google.firebase     ,com.google.firebase.iid.internal     ,com.google.android.gms.base     ,com.google.android.gms.tasks     ,com.google.firebase.analytics.connector     ,com.google.android.gms.stats     ,com.google.android.gms.ads_identifier     ,com.google.android.gms.common     ,com.google.android.gms.measurement_base     ,com.huawei.android.hms.openid     ,com.huawei.agconnect.core     ,com.huawei.hmf.tasks     ,com.huawei.hms.framework.network.grs     ,com.huawei.hms.framework.common     ,com.huawei.android.hms.base     ,com.huawei.android.hms.push     ,android.support.mediacompat     ,android.support.fragment     ,android.support.coreutils     ,android.support.coreui     ,android.support.compat     ,android.arch.lifecycle" />
     <!-- 允许读取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许读取wifi网络状态 -->
@@ -60,17 +60,12 @@
         android:icon="@drawable/icon_marshal_logo"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@drawable/icon_array_bottom"
+        android:roundIcon="@drawable/icon_marshal_logo"
         android:supportsRtl="true"
         android:theme="@style/appStyle"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".calendar.AddCalendarScheduleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".calendar.CalendarActivity"
-            android:exported="false" />
+
 
         <meta-data
             android:name="JPUSH_CHANNEL"
@@ -124,13 +119,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".calendar.CalendarAlarmReceive"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.TIME_TICK"/>
-            </intent-filter>
-        </receiver>
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

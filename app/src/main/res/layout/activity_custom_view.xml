@@ -30,16 +30,16 @@
             android:textSize="40dp"
             android:gravity="center"/>
 
-    <com.marshal.calendar.DragRectView
-        android:id="@+id/drag_rect_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_custom"
-        android:layout_above="@id/btn_start_anim"
-        app:rect_left="80"
-        app:rect_top="200"
-        app:rect_right="300"
-        app:rect_bottom="400"/>
+<!--    <com.marshal.calendar.DragRectView-->
+<!--        android:id="@+id/drag_rect_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/toolbar_custom"-->
+<!--        android:layout_above="@id/btn_start_anim"-->
+<!--        app:rect_left="80"-->
+<!--        app:rect_top="200"-->
+<!--        app:rect_right="300"-->
+<!--        app:rect_bottom="400"/>-->
 
     <Button
         android:id="@+id/btn_start_anim"
