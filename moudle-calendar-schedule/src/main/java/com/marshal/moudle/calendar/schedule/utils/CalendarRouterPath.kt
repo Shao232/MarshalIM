@@ -1,4 +1,4 @@
-package com.marshal.moudle.calendar.schedule
+package com.marshal.moudle.calendar.schedule.utils
 
 /**
  * 界面路径

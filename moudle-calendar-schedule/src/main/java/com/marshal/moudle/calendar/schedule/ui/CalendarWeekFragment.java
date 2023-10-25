@@ -1,21 +1,27 @@
-package com.marshal.moudle.calendar.schedule;
+package com.marshal.moudle.calendar.schedule.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.marshal.base_common.baseview.BaseViewFragment;
+import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.databinding.FragmentCalendarWeekBinding;
+import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleBean;
+import com.marshal.moudle.calendar.schedule.ui.AddCalendarScheduleActivity;
 import com.marshal.moudle.calendar.schedule.widget.CustomDayCalendarView;
 
 public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekBinding> {
 
     //视图类型
     private int viewType = 1;
+
+    private CalendarScheduleBean scheduleBean;
 
     @Nullable
     @Override
@@ -36,22 +42,16 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         switchAndShowView();
 
 
+        getBinding().customCalendarView.setSelectAddScheduleClick((startTime, endTime) -> {
+            scheduleBean.setStartHour(startTime);
+            scheduleBean.setEndHour(endTime);
 
-        getBinding().customCalendarView.setSelectAddScheduleClick(new CustomDayCalendarView.SelectAddScheduleClick() {
-            @Override
-            public void onAddScheduleClickListener(int startTime, int endTime) {
-                Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
-                getActivity().startActivityForResult(intent, 1413);
-            }
+            startAddSchedulePage();
         });
 
         getBinding().customWeekView.setSelectAddScheduleClick((startTime, endTime, weekInfo) -> {
-            Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
-            getActivity().startActivityForResult(intent, 1414);
+            startAddSchedulePage();
         });
-
-
-
 
     }
 
@@ -62,6 +62,24 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
             String title = data.getStringExtra("title");
             Log.d("TAG", "title: " + title);
         }
+    }
+
+    private void startAddSchedulePage() {
+        Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
+        intent.putExtra("selectTime", (Parcelable) scheduleBean);
+
+        getActivity().startActivityForResult(intent, 1413);
+
+    }
+
+    public void setCurrentTime(int year, int month, int day) {
+        if (scheduleBean == null) {
+            scheduleBean = new CalendarScheduleBean(0, 0, 0, 0, 0, -1);
+        }
+
+        scheduleBean.setYear(year);
+        scheduleBean.setMonth(month);
+        scheduleBean.setDay(day);
     }
 
     /**
@@ -92,10 +110,10 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         }
     }
 
-    public void setScheduleContent(String title,int type) {
+    public void setScheduleContent(String title, int type) {
         if (type == 2) {
             getBinding().customWeekView.setScheduleContent(title);
-        }else {
+        } else {
             getBinding().customCalendarView.setScheduleContent(title);
         }
     }

@@ -10,9 +10,9 @@ import com.marshal.AppRouterPath.APP_FUNCTION_PAGE
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityFunctionBinding
-import com.marshal.moudle.calendar.schedule.CalendarRouterPath
+import com.marshal.moudle.calendar.schedule.getAppInfoToken
+import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath
 import com.marshal.pojo.FunctionBean
-import getAppInfoToken
 
 /**
  * 金刚页

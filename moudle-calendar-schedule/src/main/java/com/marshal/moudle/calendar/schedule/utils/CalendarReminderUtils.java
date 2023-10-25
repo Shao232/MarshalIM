@@ -1,4 +1,4 @@
-package com.marshal.moudle.calendar.schedule;
+package com.marshal.moudle.calendar.schedule.utils;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.ContentValues;

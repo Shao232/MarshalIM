@@ -3,10 +3,10 @@
 
     <application>
         <activity
-            android:name="com.marshal.moudle.calendar.schedule.AddCalendarScheduleActivity"
+            android:name="com.marshal.moudle.calendar.schedule.ui.AddCalendarScheduleActivity"
             android:exported="false" />
         <activity
-            android:name="com.marshal.moudle.calendar.schedule.CalendarActivity"
+            android:name="com.marshal.moudle.calendar.schedule.ui.CalendarActivity"
             android:exported="false" />
 
         <receiver android:name=".CalendarAlarmReceive"

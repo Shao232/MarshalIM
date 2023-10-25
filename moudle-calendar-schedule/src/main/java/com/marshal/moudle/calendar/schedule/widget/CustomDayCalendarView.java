@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 
 import com.marshal.moudle.calendar.schedule.R;
-import com.marshal.moudle.calendar.schedule.SizeUtils;
+import com.marshal.moudle.calendar.schedule.utils.SizeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -190,10 +190,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             @Override
             public void onGlobalLayout() {
                 mHeight = SizeUtils.dip2px(getContext(),50f * 32);
-
-                Log.d("TAG", "密度 :" + SizeUtils.getDisplayMetrics(getContext()));
-                Log.d("TAG", "dp2px :" + mHeight);
-
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -240,6 +236,8 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             }
 
             if (selectAddScheduleClick != null) {
+                Log.d("TAG","startHour :"+startHour);
+                Log.d("TAG","selectHour :"+selectHour);
                 selectAddScheduleClick.onAddScheduleClickListener(startHour, selectHour);
             }
         }

@@ -1,4 +1,4 @@
-package com.marshal.moudle.calendar.schedule;
+package com.marshal.moudle.calendar.schedule.utils;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;

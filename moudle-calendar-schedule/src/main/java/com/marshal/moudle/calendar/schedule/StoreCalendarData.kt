@@ -1,4 +1,4 @@
-
+package com.marshal.moudle.calendar.schedule
 
 // ================Token====================================
 const val appInfoTokenKey:String = "app_info_token"

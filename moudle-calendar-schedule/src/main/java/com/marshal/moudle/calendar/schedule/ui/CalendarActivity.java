@@ -1,4 +1,4 @@
-package com.marshal.moudle.calendar.schedule;
+package com.marshal.moudle.calendar.schedule.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,15 +12,23 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelLazy;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatePickedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.marshal.base_common.MApplication;
 import com.marshal.base_common.baseview.BaseViewActivity;
-import com.marshal.https.HttpRequestFactory;
-import com.marshal.https.ScheduleService;
+import com.marshal.moudle.calendar.schedule.CalendarAlarmReceive;
+import com.marshal.moudle.calendar.schedule.StoreCalendarDataKt;
+import com.marshal.moudle.calendar.schedule.ui.viewmodel.CalendarViewModel;
+import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath;
+import com.marshal.moudle.calendar.schedule.utils.DateSelectUtils;
+import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.databinding.ActivityAddCalendarBinding;
 
 import retrofit2.Call;
@@ -35,7 +43,11 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
      * 当前日历对应的时间戳
      */
     private long curTimeMillis;
+    private int currentYear;
+    private int currentMonth;
+    private int currentDay;
 
+    private CalendarViewModel viewModel;
 
     private CalendarWeekFragment weekFragment = new CalendarWeekFragment();
 
@@ -44,11 +56,16 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         public void onCalendarOutOfRange(Calendar calendar) {
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onCalendarSelect(Calendar calendar, boolean isClick) {
             curTimeMillis = calendar.getTimeInMillis();
-            getBinding().tvYearMonth.setText(calendar.getYear() + "年" + calendar.getMonth() + "月");
-            Log.d("TAG", "日期:" + calendar.getYear() + ", " + calendar.getMonth() + ", " + calendar.getDay());
+            currentYear = calendar.getYear();
+            currentMonth = calendar.getMonth();
+            currentDay = calendar.getDay();
+            getBinding().tvYearMonth.setText(currentYear + "年" +currentMonth + "月");
+            Log.d("TAG", "日期:" + currentYear + ", " + currentMonth + ", " +currentDay);
+            weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
 
         }
     };
@@ -69,15 +86,25 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     @SuppressLint("SetTextI18n")
     @Override
     public void initView() {
-
         if (getHasIncludeToolbar()) {
             setTitle("显示日历");
         }
 
+        ViewModelProvider.Factory factory =
+                (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.
+                        getInstance(MApplication.Companion.getInstance());
+        viewModel = new ViewModelProvider(this, factory).get(CalendarViewModel.class);
+
+
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(1).setText("月"));
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(2).setText("周"));
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(3).setText("日"));
-        getBinding().tvYearMonth.setText(getBinding().calendarView.getCurYear() + "年" + getBinding().calendarView.getCurMonth() + "月");
+
+        currentYear = getBinding().calendarView.getCurYear();
+        currentMonth = getBinding().calendarView.getCurMonth();
+        currentDay = getBinding().calendarView.getCurDay();
+        getBinding().tvYearMonth.setText(currentYear + "年" + currentMonth + "月");
+
         getBinding().calendarView.setOnCalendarSelectListener(onCalendarSelectListener);
 
         curTimeMillis = getBinding().calendarView.getSelectedCalendar().getTimeInMillis();
@@ -90,6 +117,7 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         } else {
             fragmentManager.show(weekFragment);
         }
+        weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
 
         getBinding().ivAddScheduleShow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,13 +167,14 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
      * 添加闹钟功能
      */
     private void addAlarmManager() {
+        //todo test
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.set(2023, 9, 19, 10, 4);
         Intent intent = new Intent(this, CalendarAlarmReceive.class);
         PendingIntent pendingIntent;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_UPDATE_CURRENT);
-        }else {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
             pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         }
 
@@ -155,25 +184,16 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     }
 
     private void getScheduleData() {
-        //请求每日日程信息
-        Retrofit retrofit = HttpRequestFactory.INSTANCE.getScheduleRequest();
-        if (retrofit != null) {
-            ScheduleService service = retrofit.create(ScheduleService.class);
-            Log.d("TAG", "当前时间戳 :" + curTimeMillis);
-            service.getScheduleDailyList(String.valueOf(curTimeMillis)).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("TAG", "response : " + response.body());
+        Log.d("TAG", "当前时间戳 :" + curTimeMillis);
+        viewModel.getScheduleData(String.valueOf(curTimeMillis));
 
+        viewModel.getResponseResult().observe(this, aBoolean -> {
+            if(!aBoolean) {
+                if (StoreCalendarDataKt.getAppInfoToken().isEmpty()) {
+                    showToast("请重新登录");
                 }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("TAG", "错误 :" + t.getMessage());
-                }
-            });
-        }
-
+            }
+        });
 
     }
 

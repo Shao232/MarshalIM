@@ -7,4 +7,6 @@ open class BaseViewModel:ViewModel() {
 
     val errorData:MutableLiveData<Throwable> = MutableLiveData()
 
+    val responseResult: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
 }

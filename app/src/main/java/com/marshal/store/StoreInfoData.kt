@@ -12,9 +12,6 @@ const val appProgramSingleDataKey:String = "app_program_single_data"
 // ============== 开大考题 end ======================================
 const val appTestDataKey:String = "app_test_data"
 
-// ================Token====================================
-const val appInfoTokenKey:String = "app_info_token"
-// ================Token====================================
 
 fun putAppLightMode(value:Boolean){
     StoreManager.putData(appLightModeKey,value)
@@ -70,9 +67,4 @@ fun putAppTestData(value: String){
 
 fun getAppTestData():String? = StoreManager.getData(appTestDataKey,"")
 
-fun putAppInfoToken(value: String){
-    StoreManager.putData(appInfoTokenKey,value)
-}
-
-fun getAppInfoToken():String? = StoreManager.getData(appInfoTokenKey,"")
 
