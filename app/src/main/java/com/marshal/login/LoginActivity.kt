@@ -49,6 +49,7 @@ class LoginActivity : BaseViewActivity<ActivityLoginBinding>() {
             if(it) {
                 finish()
             }else {
+                showToast("登录失败，请重试")
                 Log.e("TAG","loginActivity , it=${it}")
             }
         }

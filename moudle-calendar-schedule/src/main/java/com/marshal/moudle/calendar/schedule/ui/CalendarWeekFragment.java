@@ -64,8 +64,9 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         }
     }
 
-    private void startAddSchedulePage() {
+    public void startAddSchedulePage() {
         Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
+        Log.d("TAG","weekFragment scheduleBean :"+scheduleBean.toString());
         intent.putExtra("selectTime", (Parcelable) scheduleBean);
 
         getActivity().startActivityForResult(intent, 1413);
@@ -74,12 +75,14 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
 
     public void setCurrentTime(int year, int month, int day) {
         if (scheduleBean == null) {
-            scheduleBean = new CalendarScheduleBean(0, 0, 0, 0, 0, -1);
+            scheduleBean = new CalendarScheduleBean(0, 0, 0,0, 0,0, 0,0,0, -1);
         }
 
         scheduleBean.setYear(year);
-        scheduleBean.setMonth(month);
-        scheduleBean.setDay(day);
+        scheduleBean.setStartMonth(month);
+        scheduleBean.setStartDay(day);
+        scheduleBean.setEndMonth(month);
+        scheduleBean.setEndDay(day);
     }
 
     /**

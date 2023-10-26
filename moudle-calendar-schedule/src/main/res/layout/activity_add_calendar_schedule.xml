@@ -53,20 +53,28 @@
        <TextView
            android:layout_width="0dp"
            android:layout_height="match_parent"
-           android:layout_weight="1"
+           android:layout_weight="2"
            android:text="开始时间"
            android:textColor="@color/text_color_black"
            android:textSize="14dp"
            android:gravity="center_vertical"
            android:layout_marginStart="10dp"/>
 
+        <TextView
+            android:id="@+id/tv_start_time_content_schedule"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="请选择"
+            android:textColor="@color/text_color_black"
+            android:textSize="14dp"
+            android:gravity="center_vertical|end"/>
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:src="@drawable/right_img"
             android:scaleType="centerInside"
-            android:gravity="center_vertical"
-            android:layout_marginStart="10dp"/>
+            android:gravity="center_vertical"/>
 
     </LinearLayout>
 
@@ -84,20 +92,28 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="结束时间"
             android:textColor="@color/text_color_black"
             android:textSize="14dp"
             android:gravity="center_vertical"
             android:layout_marginStart="10dp"/>
 
+        <TextView
+            android:id="@+id/tv_end_time_content_schedule"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="请选择"
+            android:textColor="@color/text_color_black"
+            android:textSize="14dp"
+            android:gravity="center_vertical|end"/>
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:src="@drawable/right_img"
             android:scaleType="centerInside"
-            android:gravity="center_vertical"
-            android:layout_marginStart="10dp"/>
+            android:gravity="center_vertical"/>
 
     </LinearLayout>
 
@@ -124,7 +140,7 @@
 
         <TextView
             android:id="@+id/tv_select_plan_content_schedule"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="请选择"
             android:textColor="@color/text_color_black"
@@ -139,7 +155,6 @@
             android:gravity="center_vertical"/>
 
     </LinearLayout>
-
 
 
     <androidx.appcompat.widget.AppCompatButton

@@ -200,15 +200,9 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         //如果手指点击的范围刚好是选择日期的范围，激活选择事件传递
-        Log.d("TAG", "click clickScheduleY :" + clickScheduleY);
-
         if (mBlueAreaRt != null && (clickScheduleY >= mBlueAreaRt.top && clickScheduleY <= mBlueAreaRt.bottom)) {
-            Log.d("TAG", "click top :" + mBlueAreaRt.top + ",bottom :" + mBlueAreaRt.bottom);
-
-            int blueAreaMin = Math.min(mBlueAreaRt.top, mBlueAreaRt.bottom);
-            int blueAreaMax = Math.max(mBlueAreaRt.top, mBlueAreaRt.bottom);
-            Log.d("TAG", "min :" + blueAreaMin);
-            Log.d("TAG", "max :" + blueAreaMax);
+            int blueAreaMin = mBlueAreaRt.top;
+            int blueAreaMax = mBlueAreaRt.bottom;
 
             String startTime = "";
             String selectTime = "";
@@ -223,7 +217,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                     selectTime = scheduleRect.getKey();
                 }
             }
-            Log.d("TAG", "start :" + startTime + " , endTime :" + selectTime);
 
             int startHour;
             int selectHour;
@@ -257,11 +250,9 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             case MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
                 switch (dragDirection) {
                     case TOP, BOTTOM -> {
-//                        Log.d("TAG", "... onTouch ACTION_MOVE event... top bottom ");
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     default -> {
-//                        Log.d("TAG", "... onTouch ACTION_MOVE event... default ");
                         getParent().requestDisallowInterceptTouchEvent(false);
                     }
                 }
@@ -301,7 +292,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                     //如何滑动的是top，bottom进行重绘,是center事件不拦截，进行click事件
                     switch (dragDirection) {
                         case TOP -> {
-//                            Log.d("TAG", "... onTouch up event... top bottom ");
                             if (clickRt.top < rectTop) {
                                 rectTop = (int) clickRt.top;
                             }
@@ -319,12 +309,10 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                         }
                         case CENTER -> {
                             //点击到蓝色区域内部
-                            Log.d("TAG", "..... 点击到蓝色区域 ....");
                             clickScheduleY = clickY;
                             return false;
                         }
                         default -> {
-//                            Log.d("TAG", "... onTouch up event... default ");
                             //如果点击到外部某个单元格，就替换绘制
                             rectLeft = (int) clickRt.left;
                             rectTop = (int) clickRt.top;
@@ -489,9 +477,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
      * @param dy
      */
     private void top(int dy) {
-//        Log.d("TAG", "...top... dy :" + dy);
-//        Log.d("TAG", "...v.top...  :" + getTop());
-//        Log.d("TAG", "...v.top...  :" + getTop());
         rectTop += dy;
         if (rectTop < getTop()) {
             rectTop = getTop();
@@ -506,7 +491,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
      * @param dy
      */
     private void bottom(int dy) {
-//        Log.d("TAG", "...bottom... dy :" + dy);
         RectF lastRect = drawRectList.get(drawRectList.size() - 1);
         rectBottom += dy;
         if (rectBottom < (rectTop + offset)) {

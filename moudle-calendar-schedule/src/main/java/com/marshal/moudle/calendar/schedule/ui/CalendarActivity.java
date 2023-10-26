@@ -66,7 +66,6 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             getBinding().tvYearMonth.setText(currentYear + "年" +currentMonth + "月");
             Log.d("TAG", "日期:" + currentYear + ", " + currentMonth + ", " +currentDay);
             weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
-
         }
     };
 
@@ -117,13 +116,12 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         } else {
             fragmentManager.show(weekFragment);
         }
+        //fragment设置时间
         weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
 
-        getBinding().ivAddScheduleShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showToast("点击加号");
-            }
+        getBinding().ivAddScheduleShow.setOnClickListener(v -> {
+
+           weekFragment.startAddSchedulePage();
         });
 
         getBinding().ivShowPopupWindow.setOnClickListener(v -> DateSelectUtils.INSTANCE.showDateSelectDialog(CalendarActivity.this, new OnDatePickedListener() {

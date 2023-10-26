@@ -14,26 +14,41 @@ import kotlinx.parcelize.Parcelize;
 public class CalendarScheduleBean implements Parcelable {
 
     private int year;
-    private int month;
-    private int day;
+    private int startMonth;
+    private int endMonth;
+    private int startDay;
+    private int endDay;
     private int startHour;
     private int endHour;
+    private int startMinute;
+    private int endMinute;
     private int weekInfo;
 
-    public CalendarScheduleBean(int year, int month, int day,int startHour,int endHour, int weekInfo) {
+
+    public CalendarScheduleBean(int year, int startMonth,int endMonth, int startDay,int endDay,int startHour,int endHour,int startMinute,int endMinute, int weekInfo) {
         this.year = year;
-        this.month = month;
-        this.day = day;
+        this.startMonth = startMonth;
+        this.endMonth = endMonth;
+        this.startDay = startDay;
+        this.endDay = endDay;
         this.startHour = startHour;
         this.endHour = endHour;
+        this.startMinute = startMinute;
+        this.endMinute = endMinute;
         this.weekInfo = weekInfo;
     }
 
     protected CalendarScheduleBean(Parcel in) {
         year = in.readInt();
-        month = in.readInt();
-        day = in.readInt();
+        startMonth = in.readInt();
+        startDay = in.readInt();
+        endMonth = in.readInt();
+        endDay = in.readInt();
         weekInfo = in.readInt();
+        startHour = in.readInt();
+        endHour = in.readInt();
+        startMinute = in.readInt();
+        endMinute = in.readInt();
     }
 
     public static final Creator<CalendarScheduleBean> CREATOR = new Creator<CalendarScheduleBean>() {
@@ -48,28 +63,77 @@ public class CalendarScheduleBean implements Parcelable {
         }
     };
 
+    public CalendarScheduleBean setYear(int year){
+        this.year = year;
+        return this;
+    }
+
+    public CalendarScheduleBean setStartMonth(int startMonth){
+        this.startMonth = startMonth;
+        return this;
+    }
+
+    public CalendarScheduleBean setEndMonth(int endMonth) {
+        this.endMonth = endMonth;
+        return this;
+    }
+
+    public CalendarScheduleBean setStartDay(int startDay){
+        this.startDay = startDay;
+        return this;
+    }
+
+    public CalendarScheduleBean setEndDay(int endDay) {
+        this.endDay = endDay;
+        return this;
+    }
+
+    public CalendarScheduleBean setStartHour(int startHour){
+        this.startHour = startHour;
+        return this;
+    }
+
+    public CalendarScheduleBean setEndHour(int endHour) {
+        this.endHour = endHour;
+        return this;
+    }
+
+    public CalendarScheduleBean setStartMinute(int startMinute) {
+        this.startMinute = startMinute;
+        return this;
+    }
+
+    public CalendarScheduleBean setEndMinute(int endMinute) {
+        this.endMinute = endMinute;
+        return this;
+    }
+
+    public int getStartMinute() {
+        return startMinute;
+    }
+
+    public int getEndMinute() {
+        return endMinute;
+    }
+
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public int getStartMonth() {
+        return startMonth;
     }
 
-    public int getMonth() {
-        return month;
+    public int getEndMonth() {
+        return endMonth;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public int getStartDay() {
+        return startDay;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
+    public int getEndDay() {
+        return endDay;
     }
 
     public int getWeekInfo() {
@@ -78,6 +142,14 @@ public class CalendarScheduleBean implements Parcelable {
 
     public void setWeekInfo(int weekInfo) {
         this.weekInfo = weekInfo;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public int getEndHour() {
+        return endHour;
     }
 
     @NonNull
@@ -94,26 +166,16 @@ public class CalendarScheduleBean implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(year);
-        dest.writeInt(month);
-        dest.writeInt(day);
+        dest.writeInt(startMonth);
+        dest.writeInt(startDay);
+        dest.writeInt(endMonth);
+        dest.writeInt(endDay);
         dest.writeInt(weekInfo);
         dest.writeInt(startHour);
         dest.writeInt(endHour);
+        dest.writeInt(startMinute);
+        dest.writeInt(endMinute);
     }
 
-    public int getStartHour() {
-        return startHour;
-    }
 
-    public void setStartHour(int startHour) {
-        this.startHour = startHour;
-    }
-
-    public int getEndHour() {
-        return endHour;
-    }
-
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
 }

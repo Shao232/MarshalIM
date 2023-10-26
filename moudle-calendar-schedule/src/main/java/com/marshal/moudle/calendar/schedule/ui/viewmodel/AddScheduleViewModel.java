@@ -20,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 public class AddScheduleViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> responseResult = new MutableLiveData<Boolean>();
+    public MutableLiveData<ArrayList<PlanBean>> resultListData = new MutableLiveData<>();
 
     public void getPlanList(){
         ScheduleJoinApi.getPlanList()
@@ -30,13 +31,12 @@ public class AddScheduleViewModel extends BaseViewModel {
                     public void onSuccess(ResponseResultBean<ArrayList<PlanBean>> response) {
                         Log.d("TAG","AddScheduleViewModel data:"+response.getData());
                         responseResult.postValue(true);
+                        resultListData.postValue(response.getData());
                     }
 
                     @Override
                     public void onThrowable(Throwable e) {
                         responseResult.postValue(false);
-
-
                         Log.e("TAG", "AddScheduleViewModel e:"+e.toString());
                     }
                 });
