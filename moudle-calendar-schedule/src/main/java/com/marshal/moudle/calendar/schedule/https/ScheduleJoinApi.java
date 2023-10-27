@@ -2,6 +2,7 @@ package com.marshal.moudle.calendar.schedule.https;
 
 import com.marshal.base_common.utils.GsonUtils;
 import com.marshal.moudle.calendar.schedule.pojo.DayScheduleBean;
+import com.marshal.moudle.calendar.schedule.pojo.EmptyBean;
 import com.marshal.moudle.calendar.schedule.pojo.PlanBean;
 import com.marshal.moudle.calendar.schedule.pojo.ResponseResultBean;
 import com.marshal.moudle.calendar.schedule.pojo.UserInfoBean;
@@ -42,6 +43,17 @@ public class ScheduleJoinApi {
     public static  Observable<ResponseResultBean<ArrayList<PlanBean>>> getPlanList(){
         if (ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest() != null) {
             return ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest().create(ScheduleService.class).getPlanList();
+        } else {
+            return null;
+        }
+    }
+
+    public static Observable<ResponseResultBean<Boolean>> postScheduleAdd(HashMap<String, Object> params){
+
+        String json = GsonUtils.INSTANCE.objToJson(params);
+        RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
+        if (ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest() != null) {
+            return ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest().create(ScheduleService.class).postScheduleAdd(body);
         } else {
             return null;
         }

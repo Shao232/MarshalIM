@@ -32,11 +32,13 @@
     <color name="error_answers_color">#F21331</color>
     <color name="black_mode">#FF000000</color>
     <color name="white_mode">#FFFBFB</color>
+    <color name="white_press_mode">#DCD9D9</color>
     <color name="bg_mode_white">#EAE9E9</color>
     <color name="gray_line">#c3c3c3</color>
     <color name="text_color_gray_hint">#B5B4B4</color>
     <color name="text_color_black">#FF000000</color>
     <color name="select_schedule_bg">#AA0497ff</color>
+    <color name="show_added_schedule_bg">#300D90EC</color>
     <!--虚线边框背景颜色-->
     <color name="dottedline_bg">#0497ff</color>
     <!--画板背景颜色-->

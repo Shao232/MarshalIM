@@ -1,4 +1,5 @@
 package com.marshal.base_common.basedialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,12 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding>: BottomSheetDialogF
 
     var rootView:View? = null
     var binding:T? = null
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(STYLE_NO_TITLE,getDialogTheme())
+        return super.onCreateDialog(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +32,10 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding>: BottomSheetDialogF
         initView()
 
         subscribeBack()
+    }
+
+    open fun getDialogTheme():Int{
+        return 0
     }
 
     abstract fun getResLayoutId():Int

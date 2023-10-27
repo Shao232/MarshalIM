@@ -23,7 +23,8 @@ public class CalendarScheduleBean implements Parcelable {
     private int startMinute;
     private int endMinute;
     private int weekInfo;
-
+    private boolean clickDayScheduleStatus = false;
+    private boolean clickWeekScheduleStatus = false;
 
     public CalendarScheduleBean(int year, int startMonth,int endMonth, int startDay,int endDay,int startHour,int endHour,int startMinute,int endMinute, int weekInfo) {
         this.year = year;
@@ -49,6 +50,8 @@ public class CalendarScheduleBean implements Parcelable {
         endHour = in.readInt();
         startMinute = in.readInt();
         endMinute = in.readInt();
+        clickDayScheduleStatus = in.readInt() != 0;
+        clickWeekScheduleStatus = in.readInt() != 0;
     }
 
     public static final Creator<CalendarScheduleBean> CREATOR = new Creator<CalendarScheduleBean>() {
@@ -108,6 +111,16 @@ public class CalendarScheduleBean implements Parcelable {
         return this;
     }
 
+    public CalendarScheduleBean setClickDayScheduleStatus(boolean clickDayScheduleStatus) {
+        this.clickDayScheduleStatus = clickDayScheduleStatus;
+        return this;
+    }
+
+    public CalendarScheduleBean setClickWeekScheduleStatus(boolean clickWeekScheduleStatus) {
+        this.clickWeekScheduleStatus = clickWeekScheduleStatus;
+        return this;
+    }
+
     public int getStartMinute() {
         return startMinute;
     }
@@ -152,6 +165,14 @@ public class CalendarScheduleBean implements Parcelable {
         return endHour;
     }
 
+    public boolean isClickDayScheduleStatus() {
+        return clickDayScheduleStatus;
+    }
+
+    public boolean isClickWeekScheduleStatus() {
+        return clickWeekScheduleStatus;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -175,6 +196,8 @@ public class CalendarScheduleBean implements Parcelable {
         dest.writeInt(endHour);
         dest.writeInt(startMinute);
         dest.writeInt(endMinute);
+        dest.writeInt(clickDayScheduleStatus?1:0);
+        dest.writeInt(clickWeekScheduleStatus?1:0);
     }
 
 

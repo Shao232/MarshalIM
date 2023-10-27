@@ -2,6 +2,8 @@ package com.marshal.moudle.calendar.schedule.ui.viewmodel;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.marshal.base_common.baseview.BaseViewModel;
 import com.marshal.moudle.calendar.schedule.https.HttpSubscribe;
 import com.marshal.moudle.calendar.schedule.https.ScheduleHttpRequestFactory;
@@ -16,6 +18,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CalendarViewModel extends BaseViewModel {
 
+    public MutableLiveData<ArrayList<DayScheduleBean>> responseScheduleLiveData = new MutableLiveData<>();
+
     public void getScheduleData(String theDay) {
 
         ScheduleJoinApi.getScheduleDailyList(theDay)
@@ -26,6 +30,7 @@ public class CalendarViewModel extends BaseViewModel {
                     public void onSuccess(ResponseResultBean<ArrayList<DayScheduleBean>> response) {
                         Log.d("TAG", "CalendarViewModel response:" + response.getData());
                         getResponseResult().postValue(true);
+                        responseScheduleLiveData.postValue(response.getData());
                     }
 
                     @Override

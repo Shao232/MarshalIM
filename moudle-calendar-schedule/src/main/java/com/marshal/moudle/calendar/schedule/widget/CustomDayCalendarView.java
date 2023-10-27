@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 
 import com.marshal.moudle.calendar.schedule.R;
+import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleViewBean;
 import com.marshal.moudle.calendar.schedule.utils.SizeUtils;
 
 import java.util.ArrayList;
@@ -42,12 +43,10 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     /**
      * 创建日程的画笔
      */
-    private Paint mSchedulePaint;
+//    private Paint mSchedulePaint;
 
     //画框的高度
     private int heightSpaceSize;
-    //统计绘制框的总高度
-    private int drawCountHeight;
 
     private boolean isCreatingSchedule = false;
     private final String[] timeArray = {
@@ -59,16 +58,14 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
      * 全部范围
      */
     private final ArrayList<RectF> drawRectList = new ArrayList<>();
-    /**
-     * 点击后的时间点 距离 start 00,end 01
-     */
-    private final HashMap<Integer, String> timeAreaMap = new HashMap<>();
 
     /**
      * key 是时间线上的01到24
      * value 是 举例:01时间对应的矩形rectF
      */
     private final HashMap<String, RectF> scheduleData = new HashMap<>();
+
+    private ArrayList<CalendarScheduleViewBean> viewDataList = new ArrayList<>();
 
     /**
      * 点击的范围
@@ -87,7 +84,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     private final int offset = 30;
 
     private int dragDirection;
-    private int lastX;
     private int lastY;
     //记录一个可以添加日程的y坐标
     private int clickScheduleY;
@@ -97,26 +93,23 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     private int rectLeft = 0;
     private int rectRight = 0;
     private int rectBottom = 0;
-    // 线条的宽度
-    private final int mLineSize = 3;
-    // 图片大小
-    private final int mRectSize = 50;
     //添加日程蓝色点击区域
     private Paint mAddScheduleBlueAreaPaint;
     /**
      * 蓝色触摸区域
      */
     private Rect mBlueAreaRt;
-    private Paint.Style mStyle;
     // 拉伸的view
     private Bitmap mBottomBmp;
     private Rect mBottomRect;
     private Bitmap mTopBmp;
     private Rect mTopRect;
-
-
     private SelectAddScheduleClick selectAddScheduleClick;
     private String title = "添加日程";
+
+    private Paint addedScheduleAreaPaint;
+    private Paint addedScheduleTextPaint;
+    private RectF addScheduleAreaRect;
 
 
     public CustomDayCalendarView(Context context) {
@@ -142,6 +135,13 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         invalidate();
     }
 
+    public void setCalendarScheduleList(ArrayList<CalendarScheduleViewBean> arrayList) {
+        this.viewDataList.clear();
+        this.viewDataList.addAll(arrayList);
+        invalidate();
+    }
+
+
     private void init() {
         mPaint = new Paint();
         mPaint.setAntiAlias(false);
@@ -156,11 +156,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         mTextPaint.setStrokeWidth(1f);
         mTextPaint.setTextSize(dip2px(mContext, 12f));
 
-        mSchedulePaint = new Paint();
-        mSchedulePaint.setAntiAlias(false);
-        mSchedulePaint.setColor(Color.TRANSPARENT);
-        mSchedulePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-
         mAddSchedulePaint = new Paint();
         mAddSchedulePaint.setAntiAlias(false);
         mAddSchedulePaint.setColor(Color.WHITE);
@@ -169,11 +164,19 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         mAddSchedulePaint.setTextSize(dip2px(mContext, 14f));
 
         mAddScheduleBlueAreaPaint = new Paint();
-        mStyle = Paint.Style.FILL_AND_STROKE;
+        Paint.Style mStyle = Paint.Style.FILL_AND_STROKE;
         mAddScheduleBlueAreaPaint.setColor(getResources().getColor(R.color.select_schedule_bg));
-        mAddScheduleBlueAreaPaint.setAntiAlias(true);
+        mAddScheduleBlueAreaPaint.setAntiAlias(false);
         mAddScheduleBlueAreaPaint.setStyle(mStyle);
-        mAddScheduleBlueAreaPaint.setStrokeWidth((float) mLineSize);
+        // 线条的宽度
+        mAddScheduleBlueAreaPaint.setStrokeWidth((float) 3f);
+
+        addedScheduleAreaPaint = new Paint();
+        addedScheduleAreaPaint.setAntiAlias(false);
+        addedScheduleAreaPaint.setColor(getResources().getColor(R.color.show_added_schedule_bg));
+        addedScheduleAreaPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        addedScheduleAreaPaint.setStrokeWidth(1f);
+
 
         mTopBmp = BitmapFactory.decodeResource(getResources(), R.drawable.stretch_bottom);
         mBottomBmp = BitmapFactory.decodeResource(getResources(), R.drawable.stretch_bottom);
@@ -184,12 +187,16 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         setOnTouchListener(this);
         setOnClickListener(this);
         setSelected(true);
-        heightSpaceSize = dip2px(mContext, 50f); // 每个单元格的大小，可以根据需要调整
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mHeight = SizeUtils.dip2px(getContext(),50f * 32);
+                mWidth = SizeUtils.getScreenWidth(mContext);
+                mHeight = SizeUtils.dip2px(getContext(), 50f * 32);
+                // 每个单元格的大小，可以根据需要调整
+                heightSpaceSize = dip2px(mContext, 50f);
+                //创建RectF数据
+                createRectFArray();
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -223,14 +230,14 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(selectTime)) {
                 startHour = Integer.parseInt(startTime);
                 selectHour = Integer.parseInt(selectTime);
-            }else {
-                Toast.makeText(mContext,"请选择完整的时间点",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "请选择完整的时间点", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (selectAddScheduleClick != null) {
-                Log.d("TAG","startHour :"+startHour);
-                Log.d("TAG","selectHour :"+selectHour);
+                Log.d("TAG", "startHour :" + startHour);
+                Log.d("TAG", "selectHour :" + selectHour);
                 selectAddScheduleClick.onAddScheduleClickListener(startHour, selectHour);
             }
         }
@@ -287,7 +294,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                     }
 
                     //当点击区域完成第一次重绘，进行判断是否是触摸滑动，
-                    dragDirection = getDirection((int) v.getX(), clickY);
+                    dragDirection = getDirection(clickY);
 
                     //如何滑动的是top，bottom进行重绘,是center事件不拦截，进行click事件
                     switch (dragDirection) {
@@ -335,13 +342,11 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     private void handleDrag(MotionEvent event, int action) {
         if (action == MotionEvent.ACTION_DOWN) {
             setSelected(true);
-            lastX = (int) event.getRawX();
             lastY = (int) event.getRawY();
-            dragDirection = getDirection((int) event.getX(), (int) event.getY());
+            dragDirection = getDirection((int) event.getY());
         }
 
         if (action == MotionEvent.ACTION_MOVE) {
-            int dx = ((int) event.getRawX()) - lastX;
             int dy = ((int) event.getRawY()) - lastY;
             switch (dragDirection) {
                 case BOTTOM:
@@ -353,7 +358,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                     top(dy);
                     break;
             }
-            lastX = (int) event.getRawX();
             lastY = (int) event.getRawY();
         }
     }
@@ -361,7 +365,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = getMeasuredWidth();
         int parentWidth = MeasureSpec.getSize(mWidth);
         int parentHeight = MeasureSpec.getSize(mHeight);
         // 根据需要设置自定义View的高度
@@ -371,8 +374,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //创建RectF数据
-        createRectFArray();
+
         //绘制每行铺满宽度，一共24列
         drawGrid(canvas);
         //绘制左侧的0到23个文字
@@ -380,13 +382,18 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         //如果添加日程
         drawScheduleAreaBlue(canvas);
 
+        if (!viewDataList.isEmpty()) {
+            CalendarScheduleViewBean bean = viewDataList.get(0);
+            drawAddedSchedule(canvas, bean);
+        }
 
     }
 
 
     private void createRectFArray() {
         int spaceStartX = dip2px(mContext, 40f);
-        drawCountHeight = 0;
+        //统计绘制框的总高度
+        int drawCountHeight = 0;
         RectF rect1;
         for (int j = 0; j < 24; j++) {//绘制24次
             rect1 = new RectF(spaceStartX, drawCountHeight, mWidth, drawCountHeight + heightSpaceSize);
@@ -406,7 +413,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         int drawTextY = 0;
         for (int i = 0; i < 24; i++) {
             canvas.drawText(i == 0 ? "" : timeArray[i], spaceStartX, drawTextY, mTextPaint);
-            timeAreaMap.put(drawTextY, timeArray[i]);
             drawTextY += heightSpaceSize;
         }
 
@@ -428,6 +434,8 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                 //取right - left 就是整个长度，然后取值长度的一半，从left起点加上一半
                 int left = mBlueAreaRt.left + ((mBlueAreaRt.right - mBlueAreaRt.left) / 2);
                 //绘制图标
+                // 图片大小
+                int mRectSize = 50;
                 mTopRect.set(left - (mRectSize / 2), mBlueAreaRt.top - (mRectSize / 2), left + (mRectSize / 2), mBlueAreaRt.top + (mRectSize / 2));
                 canvas.drawBitmap(mTopBmp, null, mTopRect, this.mAddScheduleBlueAreaPaint);
                 //绘制图标
@@ -439,15 +447,43 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         }
     }
 
+    /**
+     * 绘制保存的日程
+     *
+     * @param canvas   画布
+     * @param itemBean 数据
+     */
+    private void drawAddedSchedule(Canvas canvas, CalendarScheduleViewBean itemBean) {
+        int startHour = itemBean.getStartHour();
+        int endHour = itemBean.getEndHour();
+        RectF startRect = scheduleData.get(String.valueOf(startHour));
+        RectF endRect = scheduleData.get(String.valueOf(endHour));
+        RectF addScheduleAreaRect;
+        if (startRect !=null && endRect!=null) {
+            if (startHour == endHour) {
+                //如果开始时间等于结束时间,判断是一个单元格
+                addScheduleAreaRect = startRect;
+            } else {
+                addScheduleAreaRect = new RectF(startRect.left, startRect.top, startRect.right, endRect.bottom);
+            }
+
+            Log.d("TAG","addScheduleAreaRect :" +addScheduleAreaRect.toString());
+            canvas.drawRect(addScheduleAreaRect,addedScheduleAreaPaint);
+
+
+        }
+
+
+    }
+
 
     /**
      * 通过坐标和移动距离，确定移动方向
      *
-     * @param x
-     * @param y
-     * @return
+     * @param y y轴
+     * @return 方向
      */
-    private int getDirection(int x, int y) {
+    private int getDirection(int y) {
         int topTop = mTopRect.top;
         int topBottom = mTopRect.bottom;
 
@@ -474,7 +510,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     /**
      * 设置滑动顶部位置，位置的数值
      *
-     * @param dy
+     * @param dy 偏移量
      */
     private void top(int dy) {
         rectTop += dy;
@@ -488,7 +524,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     /**
      * 设置滑动底部位置，位置的数值
      *
-     * @param dy
+     * @param dy 偏移量
      */
     private void bottom(int dy) {
         RectF lastRect = drawRectList.get(drawRectList.size() - 1);

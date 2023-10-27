@@ -25,16 +25,14 @@ import com.marshal.base_common.MApplication;
 import com.marshal.base_common.baseview.BaseViewActivity;
 import com.marshal.moudle.calendar.schedule.CalendarAlarmReceive;
 import com.marshal.moudle.calendar.schedule.StoreCalendarDataKt;
+import com.marshal.moudle.calendar.schedule.pojo.DayScheduleBean;
 import com.marshal.moudle.calendar.schedule.ui.viewmodel.CalendarViewModel;
 import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath;
 import com.marshal.moudle.calendar.schedule.utils.DateSelectUtils;
 import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.databinding.ActivityAddCalendarBinding;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import java.util.ArrayList;
 
 @Route(path = CalendarRouterPath.APP_ADD_EVENT_CALENDAR)
 public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding> {
@@ -46,6 +44,7 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     private int currentYear;
     private int currentMonth;
     private int currentDay;
+    private ArrayList<DayScheduleBean> dayScheduleBeanArrayList;
 
     private CalendarViewModel viewModel;
 
@@ -66,6 +65,10 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             getBinding().tvYearMonth.setText(currentYear + "年" +currentMonth + "月");
             Log.d("TAG", "日期:" + currentYear + ", " + currentMonth + ", " +currentDay);
             weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
+            //切换日期，刷新数据
+            if(curTimeMillis !=0) {
+                viewModel.getScheduleData(String.valueOf(curTimeMillis));
+            }
         }
     };
 
@@ -120,7 +123,6 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
 
         getBinding().ivAddScheduleShow.setOnClickListener(v -> {
-
            weekFragment.startAddSchedulePage();
         });
 
@@ -156,8 +158,6 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             }
         });
 
-        getScheduleData();
-
         addAlarmManager();
     }
 
@@ -181,7 +181,9 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         Log.d("TAG", "设置闹钟时间戳 :" + calendar.getTimeInMillis());
     }
 
-    private void getScheduleData() {
+    @Override
+    public void subscribeBack() {
+        super.subscribeBack();
         Log.d("TAG", "当前时间戳 :" + curTimeMillis);
         viewModel.getScheduleData(String.valueOf(curTimeMillis));
 
@@ -193,25 +195,24 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             }
         });
 
+        viewModel.responseScheduleLiveData.observe(this,arrayList ->{
+            if(!arrayList.isEmpty()) {
+                //回调fragment渲染自定义view
+                dayScheduleBeanArrayList = arrayList;
+                weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
+            }
+        });
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 1413) {
-                String title = data.getStringExtra("title");
-                Log.d("TAG", "activity title: " + title);
-                weekFragment.setScheduleContent(title, 3);
-            }
-
-            if (requestCode == 1414) {
-                String title = data.getStringExtra("title");
-                Log.d("TAG", "activity title: " + title);
-                weekFragment.setScheduleContent(title, 2);
+            if(curTimeMillis !=0) {
+                viewModel.getScheduleData(String.valueOf(curTimeMillis));
             }
         }
-
     }
 
     /**
@@ -234,6 +235,7 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         }
 
         weekFragment.setViewType(type);
+        weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
 
     }
 

@@ -1,7 +1,6 @@
 package com.marshal.moudle.calendar.schedule.ui;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -10,23 +9,19 @@ import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.github.gzuliyujiang.wheelpicker.contract.OnDatePickedListener;
-import com.github.gzuliyujiang.wheelpicker.contract.OnDatimePickedListener;
-import com.github.gzuliyujiang.wheelpicker.entity.DateEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.DatimeEntity;
-import com.haibin.calendarview.CalendarUtil;
 import com.marshal.base_common.MApplication;
 import com.marshal.base_common.baseview.BaseViewActivity;
 import com.marshal.moudle.calendar.schedule.StoreCalendarDataKt;
 import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleBean;
+import com.marshal.moudle.calendar.schedule.pojo.PlanBean;
 import com.marshal.moudle.calendar.schedule.ui.viewmodel.AddScheduleViewModel;
-import com.marshal.moudle.calendar.schedule.ui.viewmodel.CalendarViewModel;
 import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath;
 import com.marshal.moudle.calendar.schedule.databinding.ActivityAddCalendarScheduleBinding;
-import com.marshal.moudle.calendar.schedule.utils.CalendarScheduleUtils;
 import com.marshal.moudle.calendar.schedule.utils.DateSelectUtils;
-import com.marshal.moudle.calendar.schedule.widget.SelectPlanDialogFragment;
+
+import java.util.Calendar;
+
 
 @Route(path = CalendarRouterPath.APP_ADD_CALENDAR_SCHEDULE)
 public class AddCalendarScheduleActivity extends BaseViewActivity<ActivityAddCalendarScheduleBinding> {
@@ -34,6 +29,7 @@ public class AddCalendarScheduleActivity extends BaseViewActivity<ActivityAddCal
     private AddScheduleViewModel viewModel;
     private CalendarScheduleBean scheduleBean;
     private SelectPlanDialogFragment dialogFragment;
+    private PlanBean selectedPlanBean;
 
     @Override
     public boolean hasToolbar() {
@@ -56,9 +52,15 @@ public class AddCalendarScheduleActivity extends BaseViewActivity<ActivityAddCal
         if (getIntent().getParcelableExtra("selectTime") != null) {
             scheduleBean = getIntent().getParcelableExtra("selectTime");
             Log.d("TAG", "data :" + scheduleBean.toString());
+            DatimeEntity timeEntity = DatimeEntity.now();
+            //设置日视图状态下如果点击时间段跳转就不处理，如果不是采取当前时间显示
+            if (scheduleBean.getStartHour() == 0 && !scheduleBean.isClickDayScheduleStatus()) {
+                scheduleBean.setStartHour(timeEntity.getTime().getHour());
+                scheduleBean.setEndHour(timeEntity.getTime().getHour());
+            }
+
             setStartTimeContent();
             setEndTimeContent();
-
         }
 
         ViewModelProvider.Factory factory =
@@ -66,22 +68,10 @@ public class AddCalendarScheduleActivity extends BaseViewActivity<ActivityAddCal
                         getInstance(MApplication.Companion.getInstance());
         viewModel = new ViewModelProvider(this, factory).get(AddScheduleViewModel.class);
 
-        dialogFragment = new SelectPlanDialogFragment();
+        if (dialogFragment == null) {
+            dialogFragment = new SelectPlanDialogFragment();
+        }
 
-        viewModel.getPlanList();
-
-        viewModel.responseResult.observe(this, aBoolean -> {
-            if (!aBoolean) {
-                if (StoreCalendarDataKt.getAppInfoToken().isEmpty()) {
-                    showToast("请重新登录");
-                }
-            }
-        });
-
-        viewModel.resultListData.observe(this,arrayList ->{
-            Log.d("TAG","planList :"+arrayList.size());
-
-        });
 
 
         getBinding().tvStartTimeContentSchedule.setOnClickListener(v -> {
@@ -125,18 +115,71 @@ public class AddCalendarScheduleActivity extends BaseViewActivity<ActivityAddCal
                     });
         });
 
+        getBinding().lvnSelectPlanSchedule.setOnClickListener(v -> {
+            if (!dialogFragment.isAdded()) {
+                dialogFragment.setSelectPlanDialogListener(bean -> {
+                    selectedPlanBean = bean;
+                    getBinding().tvSelectPlanContentSchedule.setText(bean.getTitle());
 
-        getBinding().tvCommitSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = getBinding().editTitleSchedule.getText().toString().trim();
-                if (title.isEmpty()) {
-                    showToast("请添加标题");
-                    return;
+                });
+                dialogFragment.show(getSupportFragmentManager(), "select_plan_dialog");
+            }
+        });
+
+
+        getBinding().tvCommitSchedule.setOnClickListener(v -> {
+            String title = getBinding().editTitleSchedule.getText().toString().trim();
+            String content = getBinding().editContentSchedule.getText().toString().trim();
+            if (title.isEmpty()) {
+                showToast("请添加标题");
+                return;
+            }
+
+            if (content.isEmpty()) {
+                showToast("请添加内容");
+                return;
+            }
+
+            if (selectedPlanBean == null) {
+                showToast("请选择规划");
+                return;
+            }
+
+            Calendar startTime = Calendar.getInstance();
+            startTime.set(scheduleBean.getYear(), scheduleBean.getStartMonth()-1, scheduleBean.getStartDay()
+                    , scheduleBean.getStartHour(), scheduleBean.getStartMinute(), 0);
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(scheduleBean.getYear(), scheduleBean.getEndMonth()-1, scheduleBean.getEndDay()
+                    , scheduleBean.getEndHour(), scheduleBean.getEndMinute(), 0);
+
+            viewModel.postScheduleAdd(title, content, startTime.getTimeInMillis(),endTime.getTimeInMillis(),
+                    selectedPlanBean.getId().toString(),selectedPlanBean.getTitle());
+
+        });
+
+    }
+
+    @Override
+    public void subscribeBack() {
+        super.subscribeBack();
+        viewModel.getPlanList();
+
+        viewModel.responseResult.observe(this, aBoolean -> {
+            if (!aBoolean) {
+                if (StoreCalendarDataKt.getAppInfoToken().isEmpty()) {
+                    showToast("请重新登录");
                 }
+            }
+        });
 
+        viewModel.resultListData.observe(this, arrayList -> {
+            Log.d("TAG", "planList :" + arrayList.size());
+            dialogFragment.setPlanList(arrayList);
+        });
+
+        viewModel.responseAddSchedule.observe(this,postResult ->{
+            if(postResult) {
                 Intent intent = new Intent();
-                intent.putExtra("title", title);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
@@ -145,12 +188,6 @@ public class AddCalendarScheduleActivity extends BaseViewActivity<ActivityAddCal
     }
 
     private void setStartTimeContent() {
-        if (scheduleBean.getStartHour() == 0 || scheduleBean.getStartMinute() == 0
-                || scheduleBean.getEndHour() == 0 || scheduleBean.getEndMinute() == 0) {
-            DatimeEntity timeEntity = DatimeEntity.now();
-            scheduleBean.setStartHour(timeEntity.getTime().getHour());
-            scheduleBean.setEndHour(timeEntity.getTime().getHour());
-        }
 
         String startTimeStr = scheduleBean.getStartMonth() + "月" + scheduleBean.getStartDay() + "日" + " "
                 + startHour2Str(scheduleBean.getStartHour(), scheduleBean.getStartMinute());
