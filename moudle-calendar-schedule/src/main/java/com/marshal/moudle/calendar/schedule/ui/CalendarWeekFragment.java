@@ -89,7 +89,7 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
     }
 
     public void setScheduleListShow(ArrayList<DayScheduleBean> arrayList) {
-        if (arrayList.isEmpty()) return;
+        if (arrayList ==null || arrayList.isEmpty()) return;
         this.dayScheduleBeanArrayList = arrayList;
 
         if (viewType == SCHEDULE_WEEK) {

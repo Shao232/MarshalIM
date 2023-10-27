@@ -164,10 +164,10 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         mAddSchedulePaint.setTextSize(dip2px(mContext, 14f));
 
         mAddScheduleBlueAreaPaint = new Paint();
-        Paint.Style mStyle = Paint.Style.FILL_AND_STROKE;
-        mAddScheduleBlueAreaPaint.setColor(getResources().getColor(R.color.select_schedule_bg));
+//        mAddScheduleBlueAreaPaint.setColor(getResources().getColor(R.color.select_schedule_bg));
+        mAddScheduleBlueAreaPaint.setColor(Color.argb(255, 0, 136, 244));
         mAddScheduleBlueAreaPaint.setAntiAlias(false);
-        mAddScheduleBlueAreaPaint.setStyle(mStyle);
+        mAddScheduleBlueAreaPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         // 线条的宽度
         mAddScheduleBlueAreaPaint.setStrokeWidth((float) 3f);
 
@@ -236,9 +236,15 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             }
 
             if (selectAddScheduleClick != null) {
-                Log.d("TAG", "startHour :" + startHour);
-                Log.d("TAG", "selectHour :" + selectHour);
+                isCreatingSchedule = false;
+                rectLeft = 0;
+                rectTop = 0;
+                rectRight = 0;
+                rectBottom = 0;
+                Log.d("TAG", "startHour :" + startHour + ", endHour :" + selectHour);
                 selectAddScheduleClick.onAddScheduleClickListener(startHour, selectHour);
+                postDelayed(this::invalidate, 300);
+
             }
         }
     }
@@ -270,6 +276,8 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                     // 如果超出屏幕范围，可以选择忽略这个事件或者进行相应的处理
                     return true;
                 }
+
+
 
                 //遍历全部区间，找到点击的区间范围
                 for (RectF itemF : drawRectList) {
@@ -379,13 +387,14 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         drawGrid(canvas);
         //绘制左侧的0到23个文字
         drawTimeText(canvas);
-        //如果添加日程
-        drawScheduleAreaBlue(canvas);
 
         if (!viewDataList.isEmpty()) {
             CalendarScheduleViewBean bean = viewDataList.get(0);
             drawAddedSchedule(canvas, bean);
         }
+
+        //如果添加日程
+        drawScheduleAreaBlue(canvas);
 
     }
 
@@ -459,7 +468,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         RectF startRect = scheduleData.get(String.valueOf(startHour));
         RectF endRect = scheduleData.get(String.valueOf(endHour));
         RectF addScheduleAreaRect;
-        if (startRect !=null && endRect!=null) {
+        if (startRect != null && endRect != null) {
             if (startHour == endHour) {
                 //如果开始时间等于结束时间,判断是一个单元格
                 addScheduleAreaRect = startRect;
@@ -467,9 +476,9 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                 addScheduleAreaRect = new RectF(startRect.left, startRect.top, startRect.right, endRect.bottom);
             }
 
-            Log.d("TAG","addScheduleAreaRect :" +addScheduleAreaRect.toString());
-            canvas.drawRect(addScheduleAreaRect,addedScheduleAreaPaint);
-
+            Log.d("TAG", "addScheduleAreaRect :" + addScheduleAreaRect.toString());
+            canvas.drawRect(addScheduleAreaRect, addedScheduleAreaPaint);
+            canvas.drawText(itemBean.getTitle(), addScheduleAreaRect.left + offset, addScheduleAreaRect.top + (offset * 2), mAddSchedulePaint);
 
         }
 
