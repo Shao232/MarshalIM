@@ -62,6 +62,7 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         });
 
         getBinding().customWeekView.setSelectAddScheduleClick((startTime, endTime, weekInfo) -> {
+
             startAddSchedulePage();
         });
 
@@ -89,7 +90,10 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
     }
 
     public void setScheduleListShow(ArrayList<DayScheduleBean> arrayList) {
-        if (arrayList ==null || arrayList.isEmpty()) return;
+        if (arrayList ==null || arrayList.isEmpty()) {
+            getBinding().customCalendarView.setCalendarScheduleList(null);
+            return;
+        }
         this.dayScheduleBeanArrayList = arrayList;
 
         if (viewType == SCHEDULE_WEEK) {
@@ -98,7 +102,6 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
             //获取全部日程信息，渲染到日视图上
             ArrayList<CalendarScheduleViewBean> dayScheduleList = new ArrayList<>();
             CalendarScheduleViewBean scheduleViewBean;
-
 
             for (DayScheduleBean itemBean : arrayList) {
                 scheduleViewBean = new CalendarScheduleViewBean();
@@ -119,6 +122,7 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
                 dayScheduleList.add(scheduleViewBean);
             }
 
+            Log.d("TAG", "数据量 :" + dayScheduleList.size());
             Log.d("TAG", "请求数据 转换 :" + dayScheduleList);
             getBinding().customCalendarView.setCalendarScheduleList(dayScheduleList);
         }

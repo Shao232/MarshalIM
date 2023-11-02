@@ -5,9 +5,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.marshal.base_common.baseadapter.BaseRecyclerAdapter;
+import com.marshal.moudle.calendar.schedule.pojo.AHeadTimeBean;
 import com.marshal.moudle.calendar.schedule.pojo.PlanBean;
 
-public class SelectPlanAdapter extends BaseRecyclerAdapter<SelectContentViewHolder, PlanBean> {
+public class SelectAHeadTimeAdapter extends BaseRecyclerAdapter<SelectContentViewHolder, AHeadTimeBean> {
 
     @NonNull
     @Override
@@ -17,10 +18,7 @@ public class SelectPlanAdapter extends BaseRecyclerAdapter<SelectContentViewHold
 
     @Override
     public void bindViewHolderData(@NonNull SelectContentViewHolder holder, int position) {
-        PlanBean item = getItemList().get(position);
+        AHeadTimeBean item = getItemList().get(position);
         holder.tvSelectPlanItem.setText(item.getTitle());
-
     }
-
-
 }

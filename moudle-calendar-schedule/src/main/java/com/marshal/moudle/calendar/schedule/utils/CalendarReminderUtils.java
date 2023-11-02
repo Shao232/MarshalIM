@@ -26,23 +26,18 @@ import java.util.TimeZone;
  * 日历相关的资料：https://developer.android.com/guide/topics/providers/calendar-provider.html?hl=zh-cn#calendar
  */
 public class CalendarReminderUtils {
-    private static String calanderURL;
-    private static String calanderEventURL;
-    private static String calanderRemiderURL;
-
-    private static String CALENDARS_NAME = "";
-    private static String CALENDARS_ACCOUNT_NAME = "";
-    private static String CALENDARS_ACCOUNT_TYPE = "";
-    private static String CALENDARS_DISPLAY_NAME = "";
-
     /**
      * 初始化uri
      */
-    static {
-        calanderURL = "content://com.android.calendar/calendars";
-        calanderEventURL = "content://com.android.calendar/events";
-        calanderRemiderURL = "content://com.android.calendar/reminders";
-    }
+    private static String calenderURL = "content://com.android.calendar/calendars";
+    private static String calenderEventURL = "content://com.android.calendar/events";
+    private static String calenderRemiderURL = "content://com.android.calendar/reminders";
+
+    private static String CALENDARS_NAME = "MarshalList";
+    private static String CALENDARS_ACCOUNT_NAME = "marshal";
+    private static String CALENDARS_ACCOUNT_TYPE = "com.marshal";
+    private static String CALENDARS_DISPLAY_NAME = "Marshal_账号";
+
 
     /**
      * 获取日历ID
@@ -71,7 +66,7 @@ public class CalendarReminderUtils {
     @SuppressLint("Range")
     private static int checkCalendarAccounts(Context context) {
 
-        Cursor userCursor = context.getContentResolver().query(Uri.parse(calanderURL), null, null, null, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL + " ASC ");
+        Cursor userCursor = context.getContentResolver().query(Uri.parse(calenderURL), null, null, null, CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL + " ASC ");
         try {
             if (userCursor == null)//查询返回空值
                 return -1;
@@ -110,7 +105,7 @@ public class CalendarReminderUtils {
         value.put(CalendarContract.Calendars.OWNER_ACCOUNT, CALENDARS_ACCOUNT_NAME);
         value.put(CalendarContract.Calendars.CAN_ORGANIZER_RESPOND, 0);
 
-        Uri calendarUri = Uri.parse(calanderURL);
+        Uri calendarUri = Uri.parse(calenderURL);
         calendarUri = calendarUri.buildUpon()
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
                 .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, CALENDARS_ACCOUNT_NAME)
@@ -143,7 +138,7 @@ public class CalendarReminderUtils {
         event.put(CalendarContract.Events.HAS_ALARM, 1);//设置有闹钟提醒
         event.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());//这个是时区，必须有，
         //添加事件
-        Uri newEvent = context.getContentResolver().insert(Uri.parse(calanderEventURL), event);
+        Uri newEvent = context.getContentResolver().insert(Uri.parse(calenderEventURL), event);
         return newEvent;
     }
 
@@ -217,7 +212,7 @@ public class CalendarReminderUtils {
         // 提前remind_minutes分钟有提醒
         values.put(CalendarContract.Reminders.MINUTES, remind_minutes);
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-        Uri uri = context.getContentResolver().insert(Uri.parse(calanderRemiderURL), values);
+        Uri uri = context.getContentResolver().insert(Uri.parse(calenderRemiderURL), values);
         if(uri == null) {
             // 添加提醒失败直接返回
             if(null != callback){
@@ -243,7 +238,7 @@ public class CalendarReminderUtils {
      */
     @SuppressLint("Range")
     public static void deleteCalendarEventRemind(Context context, String title, String description, long startTime, onCalendarRemindListener callback){
-        Cursor eventCursor = context.getContentResolver().query(Uri.parse(calanderEventURL), null, null, null, null);
+        Cursor eventCursor = context.getContentResolver().query(Uri.parse(calenderEventURL), null, null, null, null);
         try {
             if (eventCursor == null)//查询返回空值
                 return;
@@ -255,7 +250,7 @@ public class CalendarReminderUtils {
                     long dtstart = eventCursor.getLong(eventCursor.getColumnIndex("dtstart"));
                     if (!TextUtils.isEmpty(title) && title.equals(eventTitle) && !TextUtils.isEmpty(description) && description.equals(eventDescription) && dtstart==startTime ) {
                         int id = eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID));//取得id
-                        Uri deleteUri = ContentUris.withAppendedId(Uri.parse(calanderEventURL), id);
+                        Uri deleteUri = ContentUris.withAppendedId(Uri.parse(calenderEventURL), id);
                         int rows = context.getContentResolver().delete(deleteUri, null, null);
                         if (rows == -1) {
                             // 删除提醒失败直接返回

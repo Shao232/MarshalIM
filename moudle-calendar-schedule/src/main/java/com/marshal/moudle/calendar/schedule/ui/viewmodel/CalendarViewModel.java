@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.marshal.base_common.baseview.BaseViewModel;
+import com.marshal.moudle.calendar.schedule.https.CalendarThrowableHelper;
 import com.marshal.moudle.calendar.schedule.https.HttpSubscribe;
 import com.marshal.moudle.calendar.schedule.https.ScheduleHttpRequestFactory;
 import com.marshal.moudle.calendar.schedule.https.ScheduleJoinApi;
@@ -36,7 +37,9 @@ public class CalendarViewModel extends BaseViewModel {
                     @Override
                     public void onThrowable(Throwable e) {
                         Log.e("TAG", "CalendarViewModel e:" + e.toString());
+
                         getResponseResult().postValue(false);
+                        getErrorData().postValue(e);
                     }
                 });
 

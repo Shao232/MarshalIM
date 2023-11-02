@@ -10,6 +10,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+
+import com.marshal.moudle.calendar.schedule.utils.SizeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,6 +122,20 @@ public class CustomWeekCalendarView extends View {
 
 
         heightSpaceSize = dip2px(mContext, 36f); // 每个单元格的大小，可以根据需要调整
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mWidth = SizeUtils.getScreenWidth(mContext);
+                mHeight = SizeUtils.dip2px(getContext(), 50f * 32);
+                // 每个单元格的大小，可以根据需要调整
+                heightSpaceSize = dip2px(mContext, 50f);
+                //创建RectF数据
+                createRectFArray();
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
     }
 
     @Override
@@ -186,10 +203,8 @@ public class CustomWeekCalendarView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = getMeasuredWidth();
-        mHeight = getMeasuredHeight();
-        int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+        int parentWidth = MeasureSpec.getSize(mWidth);
+        int parentHeight = MeasureSpec.getSize(mHeight);
         // 根据需要设置自定义View的高度
         setMeasuredDimension(parentWidth, parentHeight);
     }
@@ -197,8 +212,7 @@ public class CustomWeekCalendarView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //创建recf数据
-        createRectFArray();
+
         drawGrid(canvas);
         drawTimeText(canvas);
 
@@ -207,6 +221,7 @@ public class CustomWeekCalendarView extends View {
         }
     }
 
+    //创建recf数据
     private void createRectFArray() {
         widthSpaceSize = (mWidth - dip2px(mContext, 40f)) / 7;
         int spaceStartX = dip2px(mContext, 40f);

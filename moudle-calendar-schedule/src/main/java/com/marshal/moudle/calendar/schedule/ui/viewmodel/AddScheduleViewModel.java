@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.marshal.base_common.baseview.BaseViewModel;
@@ -49,18 +50,25 @@ public class AddScheduleViewModel extends BaseViewModel {
                 });
     }
 
-    public void postScheduleAdd(String title,String remark,Long startTime,Long endTime,String planId,String planTitle){
+    public void postScheduleAdd(String title,String remark,Long startTime,Long endTime,ArrayList<Long> aHeadList,String planId,String planTitle){
         HashMap<String,Object> params = new HashMap<>();
         params.put("title",title);
         params.put("remark",remark);
         params.put("startTime",String.valueOf(startTime));
         params.put("endTime",String.valueOf(endTime));
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id",planId);
-        jsonObject.addProperty("title",planTitle);
-        params.put("plan",jsonObject);
-        Log.d("TAG","plan data :"+ GsonUtils.INSTANCE.objToJson(params));
+        JsonArray jsonArray = new JsonArray();
+        for(Long number:aHeadList){
+            jsonArray.add(number);
+        }
+        params.put("aheadTimeList",jsonArray);
+
+        if(!planId.isEmpty() && !planTitle.isEmpty()) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("id",planId);
+            jsonObject.addProperty("title",planTitle);
+            params.put("plan",jsonObject);
+        }
 
         ScheduleJoinApi.postScheduleAdd(params)
                 .subscribeOn(Schedulers.io())

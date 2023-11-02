@@ -25,15 +25,15 @@ public abstract class HttpSubscribe<T> implements Observer<T> {
     public void onNext(@NonNull T t) {
         if (t instanceof ResponseResultBean) {
             ResponseResultBean<T> bean = (ResponseResultBean<T>) t;
-            if(bean.getCode() == 200) {
+            if (bean.getCode() == 200) {
                 onSuccess(t);
-            }else {
-                if(bean.getMsg().equals("token已过期，请重新登陆")){
+            } else {
+                if (bean.getMsg().equals("token已过期，请重新登陆")) {
                     StoreCalendarDataKt.putAppInfoToken("");
                 }
                 onThrowable(new Throwable(bean.getMsg()));
             }
-        }else {
+        } else {
             onThrowable(new Throwable("类型错误"));
         }
     }
@@ -46,7 +46,8 @@ public abstract class HttpSubscribe<T> implements Observer<T> {
 
     @Override
     public void onError(@NonNull Throwable e) {
-        onThrowable(e);
+        String errorMsg = CalendarThrowableHelper.tryThrowableMessage(e);
+        onThrowable(new Throwable(errorMsg));
     }
 
     public abstract void onSuccess(T response);

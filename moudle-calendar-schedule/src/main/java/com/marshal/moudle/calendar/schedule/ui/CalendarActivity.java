@@ -33,6 +33,7 @@ import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.databinding.ActivityAddCalendarBinding;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Route(path = CalendarRouterPath.APP_ADD_EVENT_CALENDAR)
 public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding> {
@@ -195,12 +196,16 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             }
         });
 
+        viewModel.getErrorData().observe(this,throwable -> {
+            if(throwable.getMessage() !=null) {
+                showToast(throwable.getMessage());
+            }
+        });
+
         viewModel.responseScheduleLiveData.observe(this,arrayList ->{
-            if(!arrayList.isEmpty()) {
                 //回调fragment渲染自定义view
                 dayScheduleBeanArrayList = arrayList;
                 weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
-            }
         });
 
     }
