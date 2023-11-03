@@ -8,38 +8,91 @@
 
     <include layout="@layout/include_toolbar" />
 
-    <!--    <com.marshal.customview.CustomView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"/>
-    -->
+<!--    <TextView-->
+<!--        android:id="@+id/tv_anim_view"-->
+<!--        android:layout_width="@dimen/dp_100"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_above="@id/btn_start_anim"-->
+<!--        android:layout_below="@id/toolbar_custom"-->
+<!--        android:layout_marginStart="@dimen/dp_20"-->
+<!--        android:background="@color/im_chat_sender_bubble_color"-->
+<!--        android:gravity="center"-->
+<!--        android:text="AB"-->
+<!--        android:textColor="@color/text_color_black"-->
+<!--        android:textSize="40dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" />-->
+
+
+    <!--    android:animateLayoutChanges="true"  -->
+    <LinearLayout
+        android:id="@+id/lvn_show_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true"
+        android:background="@color/white_mode"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/toolbar_custom"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_custom" >
 
         <TextView
-            android:id="@+id/tv_anim_view"
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_custom"
-            android:layout_below="@id/toolbar_custom"
-            android:layout_above="@id/btn_start_anim"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/dp_20"
-            android:background="@color/im_chat_sender_bubble_color"
-            android:text="AB"
+            android:id="@+id/tv_show"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="展示列表"
+            android:textSize="18dp"
             android:textColor="@color/text_color_black"
-            android:textSize="40dp"
             android:gravity="center"/>
 
-<!--    <com.marshal.calendar.DragRectView-->
-<!--        android:id="@+id/drag_rect_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_below="@+id/toolbar_custom"-->
-<!--        android:layout_above="@id/btn_start_anim"-->
-<!--        app:rect_left="80"-->
-<!--        app:rect_top="200"-->
-<!--        app:rect_right="300"-->
-<!--        app:rect_bottom="400"/>-->
+
+
+        <TextView
+            android:id="@+id/tv_item_one"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="item1"
+            android:textSize="18dp"
+            android:textColor="@color/text_color_black"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/tv_item_two"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="item2"
+            android:textSize="18dp"
+            android:textColor="@color/text_color_black"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_item_three"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="item3"
+            android:textSize="18dp"
+            android:textColor="@color/text_color_black"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_item_four"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="item4"
+            android:textSize="18dp"
+            android:textColor="@color/text_color_black"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btn_start_anim"

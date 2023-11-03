@@ -1,6 +1,7 @@
 package com.marshal.customview
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.AppRouterPath
 import com.marshal.base_common.baseview.BaseViewActivity
@@ -9,6 +10,8 @@ import com.marshal.databinding.ActivityCustomViewBinding
 
 @Route(path = AppRouterPath.APP_CUSTOM_VIEW_PAGE)
 class CustomViewActivity : BaseViewActivity<ActivityCustomViewBinding>() {
+
+    private var showItem:Boolean = false
 
     override fun hasToolbar(): Boolean = true
 
@@ -26,6 +29,16 @@ class CustomViewActivity : BaseViewActivity<ActivityCustomViewBinding>() {
         binding?.btnStartAnim?.setOnClickListener {
 //            val animationUtils = AnimationUtils.loadAnimation(this, R.anim.scale_01)
 //            binding?.tvAnimView?.startAnimation(animationUtils)
+
+        }
+
+        binding?.lvnShowLayout?.setOnClickListener {
+            showItem = showItem != true
+
+            binding?.tvItemOne?.isVisible = showItem;
+            binding?.tvItemTwo?.isVisible = showItem;
+            binding?.tvItemThree?.isVisible = showItem;
+            binding?.tvItemFour?.isVisible = showItem;
 
         }
 
