@@ -38,6 +38,7 @@
     <color name="text_color_gray_hint">#B5B4B4</color>
     <color name="text_color_black">#FF000000</color>
     <color name="select_schedule_bg">#ff0088F4</color>
+    <color name="select_fill_schedule_bg">#2c0088F4</color>
     <color name="show_added_schedule_bg">#848688</color>
     <!--虚线边框背景颜色-->
     <color name="dottedline_bg">#0497ff</color>

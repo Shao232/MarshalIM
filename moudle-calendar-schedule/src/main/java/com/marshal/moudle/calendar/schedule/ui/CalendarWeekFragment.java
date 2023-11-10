@@ -72,7 +72,6 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
         Intent intent = new Intent(getActivity(), AddCalendarScheduleActivity.class);
         Log.d("TAG", "weekFragment scheduleBean :" + scheduleBean.toString());
         intent.putExtra("selectTime", (Parcelable) scheduleBean);
-
         getActivity().startActivityForResult(intent, 1413);
 
     }
@@ -122,7 +121,6 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
                 dayScheduleList.add(scheduleViewBean);
             }
 
-            Log.d("TAG", "数据量 :" + dayScheduleList.size());
             Log.d("TAG", "请求数据 转换 :" + dayScheduleList);
             getBinding().customCalendarView.setCalendarScheduleList(dayScheduleList);
         }

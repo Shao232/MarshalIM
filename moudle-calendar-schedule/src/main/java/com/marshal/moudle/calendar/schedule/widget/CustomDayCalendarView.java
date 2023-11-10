@@ -18,11 +18,16 @@ import android.widget.Toast;
 
 
 import com.marshal.moudle.calendar.schedule.R;
+import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleRectFBean;
 import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleViewBean;
 import com.marshal.moudle.calendar.schedule.utils.SizeUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CustomDayCalendarView extends View implements View.OnClickListener, View.OnTouchListener {
@@ -61,6 +66,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     private final HashMap<String, RectF> scheduleData = new HashMap<>();
 
     private final ArrayList<CalendarScheduleViewBean> viewDataList = new ArrayList<>();
+    private final ArrayList<CalendarScheduleRectFBean> scheduleRectFBeanList = new ArrayList<>();
 
     /**
      * 点击的范围
@@ -101,6 +107,17 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     private Rect mTopRect;
     private SelectAddScheduleClick selectAddScheduleClick;
     private Paint addedScheduleAreaPaint;
+    //绘制已经添加的日程边框
+    private Paint addedScheduleFramePaint;
+    private Paint addedScheduleFillPaint;
+
+    //绘制已经添加的日程开始时间和结束时间的两个点，决定整个日程的范围
+    private int drawTextX = 0;
+    private int drawTextY = 0;
+    private int drawTextAreaLeft = 0;
+    private int drawTextAreaTop = 0;
+    private int drawTextAreaRight = 0;
+    private int drawTextAreaBottom = 0;
 
 
     public CustomDayCalendarView(Context context) {
@@ -122,27 +139,110 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
     }
 
     public void setCalendarScheduleList(ArrayList<CalendarScheduleViewBean> arrayList) {
-        if(arrayList!=null) {
+        if (arrayList != null) {
             this.viewDataList.clear();
             this.viewDataList.addAll(arrayList);
-        }else {
+        } else {
             this.viewDataList.clear();
         }
 
+        //处理数据，转换成rectF
+        calendarScheduleDataParse();
+        //刷新添加区域消失
         clearCreateScheduleArea();
+        //重绘
         invalidate();
     }
+
+    private void calendarScheduleDataParse() {
+        //先清空
+        scheduleRectFBeanList.clear();
+        if (!viewDataList.isEmpty()) {
+
+            //第一步转换数据
+            dataParseRectFList();
+            //排序数据
+            Collections.sort((List) scheduleRectFBeanList);
+            //反转，从大到小
+            Collections.reverse(scheduleRectFBeanList);
+            //布局
+            float moveOffset = 0f;
+            for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
+                CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
+                int oldIndex = index - 1;
+                if (oldIndex <= 0) {
+                    oldIndex = 0;
+                }
+                CalendarScheduleRectFBean oldBean = scheduleRectFBeanList.get(oldIndex);
+                //判断是否重叠区域
+//                if (itemBean.getRectDrawSchedule().top >= oldBean.getRectDrawSchedule().top &&
+//                        itemBean.getRectDrawSchedule().bottom <= oldBean.getRectDrawSchedule().bottom) {
+//
+//                }
+
+// itemBean.getRectDrawSchedule().right = dip2px(mContext, 100f);
+                Log.d("TAG", "item :" + itemBean);
+            }
+        }
+    }
+
+    /**
+     * 获取数据源
+     * 得到日程的长度 比如 3格， 5格 等
+     * 得到需要绘制日程数据
+     * 全部转换成CalendarScheduleRectFBean对象后放入集合中
+     */
+    private void dataParseRectFList() {
+
+        String startHourStr;
+        String endHourStr;
+        int index;
+        for (index = 0; index < viewDataList.size(); index++) {
+            CalendarScheduleViewBean itemBean = viewDataList.get(index);
+            int startHour = itemBean.getStartHour();
+            int endHour = itemBean.getEndHour();
+            //计数从0开始,所以需要在最后加1
+            //计算一个日程所占的单元格数量
+            int tableCount = endHour - startHour + 1;
+            if (startHour < 10) {
+                startHourStr = "0" + startHour;
+            } else {
+                startHourStr = String.valueOf(startHour);
+            }
+
+            if (endHour < 10) {
+                endHourStr = "0" + endHour;
+            } else {
+                endHourStr = String.valueOf(endHour);
+            }
+
+            RectF startRect = scheduleData.get(startHourStr);
+            RectF endRect = scheduleData.get(endHourStr);
+            RectF addScheduleTableAreaRect;
+
+            if (startRect != null && endRect != null) {
+                if (startHour == endHour) {
+                    //如果开始时间等于结束时间,判断是一个单元格
+                    addScheduleTableAreaRect = new RectF(startRect.left, startRect.top, startRect.right, startRect.bottom);
+                } else {
+                    addScheduleTableAreaRect = new RectF(startRect.left, startRect.top, startRect.right, endRect.bottom);
+                }
+                scheduleRectFBeanList.add(new CalendarScheduleRectFBean(index, tableCount, addScheduleTableAreaRect, itemBean.getTitle()));
+            }
+        }
+    }
+
 
     /**
      * 清除添加区域的数据
      * 设置重新获取数据源时，添加区域消失
      */
-    private void clearCreateScheduleArea(){
+    private void clearCreateScheduleArea() {
         isCreatingSchedule = false;
         rectLeft = 0;
         rectTop = 0;
-        rectRight =0;
-        rectBottom=0;
+        rectRight = 0;
+        rectBottom = 0;
     }
 
     private void init() {
@@ -180,6 +280,17 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         addedScheduleAreaPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         addedScheduleAreaPaint.setStrokeWidth(1f);
 
+        addedScheduleFramePaint = new Paint();
+        addedScheduleFramePaint.setAntiAlias(false);
+        addedScheduleFramePaint.setStyle(Paint.Style.STROKE);
+        addedScheduleFramePaint.setStrokeWidth(5f);
+        addedScheduleFramePaint.setColor(getResources().getColor(R.color.select_schedule_bg));
+
+        addedScheduleFillPaint = new Paint();
+        addedScheduleFillPaint.setAntiAlias(false);
+        addedScheduleFillPaint.setStyle(Paint.Style.FILL);
+        addedScheduleFillPaint.setStrokeWidth(5f);
+        addedScheduleFillPaint.setColor(getResources().getColor(R.color.select_fill_schedule_bg));
 
         mTopBmp = BitmapFactory.decodeResource(getResources(), R.drawable.stretch_bottom);
         mBottomBmp = BitmapFactory.decodeResource(getResources(), R.drawable.stretch_bottom);
@@ -203,9 +314,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-
-
-
     }
 
 
@@ -393,9 +501,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         drawTimeText(canvas);
 
         //绘制已经有的日程
-        if (!viewDataList.isEmpty()) {
-            drawAddedSchedule(canvas);
-        }
+        drawAddedSchedule(canvas);
 
         //绘制添加日程
         drawScheduleAreaBlue(canvas);
@@ -439,7 +545,8 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
 
     /**
      * 绘制添加日程的区域
-     * @param canvas  画布
+     *
+     * @param canvas 画布
      */
     private void drawScheduleAreaBlue(Canvas canvas) {
         if (isCreatingSchedule) {
@@ -465,107 +572,108 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
         }
     }
 
-    //绘制已经添加的日程开始时间和结束时间的两个点，决定整个日程的范围
-    RectF addScheduleTableAreaRect;
-    int drawTextX = 0;
-    int drawTextY = 0;
-    int drawTextAreaLeft = 0;
-    int drawTextAreaTop = 0;
-    int drawTextAreaRight = 0;
-    int drawTextAreaBottom = 0;
 
     /**
      * 绘制保存的日程
+     * <p>
+     * 1.循环保存的日程集合
+     * 2.当时间段长的和时间段短的发生冲突，长的覆盖在上面
      *
      * @param canvas 画布
      */
     private void drawAddedSchedule(Canvas canvas) {
-        int drawAddedTextOffset = dip2px(mContext, 6f);
-        int drawAddedAreaOffset = dip2px(mContext, 4f);
-        String startHourStr;
-        String endHourStr;
+        if (!scheduleRectFBeanList.isEmpty()) {
+//            int drawAddedTextOffset = dip2px(mContext, 6f);
+//            int drawAddedAreaOffset = dip2px(mContext, 4f);
+//            String startHourStr;
+//            String endHourStr;
+//            RectF tempOldScheduleBean = null;
 
-        int index = 0;
+            int index;
+            for (index = 0; index < scheduleRectFBeanList.size(); index++) {
+                CalendarScheduleRectFBean itemRect = scheduleRectFBeanList.get(index);
 
-        RectF tempOldScheduleBean = null;
-        for (CalendarScheduleViewBean itemBean : viewDataList) {
-            int startHour = itemBean.getStartHour();
-            int endHour = itemBean.getEndHour();
-            //计数从0开始,所以需要在最后加1
-            //计算一个日程所占的单元格数量
-            int tableCount = endHour - startHour +1;
-
-            if (startHour < 10) {
-                startHourStr = "0" + startHour;
-            } else {
-                startHourStr = String.valueOf(startHour);
-            }
-
-            if (endHour < 10) {
-                endHourStr = "0" + endHour;
-            } else {
-                endHourStr = String.valueOf(endHour);
-            }
-
-            RectF startRect = scheduleData.get(startHourStr);
-            RectF endRect = scheduleData.get(endHourStr);
-
-            if (startRect != null && endRect != null) {
-                if (startHour == endHour) {
-                    //如果开始时间等于结束时间,判断是一个单元格
-                    addScheduleTableAreaRect = startRect;
-                } else {
-                    addScheduleTableAreaRect = new RectF(startRect.left, startRect.top, startRect.right, endRect.bottom);
-                }
-                Log.d("TAG", "addScheduleTableAreaRect :" + addScheduleTableAreaRect);
-
-
-                if (index == 0) {
-                    drawTextAreaLeft = (int) addScheduleTableAreaRect.left + drawAddedAreaOffset;
-                } else {
-                    if (tempOldScheduleBean != null && tempOldScheduleBean.top == addScheduleTableAreaRect.top
-                            && tempOldScheduleBean.bottom == addScheduleTableAreaRect.bottom) {
-                        //如果单元格和上一个单元格是相同的单元格内，
-                        drawTextAreaLeft = (int) drawTextAreaRight + drawAddedAreaOffset;
-                    } else {
-                        //如果单元格和上一个不一致了,需要重新初始化
-                        drawTextAreaLeft = (int) addScheduleTableAreaRect.left + drawAddedAreaOffset;
-
-                        int distance = (int)(addScheduleTableAreaRect.bottom-addScheduleTableAreaRect.top);
-                        Log.d("TAG","distance :"+distance);
-                        Log.d("TAG","table height :"+heightSpaceSize);
-
-                    }
-                }
-
-                drawTextAreaRight = Math.min((int) drawTextAreaLeft + (drawAddedAreaOffset * 10), mWidth);
-                drawTextAreaTop = (int) addScheduleTableAreaRect.top;
-                drawTextAreaBottom = (int) addScheduleTableAreaRect.bottom;
-
-                RectF drawTextAreaRect = new RectF(drawTextAreaLeft,drawTextAreaTop,drawTextAreaRight,drawTextAreaBottom);
-
-                drawTextX = (int) drawTextAreaRect.left + drawAddedTextOffset;
-                drawTextY = (int) drawTextAreaRect.top + dip2px(mContext, 20f);
-
-                canvas.drawRect(drawTextAreaRect, addedScheduleAreaPaint);
-
-
-
-                String showTitle;
-                if (itemBean.getTitle().length() >2) {
-                    showTitle = itemBean.getTitle().substring(0,2);
-                }else {
-                    showTitle = itemBean.getTitle();
-                }
-
-                canvas.drawText(showTitle, drawTextX, drawTextY, mAddSchedulePaint);
-
-                tempOldScheduleBean = addScheduleTableAreaRect;
-                index++;
+                canvas.drawRect(itemRect.getRectDrawSchedule(), addedScheduleFramePaint);
+                canvas.drawRect(itemRect.getRectDrawSchedule(), addedScheduleFillPaint);
             }
         }
 
 
+//        for (CalendarScheduleViewBean itemBean : viewDataList) {
+//            int startHour = itemBean.getStartHour();
+//            int endHour = itemBean.getEndHour();
+//            //计数从0开始,所以需要在最后加1
+//            //计算一个日程所占的单元格数量
+//            int tableCount = endHour - startHour +1;
+//
+//            if (startHour < 10) {
+//                startHourStr = "0" + startHour;
+//            } else {
+//                startHourStr = String.valueOf(startHour);
+//            }
+//
+//            if (endHour < 10) {
+//                endHourStr = "0" + endHour;
+//            } else {
+//                endHourStr = String.valueOf(endHour);
+//            }
+//
+//            RectF startRect = scheduleData.get(startHourStr);
+//            RectF endRect = scheduleData.get(endHourStr);
+//
+//            if (startRect != null && endRect != null) {
+//                if (startHour == endHour) {
+//                    //如果开始时间等于结束时间,判断是一个单元格
+//                    addScheduleTableAreaRect = startRect;
+//                } else {
+//                    addScheduleTableAreaRect = new RectF(startRect.left, startRect.top, startRect.right, endRect.bottom);
+//                }
+//                Log.d("TAG", "addScheduleTableAreaRect :" + addScheduleTableAreaRect);
+//
+//
+//                if (index == 0) {
+//                    drawTextAreaLeft = (int) addScheduleTableAreaRect.left + drawAddedAreaOffset;
+//                } else {
+//                    if (tempOldScheduleBean != null && tempOldScheduleBean.top == addScheduleTableAreaRect.top
+//                            && tempOldScheduleBean.bottom == addScheduleTableAreaRect.bottom) {
+//                        //如果单元格和上一个单元格是相同的单元格内，
+//                        drawTextAreaLeft = (int) drawTextAreaRight + drawAddedAreaOffset;
+//                    } else {
+//                        //如果单元格和上一个不一致了,需要重新初始化
+//                        drawTextAreaLeft = (int) addScheduleTableAreaRect.left + drawAddedAreaOffset;
+//
+//                        int distance = (int)(addScheduleTableAreaRect.bottom-addScheduleTableAreaRect.top);
+//                        Log.d("TAG","distance :"+distance);
+//                        Log.d("TAG","table height :"+heightSpaceSize);
+//
+//
+//                    }
+//                }
+//
+//                drawTextAreaRight = Math.min((int) drawTextAreaLeft + (drawAddedAreaOffset * 10), mWidth);
+//                drawTextAreaTop = (int) addScheduleTableAreaRect.top;
+//                drawTextAreaBottom = (int) addScheduleTableAreaRect.bottom;
+//
+//                RectF drawTextAreaRect = new RectF(drawTextAreaLeft,drawTextAreaTop,drawTextAreaRight,drawTextAreaBottom);
+//
+//                drawTextX = (int) drawTextAreaRect.left + drawAddedTextOffset;
+//                drawTextY = (int) drawTextAreaRect.top + dip2px(mContext, 20f);
+//
+//                canvas.drawRect(drawTextAreaRect, addedScheduleAreaPaint);
+//
+//                String showTitle;
+//                if (itemBean.getTitle().length() >2) {
+//                    showTitle = itemBean.getTitle().substring(0,2);
+//                }else {
+//                    showTitle = itemBean.getTitle();
+//                }
+//
+//                canvas.drawText(showTitle, drawTextX, drawTextY, mAddSchedulePaint);
+//
+//                tempOldScheduleBean = addScheduleTableAreaRect;
+//                index++;
+//            }
+//        }
     }
 
 

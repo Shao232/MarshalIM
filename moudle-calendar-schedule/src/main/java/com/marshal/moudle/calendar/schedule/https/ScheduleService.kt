@@ -8,7 +8,6 @@ import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -16,21 +15,17 @@ interface ScheduleService {
 
     //登录
     @POST("/user/login")
-    @Headers("Content-Type:application/json")
     fun postScheduleLogin(@Body data: RequestBody): Observable<ResponseResultBean<UserInfoBean>>
 
     //获取每天日程列表
     @GET("/schedule/daily/list")
-    @Headers("Content-Type:application/json")
     fun getScheduleDailyList(@Query("theDay") theDay:String): Observable<ResponseResultBean<ArrayList<DayScheduleBean>>>
 
     //获取规划列表
     @GET("plan/list")
-    @Headers("Content-Type:application/json")
     fun getPlanList(): Observable<ResponseResultBean<ArrayList<PlanBean>>>
 
     @POST("/schedule/add")
-    @Headers("Content-Type:application/json")
     fun postScheduleAdd(@Body data: RequestBody):Observable<ResponseResultBean<Boolean>>
 
 

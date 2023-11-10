@@ -34,6 +34,7 @@ object ScheduleHttpRequestFactory {
                 if (appToken?.isNotEmpty() == true) {
                     requestHeaderBuilder.addHeader("Token", appToken)
                 }
+                requestHeaderBuilder.addHeader("Content-Type","application/json")
                 val requestHeader = requestHeaderBuilder.build()
                 chain.proceed(requestHeader)
             })
