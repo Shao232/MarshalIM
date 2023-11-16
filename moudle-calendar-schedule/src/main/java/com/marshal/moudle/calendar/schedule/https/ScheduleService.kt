@@ -14,18 +14,18 @@ import retrofit2.http.Query
 interface ScheduleService {
 
     //登录
-    @POST("/user/login")
+    @POST("user/login")
     fun postScheduleLogin(@Body data: RequestBody): Observable<ResponseResultBean<UserInfoBean>>
 
     //获取每天日程列表
-    @GET("/schedule/daily/list")
+    @GET("schedule/daily/list")
     fun getScheduleDailyList(@Query("theDay") theDay:String): Observable<ResponseResultBean<ArrayList<DayScheduleBean>>>
 
     //获取规划列表
     @GET("plan/list")
     fun getPlanList(): Observable<ResponseResultBean<ArrayList<PlanBean>>>
 
-    @POST("/schedule/add")
+    @POST("schedule/add")
     fun postScheduleAdd(@Body data: RequestBody):Observable<ResponseResultBean<Boolean>>
 
 

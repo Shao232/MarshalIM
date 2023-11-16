@@ -15,7 +15,7 @@ object ScheduleHttpRequestFactory {
     private var retrofit: Retrofit? = null
 
     //https://mouce.xyz
-    private const val scheduleUrl: String = "https://mouce.xyz"
+    private const val scheduleUrl: String = "https://mouce.xyz/api/"
     private var okHttpClient: OkHttpClient? = null
 
     init {
@@ -39,8 +39,8 @@ object ScheduleHttpRequestFactory {
                 chain.proceed(requestHeader)
             })
             .addInterceptor(interceptor)
-            .writeTimeout(5000, TimeUnit.MILLISECONDS)
-            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .writeTimeout(3000, TimeUnit.MILLISECONDS)
+            .readTimeout(3000, TimeUnit.MILLISECONDS)
             .build()
 
         retrofit = Retrofit.Builder()

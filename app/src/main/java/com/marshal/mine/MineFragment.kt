@@ -1,7 +1,6 @@
 package com.marshal.mine
 
 import NoShakeBtnUtil
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.alibaba.android.arouter.launcher.ARouter
@@ -13,6 +12,7 @@ import com.marshal.base_common.store.putAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserPwd
 import com.marshal.databinding.FragmentMineBinding
 import com.marshal.main.MainViewModel
+import com.marshal.moudle.calendar.schedule.putAppInfoToken
 
 class MineFragment : BaseViewFragment<FragmentMineBinding>() {
 
@@ -42,6 +42,7 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
         binding?.btnToLogout?.setOnClickListener {
             putAppLoginUserAccount("")
             putAppLoginUserPwd("")
+            putAppInfoToken("")
             showToast("退出登录成功")
         }
 

@@ -50,6 +50,7 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     private CalendarViewModel viewModel;
 
     private CalendarWeekFragment weekFragment = new CalendarWeekFragment();
+    private int calendarType = 1;
 
     private CalendarView.OnCalendarSelectListener onCalendarSelectListener = new CalendarView.OnCalendarSelectListener() {
         @Override
@@ -63,11 +64,12 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             currentYear = calendar.getYear();
             currentMonth = calendar.getMonth();
             currentDay = calendar.getDay();
-            getBinding().tvYearMonth.setText(currentYear + "年" +currentMonth + "月");
-            Log.d("TAG", "日期:" + currentYear + ", " + currentMonth + ", " +currentDay);
-            weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
+            getBinding().tvYearMonth.setText(currentYear + "年" + currentMonth + "月");
+            Log.d("TAG", "日期:" + currentYear + ", " + currentMonth + ", " + currentDay);
+            weekFragment.setCurrentTime(currentYear, currentMonth, currentDay);
             //切换日期，刷新数据
-            if(curTimeMillis !=0) {
+            //当视图是周或者日进行请求
+            if (calendarType != 1 && curTimeMillis != 0) {
                 viewModel.getScheduleData(String.valueOf(curTimeMillis));
             }
         }
@@ -121,10 +123,10 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             fragmentManager.show(weekFragment);
         }
         //fragment设置时间
-        weekFragment.setCurrentTime(currentYear,currentMonth,currentDay);
+        weekFragment.setCurrentTime(currentYear, currentMonth, currentDay);
 
         getBinding().ivAddScheduleShow.setOnClickListener(v -> {
-           weekFragment.startAddSchedulePage();
+            weekFragment.startAddSchedulePage();
         });
 
         getBinding().ivShowPopupWindow.setOnClickListener(v -> DateSelectUtils.INSTANCE.showDateSelectDialog(CalendarActivity.this, new OnDatePickedListener() {
@@ -137,17 +139,23 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                boolean isShowMonth = false;
                 switch (tab.getId()) {
                     case 1:
-                        switchScheduleView(true, 1);
+                        calendarType = 1;
+                        isShowMonth = true;
                         break;
                     case 2:
-                        switchScheduleView(false, 2);
+                        calendarType = 2;
+                        isShowMonth = false;
                         break;
                     case 3:
-                        switchScheduleView(false, 3);
+                        calendarType = 3;
+                        isShowMonth = false;
                         break;
                 }
+
+                switchScheduleView(isShowMonth, calendarType);
             }
 
             @Override
@@ -186,26 +194,25 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     public void subscribeBack() {
         super.subscribeBack();
         Log.d("TAG", "当前时间戳 :" + curTimeMillis);
-        viewModel.getScheduleData(String.valueOf(curTimeMillis));
 
         viewModel.getResponseResult().observe(this, aBoolean -> {
-            if(!aBoolean) {
+            if (!aBoolean) {
                 if (StoreCalendarDataKt.getAppInfoToken().isEmpty()) {
                     showToast("请重新登录");
                 }
             }
         });
 
-        viewModel.getErrorData().observe(this,throwable -> {
-            if(throwable.getMessage() !=null) {
+        viewModel.getErrorData().observe(this, throwable -> {
+            if (throwable.getMessage() != null) {
                 showToast(throwable.getMessage());
             }
         });
 
-        viewModel.responseScheduleLiveData.observe(this,arrayList ->{
-                //回调fragment渲染自定义view
-                dayScheduleBeanArrayList = arrayList;
-                weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
+        viewModel.responseScheduleLiveData.observe(this, arrayList -> {
+            //回调fragment渲染自定义view
+            dayScheduleBeanArrayList = arrayList;
+            weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
         });
 
     }
@@ -214,7 +221,8 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if(curTimeMillis !=0) {
+            //当视图是周或者日进行请求
+            if (calendarType != 1 && curTimeMillis != 0) {
                 viewModel.getScheduleData(String.valueOf(curTimeMillis));
             }
         }
@@ -240,7 +248,10 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
         }
 
         weekFragment.setViewType(type);
-        weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
+        //当视图是周或者日进行请求
+        if (curTimeMillis != 0 && type != 1) {
+            viewModel.getScheduleData(String.valueOf(curTimeMillis));
+        }
 
     }
 

@@ -51,7 +51,6 @@ public class CalendarWeekFragment extends BaseViewFragment<FragmentCalendarWeekB
     public void initView() {
         switchAndShowView();
 
-
         getBinding().customCalendarView.setSelectAddScheduleClick((startTime, endTime) -> {
             scheduleBean.setStartHour(startTime);
             scheduleBean.setEndHour(endTime);

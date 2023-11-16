@@ -9,6 +9,7 @@ import com.marshal.moudle.calendar.schedule.pojo.UserInfoBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -16,6 +17,9 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class ScheduleJoinApi {
+
+    private static final ScheduleService httpsService =
+            Objects.requireNonNull(ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest()).create(ScheduleService.class);
 
     public static Observable<ResponseResultBean<UserInfoBean>> postLogin(String loginAccount, String loginPassword) {
         HashMap<String, String> params = new HashMap<>();
@@ -25,24 +29,24 @@ public class ScheduleJoinApi {
         String json = GsonUtils.INSTANCE.objToJson(params);
         RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
 
-        if (ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest() != null) {
-            return ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest().create(ScheduleService.class).postScheduleLogin(body);
+        if (httpsService != null) {
+            return httpsService.postScheduleLogin(body);
         } else {
             return null;
         }
     }
 
     public static Observable<ResponseResultBean<ArrayList<DayScheduleBean>>> getScheduleDailyList(String theDay) {
-        if (ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest() != null) {
-            return ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest().create(ScheduleService.class).getScheduleDailyList(theDay);
+        if (httpsService != null) {
+            return httpsService.getScheduleDailyList(theDay);
         } else {
             return null;
         }
     }
 
     public static  Observable<ResponseResultBean<ArrayList<PlanBean>>> getPlanList(){
-        if (ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest() != null) {
-            return ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest().create(ScheduleService.class).getPlanList();
+        if (httpsService != null) {
+            return httpsService.getPlanList();
         } else {
             return null;
         }
@@ -52,8 +56,8 @@ public class ScheduleJoinApi {
 
         String json = GsonUtils.INSTANCE.objToJson(params);
         RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
-        if (ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest() != null) {
-            return ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest().create(ScheduleService.class).postScheduleAdd(body);
+        if (httpsService != null) {
+            return httpsService.postScheduleAdd(body);
         } else {
             return null;
         }

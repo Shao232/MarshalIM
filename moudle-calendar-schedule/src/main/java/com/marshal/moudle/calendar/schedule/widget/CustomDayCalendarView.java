@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleRectFBean;
 import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleViewBean;
+import com.marshal.moudle.calendar.schedule.utils.DayAndMonthUtils;
 import com.marshal.moudle.calendar.schedule.utils.SizeUtils;
 
 import java.util.ArrayList;
@@ -166,23 +167,37 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             //反转，从大到小
             Collections.reverse(scheduleRectFBeanList);
             //布局
-            float moveOffset = 0f;
             for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
                 CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
-                int oldIndex = index - 1;
-                if (oldIndex <= 0) {
-                    oldIndex = 0;
-                }
-                CalendarScheduleRectFBean oldBean = scheduleRectFBeanList.get(oldIndex);
-                //判断是否重叠区域
-//                if (itemBean.getRectDrawSchedule().top >= oldBean.getRectDrawSchedule().top &&
-//                        itemBean.getRectDrawSchedule().bottom <= oldBean.getRectDrawSchedule().bottom) {
-//
-//                }
+                for(Map.Entry<String,RectF> entry : scheduleData.entrySet()){
+                    if (itemBean.getRectDrawSchedule().top == entry.getValue().top) {
+                        itemBean.setTopHour(entry.getKey());
+                    }
 
-// itemBean.getRectDrawSchedule().right = dip2px(mContext, 100f);
-                Log.d("TAG", "item :" + itemBean);
+                    if (itemBean.getRectDrawSchedule().bottom == entry.getValue().bottom) {
+                        itemBean.setBottomHour(entry.getKey());
+                    }
+                }
             }
+
+            for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
+                CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
+                Log.d("TAG","item :"+itemBean);
+                /*      变量
+                  第一个 a   0 到 3  4格
+                  第二个 b   1 到 2  2格
+                  第三个 c   0 到 1  2格
+
+                  遍历全部
+                  a.top <= item.top && a.bottom >= item.bottom
+                  a.right = 50
+                  item.left = a.right + 10
+                  item.right = 50
+
+                */
+            }
+
+
         }
     }
 
