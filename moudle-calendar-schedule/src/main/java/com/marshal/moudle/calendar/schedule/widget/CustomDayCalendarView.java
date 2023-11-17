@@ -180,10 +180,21 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                 }
             }
 
+            //test 查看全部数据
             for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
                 CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
                 Log.d("TAG","item :"+itemBean);
-                /*      变量
+            }
+
+            //单元格的宽度
+            int tableWidth  = mWidth - dip2px(mContext, 40f);
+            scheduleRectFBeanList.size();
+            for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
+                CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
+
+            }
+
+              /*      变量
                   第一个 a   0 到 3  4格
                   第二个 b   1 到 2  2格
                   第三个 c   0 到 1  2格
@@ -195,8 +206,6 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                   item.right = 50
 
                 */
-            }
-
 
         }
     }
@@ -523,7 +532,9 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
 
     }
 
-
+    /**
+     * 创建日程24个单元格，将条目保存
+     */
     private void createRectFArray() {
         int spaceStartX = dip2px(mContext, 40f);
         //统计绘制框的总高度
