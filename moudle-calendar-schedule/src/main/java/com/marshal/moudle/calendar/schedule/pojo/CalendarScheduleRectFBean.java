@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.marshal.base_common.utils.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class CalendarScheduleRectFBean implements Comparable<CalendarScheduleRectFBean> {
@@ -22,10 +23,14 @@ public class CalendarScheduleRectFBean implements Comparable<CalendarScheduleRec
     private String topHour;
     //当前日程的底部时间点，比如顶部1点，底部1点，占一个格子，如果是顶部是1点，底部是2点，占2个格子
     private String bottomHour;
+    //对象重复区域的数量
+    private ArrayList<Long> repetitionIdList = new ArrayList<>();
 
-    public CalendarScheduleRectFBean(){}
 
-    public CalendarScheduleRectFBean(long id,int tableCount, RectF rectDrawSchedule, String title) {
+    public CalendarScheduleRectFBean() {
+    }
+
+    public CalendarScheduleRectFBean(long id, int tableCount, RectF rectDrawSchedule, String title) {
         this.id = id;
         this.tableCount = tableCount;
         this.rectDrawSchedule = rectDrawSchedule;
@@ -46,6 +51,14 @@ public class CalendarScheduleRectFBean implements Comparable<CalendarScheduleRec
 
     public String getBottomHour() {
         return bottomHour;
+    }
+
+    public void setRepetitionIdList(ArrayList<Long> repetitionIdList) {
+        this.repetitionIdList = repetitionIdList;
+    }
+
+    public ArrayList<Long> getRepetitionIdList() {
+        return repetitionIdList;
     }
 
     public void setId(long id) {

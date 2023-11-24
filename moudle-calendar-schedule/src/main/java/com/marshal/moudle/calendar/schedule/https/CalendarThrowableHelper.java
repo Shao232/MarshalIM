@@ -7,6 +7,8 @@ import java.net.SocketTimeoutException;
 
 import javax.net.ssl.SSLException;
 
+import retrofit2.HttpException;
+
 public class CalendarThrowableHelper {
 
     /**
@@ -22,6 +24,8 @@ public class CalendarThrowableHelper {
         } else if (e instanceof SocketException) {
             return "网络异常，请检查网络连接";
         } else if (e instanceof SSLException) {
+            return "网络异常，请检查网络连接";
+        }else if(e instanceof HttpException){
             return "网络异常，请检查网络连接";
         }
 

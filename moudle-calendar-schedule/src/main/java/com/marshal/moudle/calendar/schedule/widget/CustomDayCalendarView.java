@@ -169,7 +169,7 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
             //布局
             for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
                 CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
-                for(Map.Entry<String,RectF> entry : scheduleData.entrySet()){
+                for (Map.Entry<String, RectF> entry : scheduleData.entrySet()) {
                     if (itemBean.getRectDrawSchedule().top == entry.getValue().top) {
                         itemBean.setTopHour(entry.getKey());
                     }
@@ -180,33 +180,84 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                 }
             }
 
-            //test 查看全部数据
-            for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
-                CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
-                Log.d("TAG","item :"+itemBean);
-            }
-
             //单元格的宽度
-            int tableWidth  = mWidth - dip2px(mContext, 40f);
+            // 如果集合中只有一个，那可以独占一行
+            // 如果有多个，但是不重叠，那可以区别独占一行
+            // 如果多个重复区域
+            /**
+
+             item :{"bottomHour":"03","id":2,"rectDrawSchedule":{"bottom":600.0,"left":120.0,"right":1080.0,"top":0.0},"repetitionIdList":[0,3],"tableCount":4,"title":"早上好3","topHour":"00"}
+             item :{"bottomHour":"02","id":0,"rectDrawSchedule":{"bottom":450.0,"left":120.0,"right":1080.0,"top":0.0},"repetitionIdList":[2,3],"tableCount":3,"title":"早上好1","topHour":"00"}
+             item :{"bottomHour":"01","id":3,"rectDrawSchedule":{"bottom":300.0,"left":120.0,"right":1080.0,"top":0.0},"repetitionIdList":[2,0],"tableCount":2,"title":"凌晨","topHour":"00"}
+             item :{"bottomHour":"05","id":1,"rectDrawSchedule":{"bottom":900.0,"left":120.0,"right":1080.0,"top":750.0},"repetitionIdList":[],"tableCount":1,"title":"早上好2","topHour":"05"}
+
+
+             */
+
+            int tableWidth = mWidth - dip2px(mContext, 40f);
+            int itemWidth = 0;
             scheduleRectFBeanList.size();
             for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
                 CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
+                int itemBeanTopHour = Integer.parseInt(itemBean.getTopHour());
+                int itemBeanBottomHour = Integer.parseInt(itemBean.getBottomHour());
 
+                ArrayList<Long> itemIdList = new ArrayList<>();
+                //再次遍历全部集合
+                for (int childIndex = 0; childIndex < scheduleRectFBeanList.size(); childIndex++) {
+                    CalendarScheduleRectFBean childBean = scheduleRectFBeanList.get(childIndex);
+                    int childTopHour = Integer.parseInt(childBean.getTopHour());
+                    int childBottomHour = Integer.parseInt(childBean.getBottomHour());
+                    if (itemBean.getId() != childBean.getId()) {
+                        //判断item包含几个条目
+
+                        //判断子条目是不是大于top并且小于bottom
+                        //第一种 itemBean小于等于childBean 被childBean包含
+                        //第二种 itemBean大于等于childBean 包含childBean
+                        if ((itemBeanTopHour <= childBottomHour && childBottomHour >= itemBeanBottomHour)
+                                || ((itemBeanTopHour <= childTopHour || itemBeanTopHour <= childBottomHour)
+                                && itemBeanBottomHour >= childBottomHour)
+
+                        ) {
+                            itemIdList.add(childBean.getId());
+                        }
+
+
+                    }
+                }
+                itemBean.setRepetitionIdList(itemIdList);
             }
 
-              /*      变量
-                  第一个 a   0 到 3  4格
-                  第二个 b   1 到 2  2格
-                  第三个 c   0 到 1  2格
+            //设置区域的left和right
+            for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
+                CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
+                //判断是否有重叠部分集合
+                if (!itemBean.getRepetitionIdList().isEmpty()) {
+                    if (index != 0) {
+                        CalendarScheduleRectFBean oldBean = scheduleRectFBeanList.get(index - 1);
+                        if (itemBean.getRepetitionIdList().contains(oldBean.getId())) {
+                            Log.d("TAG", "itemBean 包含前一个item, index :" + index);
+                            float oldRight = oldBean.getRectDrawSchedule().right;
+                            itemBean.getRectDrawSchedule().left = oldRight + dip2px(mContext, 5f);
+                            itemBean.getRectDrawSchedule().right = itemBean.getRectDrawSchedule().left + dip2px(mContext, 60f);
 
-                  遍历全部
-                  a.top <= item.top && a.bottom >= item.bottom
-                  a.right = 50
-                  item.left = a.right + 10
-                  item.right = 50
+                        } else {
+                            Log.d("TAG", "itemBean 不包含前一个item, index :" + index);
 
-                */
 
+                        }
+                    } else {
+                        itemBean.getRectDrawSchedule().right = dip2px(mContext, 100f);
+                    }
+                }
+            }
+
+
+            //test 查看全部数据
+            for (int index = 0; index < scheduleRectFBeanList.size(); index++) {
+                CalendarScheduleRectFBean itemBean = scheduleRectFBeanList.get(index);
+                Log.d("TAG", "item :" + itemBean);
+            }
         }
     }
 
