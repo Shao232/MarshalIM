@@ -211,16 +211,46 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                     if (itemBean.getId() != childBean.getId()) {
                         //判断item包含几个条目
 
+                        /**
+
+                         item :{"bottomHour":"07","id":6,"repetitionIdList":[5,8,4,2,0,3,1],"topHour":"00"}
+
+                         item :{"bottomHour":"04","id":5,"repetitionIdList":[6,2,0,3],"topHour":"00"}
+
+                         item :{"bottomHour":"15","id":10,"repetitionIdList":[7],"topHour":"12"}
+
+                         item :{"bottomHour":"08","id":8,"repetitionIdList":[1],"topHour":"05"}
+
+                         item :{"bottomHour":"04","id":4,"repetitionIdList":[],"topHour":"01"}
+
+                         item :{"bottomHour":"03","id":2,"repetitionIdList":[6,5,4,0,3],"topHour":"00"}
+
+                         item :{"bottomHour":"02","id":0,"repetitionIdList":[6,5,4,2,3],"topHour":"00"}
+
+                         item :{"bottomHour":"01","id":3,"repetitionIdList":[6,5,4,2,0],"topHour":"00"}
+
+                         item :{"bottomHour":"19","id":9,"repetitionIdList":[],"topHour":"19"}
+
+                         item :{"bottomHour":"13","id":7,"repetitionIdList":[],"topHour":"13"}
+
+                         item :{"bottomHour":"05","id":1,"repetitionIdList":[8],"topHour":"05"}
+
+                         */
+
                         //判断子条目是不是大于top并且小于bottom
                         //第一种 itemBean小于等于childBean 被childBean包含
                         //第二种 itemBean大于等于childBean 包含childBean
-                        if ((itemBeanTopHour <= childBottomHour && childBottomHour >= itemBeanBottomHour)
-                                || ((itemBeanTopHour <= childTopHour || itemBeanTopHour <= childBottomHour)
-                                && itemBeanBottomHour >= childBottomHour)
 
-                        ) {
+                        //itemBean的顶部和底部都小于childBean 表示不包含
+                        if(itemBeanTopHour < childTopHour && itemBeanBottomHour < childTopHour) {
+                            continue;
+                        }
+
+                        if(itemBeanTopHour <= childTopHour ) {
                             itemIdList.add(childBean.getId());
                         }
+
+
 
 
                     }
@@ -235,16 +265,15 @@ public class CustomDayCalendarView extends View implements View.OnClickListener,
                 if (!itemBean.getRepetitionIdList().isEmpty()) {
                     if (index != 0) {
                         CalendarScheduleRectFBean oldBean = scheduleRectFBeanList.get(index - 1);
-                        if (itemBean.getRepetitionIdList().contains(oldBean.getId())) {
+                        if (itemBean.getRepetitionIdList().contains(oldBean.getId())
+                        || oldBean.getRepetitionIdList().contains(itemBean.getId())) {
                             Log.d("TAG", "itemBean 包含前一个item, index :" + index);
                             float oldRight = oldBean.getRectDrawSchedule().right;
-                            itemBean.getRectDrawSchedule().left = oldRight + dip2px(mContext, 5f);
+                            itemBean.getRectDrawSchedule().left = oldRight + dip2px(mContext, 3f);
                             itemBean.getRectDrawSchedule().right = itemBean.getRectDrawSchedule().left + dip2px(mContext, 60f);
 
                         } else {
                             Log.d("TAG", "itemBean 不包含前一个item, index :" + index);
-
-
                         }
                     } else {
                         itemBean.getRectDrawSchedule().right = dip2px(mContext, 100f);
