@@ -17,25 +17,18 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.base_common.baseview.BaseViewActivity
-import com.marshal.base_common.store.putAppLoginUserAccount
-import com.marshal.base_common.store.putAppLoginUserPwd
+import com.marshal.base_common.https.HttpSubscribe
 import com.marshal.databinding.ActivityMainBinding
-import com.marshal.https.IMService
+import com.marshal.https.MainApi
 import com.marshal.main.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.concurrent.TimeUnit
+import com.marshal.pojo.TestData
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  *
- ImmersionBar.with(this)
+ImmersionBar.with(this)
 .statusBarColor(com.gamebox.common.R.color.gamebox_only_black)
 .fitsSystemWindows(true)//解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
 .init()
@@ -74,8 +67,8 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     )
 
     private var mainBroadcastReceiver: MainBroadcastReceiver? = null
-    private var localBroadcastReceiver:LocalBroadcastManager? = null
-    private val mainViewModel:MainViewModel by viewModels()
+    private var localBroadcastReceiver: LocalBroadcastManager? = null
+    private val mainViewModel: MainViewModel by viewModels()
 
 
     override fun getResLayoutBinding(): View? {
@@ -126,7 +119,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.marshal.login.user")
         registerReceiver(mainBroadcastReceiver, intentFilter)
-        localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver?:return,intentFilter)
+        localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver ?: return, intentFilter)
     }
 
     private fun initChat() {
@@ -146,34 +139,17 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     private fun initHttp() {
-        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
+        MainApi.getData()?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : HttpSubscribe<TestData>() {
+                override fun onSuccess(response: TestData?) {
+                    Log.d("TAG", "response: $response")
+                }
 
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .writeTimeout(5000, TimeUnit.MILLISECONDS)
-            .readTimeout(5000, TimeUnit.MILLISECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl("https://www.marshalim.club")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val api = retrofit.create(IMService::class.java)
-        api.getData().enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.d("TAG", "call: ${call.request()}")
-                Log.d("TAG", "response: $response")
-                Log.d("TAG", "response: ${response.body()}")
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("TAG", "call: ${call.request()}")
-                t.printStackTrace()
-            }
-        })
+                override fun onThrowable(e: Throwable?) {
+                    Log.e("TAG", "throwable: ${e?.message}")
+                }
+            })
     }
 
 
@@ -193,7 +169,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 12) {
             val dataResults = grantResults.filter { it == PackageManager.PERMISSION_GRANTED }
-            permissions.forEach { Log.d("TAG", "permissions: $it")}
+            permissions.forEach { Log.d("TAG", "permissions: $it") }
 
             if (dataResults.isNotEmpty()) {
                 Log.d("TAG", "权限请求成功!!!!!")
@@ -221,7 +197,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        localBroadcastReceiver?.unregisterReceiver(mainBroadcastReceiver?:return)
+        localBroadcastReceiver?.unregisterReceiver(mainBroadcastReceiver ?: return)
     }
 
 

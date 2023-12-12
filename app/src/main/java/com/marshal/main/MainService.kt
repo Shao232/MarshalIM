@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.marshal.mine.open.works.OpenReadEnglishQuestionWork
 import com.marshal.mine.open.works.OpenReadQuestionProgramDesignWork
 import com.marshal.mine.open.works.OpenReadQuestionThoughtWork
 import com.marshal.mine.open.works.OpenReadQuestionsWork
@@ -11,6 +12,7 @@ import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData
 import getAppProgramSingleData
+import getAppSecondEnglishQuestionData
 import getAppThoughtSingleData
 
 class MainService : Service() {
@@ -33,6 +35,11 @@ class MainService : Service() {
         if (getAppProgramSingleData()?.isEmpty() == true) {
             Thread(OpenReadQuestionProgramDesignWork()).start()
         }
+
+        if(getAppSecondEnglishQuestionData()?.isEmpty() == true) {
+            Thread(OpenReadEnglishQuestionWork()).start()
+        }
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

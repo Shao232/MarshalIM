@@ -1,4 +1,5 @@
 package com.marshal.moudle.calendar.schedule.https
+import com.marshal.base_common.https.CustomHttpLogger
 import com.marshal.moudle.calendar.schedule.getAppInfoToken
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

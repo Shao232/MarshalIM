@@ -1,8 +1,10 @@
 package com.marshal.https
 
+import com.marshal.base_common.https.CustomHttpLogger
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
@@ -12,13 +14,12 @@ object HttpRequestFactory {
     private val interceptor = HttpLoggingInterceptor(CustomHttpLogger.custom)
     private var retrofit: Retrofit? = null
     private const val iMarshalUrl: String = "https://www.marshalim.club"
-    private var okHttpClient: OkHttpClient? = null
+    private lateinit var okHttpClient: OkHttpClient
 
-    init {
 
-    }
+    fun getMarshalIMRequest(): Retrofit? {
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
 
-    fun getMarshalIMRequest() {
         okHttpClient = OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .writeTimeout(5000, TimeUnit.MILLISECONDS)
@@ -26,14 +27,14 @@ object HttpRequestFactory {
             .build()
 
         retrofit = Retrofit.Builder()
-            .client(okHttpClient ?: return)
+            .client(okHttpClient)
             .baseUrl(iMarshalUrl)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
+        return retrofit
     }
-
-
 
 
 }

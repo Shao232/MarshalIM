@@ -52,7 +52,7 @@ abstract class BaseRecyclerAdapter<T : BaseRecyclerViewHolder, E> : RecyclerView
 
     abstract fun bindViewHolderData(holder: T, position: Int)
 
-    fun addListAll(list: Collection<E>) {
+    fun addListAll(list: ArrayList<E>) {
         itemList.clear()
         itemList.addAll(list)
         notifyDataSetChanged()

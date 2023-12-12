@@ -1,34 +1,47 @@
 package com.marshal.mine.open.adapter
 
-import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
-import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 import android.view.View
 import android.view.ViewGroup
 import com.marshal.R
+import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
+import com.marshal.base_common.baseadapter.BaseRecyclerAdapter
 import com.marshal.pojo.OpenAnswerBean
 
 /**
  * 单选题 答案
  */
-class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerViewHolder, OpenAnswerBean>() {
+class OpenQuestionAnswersAdapter :
+    BaseRecyclerAdapter<OpenQuestionOnlyAnswerViewHolder, OpenAnswerBean>() {
 
     var onSelectAnswerListener: QuestionSelectAnswerListener? = null
+    var onEnableClick: Boolean = true
 
     fun setOnSelectAnswerClickListener(selectAnswerListener: QuestionSelectAnswerListener) {
         onSelectAnswerListener = selectAnswerListener
     }
 
     override fun onViewHolder(parent: ViewGroup, viewType: Int): OpenQuestionOnlyAnswerViewHolder {
-        return OpenQuestionOnlyAnswerViewHolder(mContext, R.layout.item_open_question_choice,parent)
+        return OpenQuestionOnlyAnswerViewHolder(
+            mContext,
+            R.layout.item_open_question_choice,
+            parent
+        )
     }
 
     override fun bindViewHolderData(holder: OpenQuestionOnlyAnswerViewHolder, position: Int) {
         val answer = itemList[position]
         holder.tvOnlyAnswer?.text = "${answer.answerTitle}. ${answer.answerContent}"
         //告诉adapter有选择的答案，修改背景颜色
-        holder.clnChoice?.setBackgroundColor( if(answer.hasSelectSelf == true) mContext?.resources
-            ?.getColor(R.color.gray_line)?:0 else mContext?.resources
-            ?.getColor(R.color.white_mode)?:0)
+
+        holder.clnChoice?.setBackgroundColor(
+            if (answer.hasSelectSelf == true) mContext?.resources
+                ?.getColor(R.color.gray_line) ?: 0 else mContext?.resources
+                ?.getColor(R.color.white_mode) ?: 0
+        )
+
+        if (!onEnableClick) {
+            return
+        }
 
         itemOnClickListener = object : AdapterItemOnClickListener<OpenAnswerBean> {
             override fun onClick(view: View, bean: OpenAnswerBean) {
@@ -38,13 +51,13 @@ class OpenQuestionAnswersAdapter : BaseRecyclerAdapter<OpenQuestionOnlyAnswerVie
                 itemList.forEach {
                     it.hasSelectSelf = it.answerTitle.contentEquals(bean.answerTitle)
                 }
-                onSelectAnswerListener?.onSelectAnswer(view,bean)
+                onSelectAnswerListener?.onSelectAnswer(view, bean)
                 notifyDataSetChanged()
             }
         }
     }
 
-    interface QuestionSelectAnswerListener{
-        fun onSelectAnswer(view:View,bean: OpenAnswerBean)
+    interface QuestionSelectAnswerListener {
+        fun onSelectAnswer(view: View, bean: OpenAnswerBean)
     }
 }

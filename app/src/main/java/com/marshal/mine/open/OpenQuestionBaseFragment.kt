@@ -2,7 +2,6 @@ package com.marshal.mine.open
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.marshal.R
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.databinding.IncludeOpenQuestionListFragmentBinding
@@ -24,14 +23,14 @@ abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionLi
     override fun initView() {
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding?.recyclerList?.layoutManager = layoutManager
-        binding?.recyclerList?.adapter =getAdapter()
+        getAdapter()
         viewCreate()
 
         binding?.recyclerList?.scrollBarSize
 
     }
 
-    abstract fun getAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>?
+    abstract fun getAdapter()
 
     open fun viewCreate(){}
 

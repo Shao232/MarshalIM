@@ -2,19 +2,13 @@ package com.marshal.moudle.calendar.schedule.ui.viewmodel;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.marshal.base_common.baseview.BaseViewModel;
-import com.marshal.base_common.utils.GsonUtils;
-import com.marshal.moudle.calendar.schedule.StoreCalendarDataKt;
-import com.marshal.moudle.calendar.schedule.https.HttpSubscribe;
+import com.marshal.base_common.https.HttpSubscribe;
 import com.marshal.moudle.calendar.schedule.https.ScheduleJoinApi;
-import com.marshal.moudle.calendar.schedule.pojo.EmptyBean;
 import com.marshal.moudle.calendar.schedule.pojo.PlanBean;
 import com.marshal.moudle.calendar.schedule.pojo.ResponseResultBean;
 
@@ -37,7 +31,6 @@ public class AddScheduleViewModel extends BaseViewModel {
                 .subscribe(new HttpSubscribe<>() {
                     @Override
                     public void onSuccess(ResponseResultBean<ArrayList<PlanBean>> response) {
-                        Log.d("TAG","AddScheduleViewModel data:"+response.getData());
                         responseResult.postValue(true);
                         resultListData.postValue(response.getData());
                     }
@@ -76,8 +69,8 @@ public class AddScheduleViewModel extends BaseViewModel {
                 .subscribe(new HttpSubscribe<>() {
                     @Override
                     public void onSuccess(ResponseResultBean<Boolean> response) {
-                        responseAddSchedule.postValue(true);
                         Log.d("TAG","AddScheduleViewModel data:"+response.getData());
+                        responseAddSchedule.postValue(true);
                     }
 
                     @Override

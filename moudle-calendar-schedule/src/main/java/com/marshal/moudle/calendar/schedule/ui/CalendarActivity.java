@@ -12,69 +12,26 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelLazy;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatePickedListener;
 import com.google.android.material.tabs.TabLayout;
-import com.haibin.calendarview.Calendar;
-import com.haibin.calendarview.CalendarView;
 import com.marshal.base_common.MApplication;
 import com.marshal.base_common.baseview.BaseViewActivity;
 import com.marshal.moudle.calendar.schedule.CalendarAlarmReceive;
-import com.marshal.moudle.calendar.schedule.StoreCalendarDataKt;
-import com.marshal.moudle.calendar.schedule.pojo.DayScheduleBean;
-import com.marshal.moudle.calendar.schedule.ui.viewmodel.CalendarViewModel;
 import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath;
 import com.marshal.moudle.calendar.schedule.utils.DateSelectUtils;
 import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.databinding.ActivityAddCalendarBinding;
 
-import java.util.ArrayList;
-import java.util.Objects;
+
 
 @Route(path = CalendarRouterPath.APP_ADD_EVENT_CALENDAR)
 public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding> {
 
-    /**
-     * 当前日历对应的时间戳
-     */
-    private long curTimeMillis;
-    private int currentYear;
-    private int currentMonth;
-    private int currentDay;
-    private ArrayList<DayScheduleBean> dayScheduleBeanArrayList;
-
-    private CalendarViewModel viewModel;
 
     private CalendarWeekFragment weekFragment = new CalendarWeekFragment();
     private int calendarType = 1;
-
-    private CalendarView.OnCalendarSelectListener onCalendarSelectListener = new CalendarView.OnCalendarSelectListener() {
-        @Override
-        public void onCalendarOutOfRange(Calendar calendar) {
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onCalendarSelect(Calendar calendar, boolean isClick) {
-            curTimeMillis = calendar.getTimeInMillis();
-            currentYear = calendar.getYear();
-            currentMonth = calendar.getMonth();
-            currentDay = calendar.getDay();
-            getBinding().tvYearMonth.setText(currentYear + "年" + currentMonth + "月");
-            Log.d("TAG", "日期:" + currentYear + ", " + currentMonth + ", " + currentDay);
-            weekFragment.setCurrentTime(currentYear, currentMonth, currentDay);
-            //切换日期，刷新数据
-            //当视图是周或者日进行请求
-            if (calendarType != 1 && curTimeMillis != 0) {
-                viewModel.getScheduleData(String.valueOf(curTimeMillis));
-            }
-        }
-    };
-
 
     @Override
     public boolean hasToolbar() {
@@ -95,24 +52,16 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             setTitle("显示日历");
         }
 
-        ViewModelProvider.Factory factory =
-                (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.
-                        getInstance(MApplication.Companion.getInstance());
-        viewModel = new ViewModelProvider(this, factory).get(CalendarViewModel.class);
+//        ViewModelProvider.Factory factory =
+//                (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory.
+//                        getInstance(MApplication.Companion.getInstance());
+//        viewModel = new ViewModelProvider(this, factory).get(CalendarViewModel.class);
 
 
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(1).setText("月"));
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(2).setText("周"));
         getBinding().tabLayout.addTab(getBinding().tabLayout.newTab().setId(3).setText("日"));
 
-        currentYear = getBinding().calendarView.getCurYear();
-        currentMonth = getBinding().calendarView.getCurMonth();
-        currentDay = getBinding().calendarView.getCurDay();
-        getBinding().tvYearMonth.setText(currentYear + "年" + currentMonth + "月");
-
-        getBinding().calendarView.setOnCalendarSelectListener(onCalendarSelectListener);
-
-        curTimeMillis = getBinding().calendarView.getSelectedCalendar().getTimeInMillis();
 
         //设置fragment
         FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
@@ -123,39 +72,32 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
             fragmentManager.show(weekFragment);
         }
         //fragment设置时间
-        weekFragment.setCurrentTime(currentYear, currentMonth, currentDay);
+//        weekFragment.setCurrentTime(currentYear, currentMonth, currentDay);
+
+        //初始化月视图
+       getBinding().tabLayout.postDelayed(() -> switchScheduleView(calendarType), 100);
 
         getBinding().ivAddScheduleShow.setOnClickListener(v -> {
-            weekFragment.startAddSchedulePage();
+
         });
 
         getBinding().ivShowPopupWindow.setOnClickListener(v -> DateSelectUtils.INSTANCE.showDateSelectDialog(CalendarActivity.this, new OnDatePickedListener() {
             @Override
             public void onDatePicked(int year, int month, int day) {
-                getBinding().calendarView.scrollToCalendar(year, month, day, false, true);
+//                getBinding().calendarView.scrollToCalendar(year, month, day, false, true);
             }
         }));
 
         getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                boolean isShowMonth = false;
                 switch (tab.getId()) {
-                    case 1:
-                        calendarType = 1;
-                        isShowMonth = true;
-                        break;
-                    case 2:
-                        calendarType = 2;
-                        isShowMonth = false;
-                        break;
-                    case 3:
-                        calendarType = 3;
-                        isShowMonth = false;
-                        break;
+                    case 1 -> calendarType = 1;
+                    case 2 -> calendarType = 2;
+                    case 3 -> calendarType = 3;
                 }
 
-                switchScheduleView(isShowMonth, calendarType);
+                switchScheduleView(calendarType);
             }
 
             @Override
@@ -193,27 +135,13 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     @Override
     public void subscribeBack() {
         super.subscribeBack();
-        Log.d("TAG", "当前时间戳 :" + curTimeMillis);
 
-        viewModel.getResponseResult().observe(this, aBoolean -> {
-            if (!aBoolean) {
-                if (StoreCalendarDataKt.getAppInfoToken().isEmpty()) {
-                    showToast("请重新登录");
-                }
-            }
-        });
 
-        viewModel.getErrorData().observe(this, throwable -> {
-            if (throwable.getMessage() != null) {
-                showToast(throwable.getMessage());
-            }
-        });
+    }
 
-        viewModel.responseScheduleLiveData.observe(this, arrayList -> {
-            //回调fragment渲染自定义view
-            dayScheduleBeanArrayList = arrayList;
-            weekFragment.setScheduleListShow(dayScheduleBeanArrayList);
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -221,38 +149,18 @@ public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBindin
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            //当视图是周或者日进行请求
-            if (calendarType != 1 && curTimeMillis != 0) {
-                viewModel.getScheduleData(String.valueOf(curTimeMillis));
-            }
+            weekFragment.updateScheduleList();
+
         }
     }
 
     /**
      * 切换视图
      *
-     * @param showMonth
      * @param type      1 月视图 2 周视图 3 日视图
      */
-    private void switchScheduleView(boolean showMonth, int type) {
-        if (showMonth) {
-            getBinding().nestedScrollView.setVisibility(View.VISIBLE);
-            getBinding().flnShowSchedule.setVisibility(View.GONE);
-            getBinding().calendarLayout.setModeBothMonthWeekView();
-            getBinding().calendarLayout.expand(150);
-        } else {
-            getBinding().nestedScrollView.setVisibility(View.GONE);
-            getBinding().flnShowSchedule.setVisibility(View.VISIBLE);
-            getBinding().calendarLayout.setModeOnlyMonthView();
-            getBinding().calendarLayout.shrink(150);
-        }
-
+    private void switchScheduleView(int type) {
         weekFragment.setViewType(type);
-        //当视图是周或者日进行请求
-        if (curTimeMillis != 0 && type != 1) {
-            viewModel.getScheduleData(String.valueOf(curTimeMillis));
-        }
-
     }
 
 }

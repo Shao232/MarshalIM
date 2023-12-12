@@ -9,6 +9,8 @@ const val appFunctionMultipleDataKey:String = "app_function_multiple_data"
 const val appFunctionEstimateDataKey:String = "app_function_Estimate_data"
 const val appThoughtSingleDataKey:String = "app_thought_single_data"
 const val appProgramSingleDataKey:String = "app_program_single_data"
+
+const val appSecondEnglishQuestionKey:String = "app_second_english_question"
 // ============== 开大考题 end ======================================
 const val appTestDataKey:String = "app_test_data"
 
@@ -60,6 +62,16 @@ fun putAppProgramSingleData(value:String){
 fun getAppProgramSingleData():String?{
     return StoreManager.getData(appProgramSingleDataKey,"")
 }
+
+//appSecondEnglishQuestionKey
+fun putAppSecondEnglishQuestionData(value: String){
+    StoreManager.putData(appSecondEnglishQuestionKey,value)
+}
+
+fun getAppSecondEnglishQuestionData():String?{
+    return StoreManager.getData(appSecondEnglishQuestionKey,"")
+}
+
 
 fun putAppTestData(value: String){
     StoreManager.putData(appTestDataKey,value)

@@ -2,7 +2,7 @@ package com.marshal.login
 
 import android.util.Log
 import com.marshal.base_common.baseview.BaseViewModel
-import com.marshal.moudle.calendar.schedule.https.HttpSubscribe
+import com.marshal.base_common.https.HttpSubscribe
 import com.marshal.moudle.calendar.schedule.https.ScheduleJoinApi
 import com.marshal.moudle.calendar.schedule.pojo.ResponseResultBean
 import com.marshal.moudle.calendar.schedule.pojo.UserInfoBean
@@ -17,7 +17,7 @@ class LoginViewModel(): BaseViewModel() {
         ScheduleJoinApi.postLogin(loginAccount, loginPassword)
             .subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe(object:HttpSubscribe<ResponseResultBean<UserInfoBean>>(){
+            ?.subscribe(object: HttpSubscribe<ResponseResultBean<UserInfoBean>>(){
                 override fun onSuccess(response: ResponseResultBean<UserInfoBean>?) {
                     val infoBean:UserInfoBean? = response?.data
                     putAppInfoToken(infoBean?.token?:"")

@@ -1,22 +1,20 @@
 package com.marshal.mine.dialog
 
-import NoShakeBtnUtil
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.marshal.R
+import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
 import com.marshal.base_common.basedialog.BaseBottomSheetDialogFragment
 import com.marshal.databinding.DialogSheetCommitLayoutBinding
+import com.marshal.mine.open.adapter.OpenSelectJobAdapter
 
-class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=""):
+class OpenQuestionSelectDialog(titleList:ArrayList<String>) :
     BaseBottomSheetDialogFragment<DialogSheetCommitLayoutBinding>() {
 
-    private var questionDialogClick:QuestionDialogClickListener? = null
+    private var questionDialogClick: QuestionDialogClickListener? = null
+    private var jobAdapter: OpenSelectJobAdapter? = null
+    private val dataList = titleList
 
-    /**
-     * data
-     */
-    private var firstTitle:String? = first
-    private var secondTitle:String? = second
-    private var thirdTitle:String? = third
 
     fun setOnDialogClickListener(dialogClickListener: QuestionDialogClickListener) {
         questionDialogClick = dialogClickListener
@@ -30,40 +28,25 @@ class OpenQuestionSelectDialog(first:String?="",second:String?="",third:String?=
     }
 
     override fun initView() {
-        binding?.buttonFirst?.text = firstTitle
-        binding?.buttonSecond?.text =secondTitle
-        binding?.buttonThird?.text = thirdTitle
 
-        binding?.buttonFirst?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)){
-                return@setOnClickListener
+        jobAdapter = OpenSelectJobAdapter()
+        binding?.recyclerview?.layoutManager =
+            LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+        binding?.recyclerview?.adapter = jobAdapter
+
+        jobAdapter?.addListAll(dataList)
+        jobAdapter?.setAdapterItemOnClickListener(object :AdapterItemOnClickListener<String>{
+            override fun onClick(view: View, bean: String) {
+                super.onClick(view, bean)
+                questionDialogClick?.onClickTitleContent(bean)
+                dismiss()
             }
+        })
 
-            questionDialogClick?.onClickFirstItem(it)
-            dismiss()
-        }
-        binding?.buttonSecond?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)){
-                return@setOnClickListener
-            }
-
-            questionDialogClick?.onClickSecondItem(it)
-            dismiss()
-        }
-        binding?.buttonThird?.setOnClickListener {
-            if(NoShakeBtnUtil.isFastDoubleClick(it)){
-                return@setOnClickListener
-            }
-
-            questionDialogClick?.onClickThirdItem(it)
-            dismiss()
-        }
     }
 
-    interface QuestionDialogClickListener{
-        fun onClickFirstItem(view: View)
-        fun onClickSecondItem(view: View)
-        fun onClickThirdItem(view: View)
+    interface QuestionDialogClickListener {
+        fun onClickTitleContent(title: String)
     }
 
 }
