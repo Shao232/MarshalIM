@@ -37,8 +37,6 @@ android {
                 JPUSH_APPKEY : "3f6401486374f034584ca603", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
-
-
     }
 
     lintOptions {

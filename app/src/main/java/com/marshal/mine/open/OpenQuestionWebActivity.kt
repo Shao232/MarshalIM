@@ -14,8 +14,7 @@ import com.marshal.databinding.ActivityOpenQuestionWebBinding
 @Route(path = AppRouterPath.OPEN_QUESTION_WEB_BANK)
 class OpenQuestionWebActivity : BaseViewActivity<ActivityOpenQuestionWebBinding>() {
 
-    private val openURL = "http://39.98.74.62:7080"
-//    private val openURL_2 = "http://39.98.74.62:7080/#/allExam"
+    private val openURL = "http://39.98.74.62:7080/#/?ss=saldjkflajsldfasdf"
 
     override fun hasToolbar(): Boolean = true
 
