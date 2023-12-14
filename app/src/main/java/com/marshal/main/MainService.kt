@@ -4,10 +4,10 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.marshal.mine.open.works.OpenReadEnglishQuestionWork
-import com.marshal.mine.open.works.OpenReadQuestionProgramDesignWork
-import com.marshal.mine.open.works.OpenReadQuestionThoughtWork
-import com.marshal.mine.open.works.OpenReadQuestionsWork
+import com.marshalim.moudle.open.question.works.OpenReadEnglishQuestionWork
+import com.marshalim.moudle.open.question.works.OpenReadQuestionProgramDesignWork
+import com.marshalim.moudle.open.question.works.OpenReadQuestionThoughtWork
+import com.marshalim.moudle.open.question.works.OpenReadQuestionsWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData

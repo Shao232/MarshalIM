@@ -13,6 +13,7 @@ import com.marshal.databinding.ActivityFunctionBinding
 import com.marshal.moudle.calendar.schedule.getAppInfoToken
 import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath
 import com.marshal.pojo.FunctionBean
+import com.marshalim.moudle.open.question.OpenQuestionRouter
 
 /**
  * 金刚页
@@ -57,14 +58,14 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
     private fun initData() {
         adapter?.itemList?.add(FunctionBean("蓝牙连接", AppRouterPath.MINE_TO_BLUE_TOOTH))
         adapter?.itemList?.add(FunctionBean("UDP连接", AppRouterPath.MINE_TO_CONNECT_UDP))
-        adapter?.itemList?.add(FunctionBean("开大题库(仅限学习)", AppRouterPath.OPEN_QUESTION_BANK))
-        adapter?.itemList?.add(FunctionBean("开大题库(仅供学习web版)",AppRouterPath.OPEN_QUESTION_WEB_BANK))
-        adapter?.itemList?.add(FunctionBean("添加日程", CalendarRouterPath.APP_ADD_EVENT_CALENDAR))
         adapter?.itemList?.add(FunctionBean("协程学习", AppRouterPath.HOME_COROUTINES))
-        adapter?.itemList?.add(FunctionBean("驾校模拟", DrivingRouterPath.Driving_HOME_PATH))
         adapter?.itemList?.add(FunctionBean("保存数据", AppRouterPath.STORE_DATA_PAGE))
         adapter?.itemList?.add(FunctionBean("讯飞星火", AppRouterPath.APP_AI_CHAT))
         adapter?.itemList?.add(FunctionBean("自定义View", AppRouterPath.APP_CUSTOM_VIEW_PAGE))
+        adapter?.itemList?.add(FunctionBean("开大题库(仅限学习)", OpenQuestionRouter.OPEN_QUESTION_BANK))
+        adapter?.itemList?.add(FunctionBean("开大题库(仅供学习web版)", OpenQuestionRouter.OPEN_QUESTION_WEB_BANK))
+        adapter?.itemList?.add(FunctionBean("驾校模拟", DrivingRouterPath.Driving_HOME_PATH))
         adapter?.itemList?.add(FunctionBean("添加日程", CalendarRouterPath.APP_ADD_EVENT_CALENDAR))
+
     }
 }
