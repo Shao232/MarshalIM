@@ -66,6 +66,7 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
         adapter?.itemList?.add(FunctionBean("开大题库(仅供学习web版)", OpenQuestionRouter.OPEN_QUESTION_WEB_BANK))
         adapter?.itemList?.add(FunctionBean("驾校模拟", DrivingRouterPath.Driving_HOME_PATH))
         adapter?.itemList?.add(FunctionBean("添加日程", CalendarRouterPath.APP_ADD_EVENT_CALENDAR))
+        adapter?.itemList?.add(FunctionBean("短信列表", AppRouterPath.APP_SMS_LIST_PAGE))
 
     }
 }

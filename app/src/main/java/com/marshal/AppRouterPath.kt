@@ -30,6 +30,8 @@ object AppRouterPath {
     const val APP_AI_CHAT = "/ai/xinghuo/chat"
     //自定义view界面
     const val APP_CUSTOM_VIEW_PAGE = "/custom/view/page"
+    //短信列表
+    const val APP_SMS_LIST_PAGE = "/sms/list/page"
 
 
 }

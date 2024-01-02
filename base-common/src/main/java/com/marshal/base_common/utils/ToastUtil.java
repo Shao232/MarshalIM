@@ -10,7 +10,7 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-package com.driving_school.utils;
+package com.marshal.base_common.utils;
 
 import android.content.Context;
 import android.os.Handler;

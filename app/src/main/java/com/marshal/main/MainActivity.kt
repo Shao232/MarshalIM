@@ -63,7 +63,8 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.READ_CALENDAR,
-        Manifest.permission.WRITE_CALENDAR
+        Manifest.permission.WRITE_CALENDAR,
+        Manifest.permission.READ_SMS
     )
 
     private var mainBroadcastReceiver: MainBroadcastReceiver? = null
@@ -91,17 +92,12 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             tab.text = mainArray[position]
         }.attach()
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d("TAG", "请求读写权限")
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_SMS)!=PackageManager.PERMISSION_GRANTED) {
 
+            Log.d("TAG", "-----请求权限-----")
             ActivityCompat.requestPermissions(this, permissionArray, 12)
         } else {
             intentStartMainService = Intent(this, MainService::class.java)
