@@ -5,6 +5,7 @@ import androidx.multidex.MultiDexApplication
 import cn.jiguang.api.utils.JCollectionAuth
 import cn.jpush.android.api.JPushInterface
 import com.alibaba.android.arouter.launcher.ARouter
+import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 
 class MApplication : MultiDexApplication() {
@@ -42,7 +43,7 @@ class MApplication : MultiDexApplication() {
         ARouter.init(this)
         MMKV.initialize(this)
 
-
+        CrashReport.initCrashReport(this, "ed4bbbd59c", true)
 
     }
 

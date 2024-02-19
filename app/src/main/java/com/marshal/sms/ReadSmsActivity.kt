@@ -53,6 +53,7 @@ class ReadSmsActivity : BaseViewActivity<ActivityReadSmsBinding>() {
             binding?.recyclerView?.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
             binding?.recyclerView?.adapter = adapter
 
+
         }
     }
 

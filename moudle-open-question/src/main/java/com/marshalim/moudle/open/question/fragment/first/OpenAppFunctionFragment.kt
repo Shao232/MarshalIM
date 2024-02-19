@@ -1,8 +1,9 @@
-package com.marshalim.moudle.open.question
+package com.marshalim.moudle.open.question.fragment.first
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.marshalim.moudle.open.question.adapter.OpenQuestionAdapter
+import com.marshalim.moudle.open.question.fragment.OpenQuestionBaseFragment
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
@@ -26,6 +27,11 @@ class OpenAppFunctionFragment : OpenQuestionBaseFragment() {
 
     override fun viewCreate() {
         super.viewCreate()
+
+        if(hasIncludeToolbar) {
+            setTitle("计算机应用基础")
+        }
+
         val appFunctionSingleData = getAppFunctionSingleData()
         if(appFunctionSingleData?.isNotEmpty() == true) {
             val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type

@@ -13,7 +13,7 @@ import com.marshal.databinding.ActivityFunctionBinding
 import com.marshal.moudle.calendar.schedule.getAppInfoToken
 import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath
 import com.marshal.pojo.FunctionBean
-import com.marshalim.moudle.open.question.OpenQuestionRouter
+import com.marshalim.moudle.open.question.utils.OpenQuestionRouter
 
 /**
  * 金刚页

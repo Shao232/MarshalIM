@@ -92,10 +92,19 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             tab.text = mainArray[position]
         }.attach()
 
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_SMS)!=PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
             Log.d("TAG", "-----请求权限-----")
             ActivityCompat.requestPermissions(this, permissionArray, 12)
@@ -194,6 +203,9 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         localBroadcastReceiver?.unregisterReceiver(mainBroadcastReceiver ?: return)
+        if (intentStartMainService != null) {
+            stopService(intentStartMainService)
+        }
     }
 
 

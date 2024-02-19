@@ -102,7 +102,6 @@ class OpenReadEnglishQuestionWork : Runnable {
             while (array1Index < arrayCell.size) {
                 val item = arrayCell[array1Index]
                 data.find { it.id == array1Index }?.title = item.contents
-
                 array1Index++
             }
         }

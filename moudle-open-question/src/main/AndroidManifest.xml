@@ -2,13 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-
-        <activity
-            android:name=".OpenQuestionWebActivity"
+        <activity android:name=".activity.OpenFragmentActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".OpenQuestionBankActivity"
+            android:name=".activity.OpenQuestionWebActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.OpenQuestionBankActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

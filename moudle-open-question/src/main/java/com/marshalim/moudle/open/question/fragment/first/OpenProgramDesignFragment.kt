@@ -1,8 +1,9 @@
-package com.marshalim.moudle.open.question
+package com.marshalim.moudle.open.question.fragment.first
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.marshalim.moudle.open.question.adapter.OpenQuestionProgramDesignAdapter
+import com.marshalim.moudle.open.question.fragment.OpenQuestionBaseFragment
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import getAppProgramSingleData
 
@@ -22,6 +23,11 @@ class OpenProgramDesignFragment : OpenQuestionBaseFragment()  {
 
     override fun viewCreate() {
         super.viewCreate()
+
+        if(hasIncludeToolbar) {
+            setTitle("程序设计")
+        }
+
         val appProgramSingleData = getAppProgramSingleData()
         if(appProgramSingleData?.isNotEmpty() == true) {
             val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type

@@ -4,6 +4,7 @@ plugins {
     id "kotlin-android"
     id "kotlin-parcelize"
     id "kotlin-kapt"
+
 }
 
 android {
@@ -37,6 +38,13 @@ android {
                 JPUSH_APPKEY : "3f6401486374f034584ca603", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
+
+        sourceSets {
+            main {//表示为main
+                jni.srcDirs = ["libs"]
+            }
+        }
+
     }
 
     lintOptions {
@@ -93,11 +101,7 @@ android {
         implementation.exclude group: 'com.intellij', module: 'annotations'
     }
 
-    sourceSets {
-        main {//表示为main
-            jni.srcDirs = ["src/main/jniLibs"]
-        }
-    }
+
 
 }
 
@@ -112,6 +116,7 @@ dependencies {
     implementation project(':driving-school')
     implementation project(":moudle-calendar-schedule")
     implementation project(":moudle-open-question")
+
 
     kapt deps.support.arouter_compiler
 

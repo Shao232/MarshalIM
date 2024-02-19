@@ -1,5 +1,6 @@
 package com.marshal.https
 
+import com.marshal.base_common.https.HttpRequestFactory
 import com.marshal.pojo.TestData
 import io.reactivex.Observable
 

@@ -1,4 +1,4 @@
-package com.marshalim.moudle.open.question
+package com.marshalim.moudle.open.question.activity
 
 import android.util.Log
 import android.view.View
@@ -9,6 +9,7 @@ import android.webkit.WebViewClient
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshalim.moudle.open.question.databinding.ActivityOpenQuestionWebBinding
+import com.marshalim.moudle.open.question.utils.OpenQuestionRouter
 
 @Route(path = OpenQuestionRouter.OPEN_QUESTION_WEB_BANK)
 class OpenQuestionWebActivity : BaseViewActivity<ActivityOpenQuestionWebBinding>() {

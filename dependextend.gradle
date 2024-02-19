@@ -83,7 +83,7 @@ ext {
                     "jiguang_sdk_jpush"         : "cn.jiguang.sdk:jpush:5.0.3",
                     "jiguang_sdk_huawei"        : "cn.jiguang.sdk.plugin:huawei:5.0.3",
                     "huawei_hms_push"           : "com.huawei.hms:push:6.5.0.300",
-                    //
+                    //滚动控件
                     "android_picker_common"     : "com.github.gzu-liyujiang.AndroidPicker:Common:4.1.12",
                     "android_picker_wheelview"  : "com.github.gzu-liyujiang.AndroidPicker:WheelView:4.1.12",
                     "android_picker_wheelPicker": "com.github.gzu-liyujiang.AndroidPicker:WheelPicker:4.1.12",

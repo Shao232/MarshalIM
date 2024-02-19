@@ -27,6 +27,8 @@ class OpenQuestionSelectDialog(titleList:ArrayList<String>) :
         return binding?.root
     }
 
+    override fun getPeekHeight(): Int = resources.getDimensionPixelOffset(R.dimen.bottom_170_dp)
+
     override fun initView() {
 
         jobAdapter = OpenSelectJobAdapter()

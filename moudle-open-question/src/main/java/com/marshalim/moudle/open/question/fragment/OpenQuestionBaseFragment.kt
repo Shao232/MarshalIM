@@ -1,8 +1,9 @@
-package com.marshalim.moudle.open.question
+package com.marshalim.moudle.open.question.fragment
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marshal.base_common.baseview.BaseViewFragment
+import com.marshalim.moudle.open.question.R
 import com.marshalim.moudle.open.question.databinding.IncludeOpenQuestionListFragmentBinding
 
 /**
@@ -12,6 +13,8 @@ abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionLi
 
     protected var layoutManager: LinearLayoutManager? = null
 
+    override fun hasToolbar(): Boolean  = true
+
     override fun getResLayoutId(): Int = R.layout.include_open_question_list_fragment
 
     override fun getResLayoutBinding(): View? {
@@ -20,13 +23,13 @@ abstract class OpenQuestionBaseFragment : BaseViewFragment<IncludeOpenQuestionLi
     }
 
     override fun initView() {
+
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding?.recyclerList?.layoutManager = layoutManager
+
         getAdapter()
+
         viewCreate()
-
-        binding?.recyclerList?.scrollBarSize
-
     }
 
     abstract fun getAdapter()

@@ -1,6 +1,5 @@
-package com.marshal.https
+package com.marshal.base_common.https
 
-import com.marshal.base_common.https.CustomHttpLogger
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +14,6 @@ object HttpRequestFactory {
     private var retrofit: Retrofit? = null
     private const val iMarshalUrl: String = "https://www.marshalim.club"
     private lateinit var okHttpClient: OkHttpClient
-
 
     fun getMarshalIMRequest(): Retrofit? {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
