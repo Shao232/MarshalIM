@@ -8,16 +8,19 @@ import androidx.fragment.app.FragmentTransaction
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshalim.moudle.open.question.R
 import com.marshalim.moudle.open.question.databinding.ActivityOpenFragmentBinding
+import com.marshalim.moudle.open.question.fragment.first.OpenAppFunctionFragment
+import com.marshalim.moudle.open.question.fragment.first.OpenProgramDesignFragment
+import com.marshalim.moudle.open.question.fragment.first.OpenThoughtFragment
+import com.marshalim.moudle.open.question.fragment.second.OpenSecondEnglishFragment
+import com.marshalim.moudle.open.question.fragment.third.OpenDatabaseFragment
+import com.marshalim.moudle.open.question.fragment.third.OpenSoftwareFragment
 
 class OpenFragmentActivity:BaseViewActivity<ActivityOpenFragmentBinding>() {
 
-
     companion object{
-        private var fragment:Fragment? = null
-
-        fun startFragment(context: Context, newFragment:Fragment){
-            fragment = newFragment
-            val intent: Intent = Intent(context,OpenFragmentActivity::class.java)
+        fun startFragment(context: Context, newFragmentName:String){
+            val intent = Intent(context,OpenFragmentActivity::class.java)
+            intent.putExtra("fragmentName",newFragmentName)
             context.startActivity(intent)
         }
     }
@@ -31,9 +34,35 @@ class OpenFragmentActivity:BaseViewActivity<ActivityOpenFragmentBinding>() {
 
     override fun initView() {
 
-        fragmentTransaction = supportFragmentManager.beginTransaction()
+        var fragmentName:String = ""
+        if(intent.getStringExtra("fragmentName") !=null) {
+            fragmentName = intent.getStringExtra("fragmentName") ?:""
+        }
 
-        if(fragment!=null) {
+        fragmentTransaction = supportFragmentManager.beginTransaction()
+        if(fragmentName.isNotEmpty()) {
+            var fragment:Fragment?= null
+            when(fragmentName) {
+                OpenProgramDesignFragment::class.java.simpleName ->{
+                    fragment = OpenProgramDesignFragment()
+                }
+                OpenThoughtFragment::class.java.simpleName ->{
+                    fragment = OpenThoughtFragment()
+                }
+                OpenAppFunctionFragment::class.java.simpleName->{
+                    fragment = OpenAppFunctionFragment()
+                }
+                OpenSecondEnglishFragment::class.java.simpleName->{
+                    fragment = OpenSecondEnglishFragment()
+                }
+                OpenSoftwareFragment::class.java.simpleName->{
+                    fragment = OpenSoftwareFragment()
+                }
+                OpenDatabaseFragment::class.java.simpleName->{
+                    fragment = OpenDatabaseFragment()
+                }
+
+            }
             fragmentTransaction?.replace(R.id.frame_layout, fragment?:return,"frag")
                 ?.commitNowAllowingStateLoss()
         }

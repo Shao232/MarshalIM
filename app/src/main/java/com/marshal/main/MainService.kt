@@ -4,15 +4,17 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.marshalim.moudle.open.question.works.OpenReadEnglishQuestionWork
-import com.marshalim.moudle.open.question.works.OpenReadQuestionProgramDesignWork
-import com.marshalim.moudle.open.question.works.OpenReadQuestionThoughtWork
-import com.marshalim.moudle.open.question.works.OpenReadQuestionsWork
+import com.marshalim.moudle.open.question.works.first.OpenReadQuestionProgramDesignWork
+import com.marshalim.moudle.open.question.works.first.OpenReadQuestionThoughtWork
+import com.marshalim.moudle.open.question.works.first.OpenReadQuestionsWork
+import com.marshalim.moudle.open.question.works.second.OpenReadEnglishQuestionWork
+import com.marshalim.moudle.open.question.works.third.OpenReadDatabaseWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData
 import getAppProgramSingleData
 import getAppSecondEnglishQuestionData
+import getAppThirdDatabaseData
 import getAppThoughtSingleData
 import java.util.concurrent.Executors
 
@@ -37,6 +39,7 @@ class MainService : Service() {
         super.onCreate()
         Log.d("TAG", "service:onCreate")
 
+        //线程池
         val executorServices = Executors.newSingleThreadExecutor()
 
         if (getAppFunctionSingleData()?.isEmpty() == true
@@ -54,9 +57,15 @@ class MainService : Service() {
             executorServices.execute(OpenReadQuestionProgramDesignWork())
         }
 
-        if(getAppSecondEnglishQuestionData()?.isEmpty() == true) {
+        if (getAppSecondEnglishQuestionData()?.isEmpty() == true) {
             executorServices.execute(OpenReadEnglishQuestionWork())
         }
+
+        if (getAppThirdDatabaseData()?.isEmpty() == true) {
+            executorServices.execute(OpenReadDatabaseWork())
+        }
+
+        //executorServices.execute(OpenReadSoftwareWork())
 
     }
 

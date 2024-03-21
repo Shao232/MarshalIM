@@ -1,4 +1,4 @@
-package com.marshalim.moudle.open.question.works
+package com.marshalim.moudle.open.question.works.second
 
 import FileUtils
 import android.util.Log
@@ -10,6 +10,9 @@ import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import putAppSecondEnglishQuestionData
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
+/**
+ * 读取大学英语2题库
+ */
 class OpenReadEnglishQuestionWork : Runnable {
 
     private val lock = ReentrantReadWriteLock()

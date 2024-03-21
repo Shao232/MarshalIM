@@ -10,7 +10,12 @@ const val appThoughtSingleDataKey:String = "app_thought_single_data"
 const val appProgramSingleDataKey:String = "app_program_single_data"
 
 const val appSecondEnglishQuestionKey:String = "app_second_english_question"
+
+const val appThirdDatabaseKey:String = "app_third_database_question"
+const val appThirdSoftwareKey:String = "app_third_software_question"
 // ============== 开大考题 end ======================================
+
+
 
 
 fun putAppFunctionSingleData(value:String){
@@ -60,6 +65,22 @@ fun putAppSecondEnglishQuestionData(value: String){
 
 fun getAppSecondEnglishQuestionData():String?{
     return StoreManager.getData(appSecondEnglishQuestionKey,"")
+}
+
+fun putAppThirdDatabaseData(value: String){
+    StoreManager.putData(appThirdDatabaseKey,value)
+}
+
+fun getAppThirdDatabaseData():String?{
+    return StoreManager.getData(appThirdDatabaseKey,"")
+}
+
+fun putAppThirdSoftwareData(value:String){
+    StoreManager.putData(appThirdSoftwareKey,value)
+}
+
+fun getAppThirdSoftwareData():String?{
+    return StoreManager.getData(appThirdSoftwareKey,"")
 }
 
 

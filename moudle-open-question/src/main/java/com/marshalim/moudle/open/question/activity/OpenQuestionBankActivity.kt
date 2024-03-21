@@ -11,8 +11,9 @@ import com.marshalim.moudle.open.question.dialog.OpenQuestionSelectDialog
 import com.marshalim.moudle.open.question.fragment.first.OpenAppFunctionFragment
 import com.marshalim.moudle.open.question.fragment.first.OpenProgramDesignFragment
 import com.marshalim.moudle.open.question.fragment.first.OpenThoughtFragment
-import com.marshalim.moudle.open.question.fragment.second.OpenOSFragment
 import com.marshalim.moudle.open.question.fragment.second.OpenSecondEnglishFragment
+import com.marshalim.moudle.open.question.fragment.third.OpenDatabaseFragment
+import com.marshalim.moudle.open.question.fragment.third.OpenSoftwareFragment
 import com.marshalim.moudle.open.question.utils.OpenFirstContent
 import com.marshalim.moudle.open.question.utils.OpenFourthContent
 import com.marshalim.moudle.open.question.utils.OpenQuestionRouter
@@ -124,17 +125,18 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                 when (bean) {
                     OpenFirstContent -> {
                         questionList = arrayListOf("程序设计", "计算机思维导论", "计算机应用基础")
-
                     }
 
                     OpenSecondContent -> {
-                        questionList = arrayListOf("操作系统","大学英语2")
+                        questionList = arrayListOf("大学英语2")
                     }
 
                     OpenThirdContent -> {
+                        questionList = arrayListOf("软件工程复习题", "数据库及原理")
                     }
 
                     OpenFourthContent -> {
+                        return
                     }
                 }
 
@@ -146,34 +148,47 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                             "程序设计" -> {
                                 OpenFragmentActivity.startFragment(
                                     this@OpenQuestionBankActivity,
-                                    OpenProgramDesignFragment()
+                                    OpenProgramDesignFragment::class.java.simpleName
                                 )
                             }
 
                             "计算机思维导论" -> {
                                 OpenFragmentActivity.startFragment(
                                     this@OpenQuestionBankActivity,
-                                    OpenThoughtFragment()
+                                    OpenThoughtFragment::class.java.simpleName
                                 )
                             }
 
                             "计算机应用基础" -> {
                                 OpenFragmentActivity.startFragment(
                                     this@OpenQuestionBankActivity,
-                                    OpenAppFunctionFragment()
+                                    OpenAppFunctionFragment::class.java.simpleName
                                 )
                             }
-
-                            "操作系统" -> {
-                                OpenFragmentActivity.startFragment(
-                                    this@OpenQuestionBankActivity,
-                                    OpenOSFragment()
-                                )
-                            }
+//                            "操作系统" -> {
+//                                OpenFragmentActivity.startFragment(
+//                                    this@OpenQuestionBankActivity,
+//                                    OpenOSFragment()
+//                                )
+//                            }
                             "大学英语2" -> {
                                 OpenFragmentActivity.startFragment(
                                     this@OpenQuestionBankActivity,
-                                    OpenSecondEnglishFragment()
+                                    OpenSecondEnglishFragment::class.java.simpleName
+                                )
+                            }
+
+                            "软件工程复习题" -> {
+                                OpenFragmentActivity.startFragment(
+                                    this@OpenQuestionBankActivity,
+                                    OpenSoftwareFragment::class.java.simpleName
+                                )
+                            }
+
+                            "数据库及原理" -> {
+                                OpenFragmentActivity.startFragment(
+                                    this@OpenQuestionBankActivity,
+                                    OpenDatabaseFragment::class.java.simpleName
                                 )
                             }
                         }
@@ -184,43 +199,11 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
             }
         })
 
-//        appFunctionFragment = OpenAppFunctionFragment()
-//        thoughtFragment = OpenThoughtFragment()
-//        programDesignFragment = OpenProgramDesignFragment()
-//        appSecondEnglishFragment = OpenSecondEnglishFragment()
-//
-//        fragmentManager = supportFragmentManager
-//        fragmentManager?.beginTransaction()?.add(
-//            R.id.frame_layout, appFunctionFragment ?: return,
-//            "fragment_appFunction"
-//        )?.commitNowAllowingStateLoss()
-//        currentShowFragment = appFunctionFragment
-
     }
 
     override fun onClickMenu(view: View) {
         super.onClickMenu(view)
-//        if (currentCourse == appFunction) {
-//            val questionList = arrayListOf("单选题", "多选题", "判断题")
-//            val dialogFragment = OpenQuestionSelectDialog(questionList)
-//            dialogFragment.setOnDialogClickListener(object :OpenQuestionSelectDialog.QuestionDialogClickListener{
-//                override fun onClickTitleContent(title: String) {
-//                    when(title){
-//                        questionList[0]->{
-//                            appFunctionFragment?.updateList(1)
-//                        }
-//                        questionList[1]->{
-//                            appFunctionFragment?.updateList(2)
-//                        }
-//                        questionList[2]->{
-//                            appFunctionFragment?.updateList(3)
-//                        }
-//                    }
-//                }
-//            })
-//
-//            dialogFragment.show(supportFragmentManager, "dialog_question")
-//        }
+
         val questionList = arrayListOf("单选题", "多选题", "判断题")
         val dialogFragment = OpenQuestionSelectDialog(questionList)
         dialogFragment.setOnDialogClickListener(object :
@@ -232,61 +215,6 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         dialogFragment.show(supportFragmentManager, "dialog_question")
     }
 
-//    private fun showAndSwitchFragment(needShowFragment:Fragment?,title:String){
-//        if(currentShowFragment == needShowFragment) {
-//            return
-//        }
-//        currentShowFragment = needShowFragment
-//
-//        if(needShowFragment?.isAdded == false) {
-//            fragmentManager?.beginTransaction()?.add(R.id.frame_layout,needShowFragment)?.commitNowAllowingStateLoss()
-//            return
-//        }
-//
-//        when(title) {
-//            firstTitle ->{
-//                if(needShowFragment?.isAdded == true) {
-//                    fragmentManager?.beginTransaction()
-//                        ?.hide(thoughtFragment?:return)
-//                        ?.hide(programDesignFragment?:return)
-//                        ?.hide(appSecondEnglishFragment?:return)
-//                        ?.show(needShowFragment?:return)
-//                        ?.commitNowAllowingStateLoss()
-//                }
-//            }
-//            secondTitle ->{
-//                if(needShowFragment?.isAdded == true) {
-//                    fragmentManager?.beginTransaction()
-//                        ?.hide(appFunctionFragment?:return)
-//                        ?.hide(programDesignFragment?:return)
-//                        ?.hide(appSecondEnglishFragment?:return)
-//                        ?.show(needShowFragment)
-//                        ?.commitNowAllowingStateLoss()
-//                }
-//
-//            }
-//            thirdTitle ->{
-//                if(needShowFragment?.isAdded == true) {
-//                    fragmentManager?.beginTransaction()
-//                        ?.hide(appFunctionFragment?:return)
-//                        ?.hide(thoughtFragment?:return)
-//                        ?.hide(appSecondEnglishFragment?:return)
-//                        ?.show(needShowFragment)
-//                        ?.commitNowAllowingStateLoss()
-//                }
-//            }
-//            fourTitle ->{
-//                if(needShowFragment?.isAdded == true) {
-//                    fragmentManager?.beginTransaction()
-//                        ?.hide(appFunctionFragment?:return)
-//                        ?.hide(thoughtFragment?:return)
-//                        ?.hide(programDesignFragment?:return)
-//                        ?.show(needShowFragment)
-//                        ?.commitNowAllowingStateLoss()
-//                }
-//            }
-//        }
-//    }
 
 
 }

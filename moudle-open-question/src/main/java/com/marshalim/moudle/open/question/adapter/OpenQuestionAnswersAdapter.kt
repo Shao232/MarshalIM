@@ -1,5 +1,6 @@
 package com.marshalim.moudle.open.question.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
@@ -28,9 +29,17 @@ class OpenQuestionAnswersAdapter :
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun bindViewHolderData(holder: OpenQuestionOnlyAnswerViewHolder, position: Int) {
         val answer = itemList[position]
-        holder.tvOnlyAnswer?.text = "${answer.answerTitle}. ${answer.answerContent}"
+        if(answer.answerTitle?.isNotEmpty() == true && answer.answerContent?.isNotEmpty() == true) {
+            holder.tvOnlyAnswer?.text = "${answer.answerTitle}. ${answer.answerContent}"
+        }else if(answer.answerTitle.isNullOrBlank()){
+            holder.tvOnlyAnswer?.text = "${answer.answerContent}"
+        }else if(answer.answerContent.isNullOrBlank()) {
+            holder.tvOnlyAnswer?.text = "${answer.answerTitle}"
+        }
+
         //告诉adapter有选择的答案，修改背景颜色
 
         holder.clnChoice?.setBackgroundColor(

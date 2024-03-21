@@ -101,8 +101,6 @@ android {
         implementation.exclude group: 'com.intellij', module: 'annotations'
     }
 
-
-
 }
 
 
@@ -112,11 +110,9 @@ dependencies {
     implementation files('libs/AIKit.aar')
     //依赖的模块
     implementation project(":base-common")
-
     implementation project(':driving-school')
     implementation project(":moudle-calendar-schedule")
     implementation project(":moudle-open-question")
-
 
     kapt deps.support.arouter_compiler
 

@@ -13,7 +13,7 @@ data class OpenAnswersBean(
      * 3.判断
      * 4.填空
      */
-    var questionType:Int,
+    var questionType:Int?=0,
     var title:String?="",
     //答案，比如单选4个回答,判断两个回答
     var answerList: ArrayList<OpenAnswerBean>? = ArrayList(),

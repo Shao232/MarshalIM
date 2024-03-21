@@ -1,4 +1,4 @@
-package com.marshalim.moudle.open.question.works
+package com.marshalim.moudle.open.question.works.first
 
 import FileUtils
 import android.util.Log
@@ -10,6 +10,9 @@ import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
 import putAppProgramSingleData
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
+/**
+ * 读取程序设计复习资料_2
+ */
 class OpenReadQuestionProgramDesignWork : Runnable {
 
     private val lock = ReentrantReadWriteLock()
