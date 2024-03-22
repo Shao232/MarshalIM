@@ -9,12 +9,14 @@ import com.marshalim.moudle.open.question.works.first.OpenReadQuestionThoughtWor
 import com.marshalim.moudle.open.question.works.first.OpenReadQuestionsWork
 import com.marshalim.moudle.open.question.works.second.OpenReadEnglishQuestionWork
 import com.marshalim.moudle.open.question.works.third.OpenReadDatabaseWork
+import com.marshalim.moudle.open.question.works.third.OpenReadSoftwareWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData
 import getAppProgramSingleData
 import getAppSecondEnglishQuestionData
 import getAppThirdDatabaseData
+import getAppThirdSoftwareData
 import getAppThoughtSingleData
 import java.util.concurrent.Executors
 
@@ -65,7 +67,9 @@ class MainService : Service() {
             executorServices.execute(OpenReadDatabaseWork())
         }
 
-        //executorServices.execute(OpenReadSoftwareWork())
+        if (getAppThirdSoftwareData()?.isEmpty() == true) {
+            executorServices.execute(OpenReadSoftwareWork())
+        }
 
     }
 

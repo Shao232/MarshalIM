@@ -1,7 +1,6 @@
 package com.marshalim.moudle.open.question.works.third
 
 import FileUtils
-import android.util.Log
 import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswerBean
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
@@ -35,8 +34,6 @@ class OpenReadDatabaseWork : Runnable {
 
         zzExcelCreator1 = zzExcelCreator1.openSheet(0)
         val writableSheet = zzExcelCreator1.writableSheet
-        Log.d("TAG", "database columns: 有${writableSheet.columns}列")
-        Log.d("TAG", "database rows: 有${writableSheet.rows}行")
 
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
@@ -46,18 +43,8 @@ class OpenReadDatabaseWork : Runnable {
         val arrayFifth = writableSheet.getColumn(5)
         val arraySixth = writableSheet.getColumn(6)
 
-        Log.d("TAG", "arrayZero size : " + arrayZero.size)
-        Log.d("TAG", "arrayFirst size : " + arrayFirst.size)
-        Log.d("TAG", "arraySecond size : " + arraySecond.size)
-        Log.d("TAG", "arrayThird size : " + arrayThird.size)
-        Log.d("TAG", "arrayFourth size : " + arrayFourth.size)
-        Log.d("TAG", "arrayFifth size : " + arrayFifth.size)
-        Log.d("TAG", "arraySixth size : " + arraySixth.size)
-
         val arrayList: ArrayList<OpenAnswersBean> = ArrayList()
         readZeroArray(arrayZero, arrayList)
-
-        Log.d("TAG", "arrayList size : " + arrayList.size)
 
         readFirstArray(arrayList, arrayFirst)
 
@@ -71,9 +58,6 @@ class OpenReadDatabaseWork : Runnable {
 
         readAnswerArray(arrayList, arraySixth)
 
-//        for (itemBean: OpenAnswersBean in arrayList) {
-//            Log.d("TAG", "bean :$itemBean")
-//        }
         val json = Gson().toJson(arrayList)
         putAppThirdDatabaseData(json)
 

@@ -23,7 +23,6 @@ class OpenDatabaseFragment : OpenQuestionBaseFragment() {
             setTitle("数据库及原理")
         }
 
-
         val appThirdDatabaseData = getAppThirdDatabaseData()
         if (appThirdDatabaseData?.isNotEmpty() == true) {
             val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
@@ -31,10 +30,6 @@ class OpenDatabaseFragment : OpenQuestionBaseFragment() {
         }
 
         if(appThirdDatabaseList?.isNotEmpty() == true) {
-//            for (itemBean: OpenAnswersBean in appThirdDatabaseList?:return) {
-//                Log.d("OpenDatabaseFragment", "bean :$itemBean")
-//            }
-
             readQuestionAdapter?.addListAll(appThirdDatabaseList?:return)
         }
     }
