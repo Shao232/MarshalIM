@@ -14,6 +14,7 @@ import com.marshalim.moudle.open.question.fragment.first.OpenThoughtFragment
 import com.marshalim.moudle.open.question.fragment.second.OpenSecondEnglishFragment
 import com.marshalim.moudle.open.question.fragment.third.OpenDatabaseFragment
 import com.marshalim.moudle.open.question.fragment.third.OpenSoftwareFragment
+import com.marshalim.moudle.open.question.fragment.third.OpenThirdEnglishFragment
 
 class OpenFragmentActivity:BaseViewActivity<ActivityOpenFragmentBinding>() {
 
@@ -34,7 +35,7 @@ class OpenFragmentActivity:BaseViewActivity<ActivityOpenFragmentBinding>() {
 
     override fun initView() {
 
-        var fragmentName:String = ""
+        var fragmentName = ""
         if(intent.getStringExtra("fragmentName") !=null) {
             fragmentName = intent.getStringExtra("fragmentName") ?:""
         }
@@ -60,6 +61,9 @@ class OpenFragmentActivity:BaseViewActivity<ActivityOpenFragmentBinding>() {
                 }
                 OpenDatabaseFragment::class.java.simpleName->{
                     fragment = OpenDatabaseFragment()
+                }
+                OpenThirdEnglishFragment::class.java.simpleName->{
+                    fragment = OpenThirdEnglishFragment()
                 }
 
             }

@@ -4,12 +4,9 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.marshalim.moudle.open.question.works.first.OpenReadQuestionProgramDesignWork
 import com.marshalim.moudle.open.question.works.first.OpenReadQuestionThoughtWork
 import com.marshalim.moudle.open.question.works.first.OpenReadQuestionsWork
-import com.marshalim.moudle.open.question.works.second.OpenReadEnglishQuestionWork
-import com.marshalim.moudle.open.question.works.third.OpenReadDatabaseWork
-import com.marshalim.moudle.open.question.works.third.OpenReadSoftwareWork
+import com.marshalim.moudle.open.question.works.third.OpenReadThirdEnglishWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
 import getAppFunctionSingleData
@@ -18,6 +15,7 @@ import getAppSecondEnglishQuestionData
 import getAppThirdDatabaseData
 import getAppThirdSoftwareData
 import getAppThoughtSingleData
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
@@ -37,12 +35,20 @@ import java.util.concurrent.Executors
 
 class MainService : Service() {
 
+    private var executorServices: ExecutorService= Executors.newSingleThreadExecutor()
+
+
+    // 简化条件判断并封装成一个方法
+    private fun executeIfEmpty(data: String?, work: Runnable) {
+        if (data?.isEmpty() == true) {
+            executorServices.execute(work)
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         Log.d("TAG", "service:onCreate")
 
-        //线程池
-        val executorServices = Executors.newSingleThreadExecutor()
 
         if (getAppFunctionSingleData()?.isEmpty() == true
             || getAppFunctionMultipleData()?.isEmpty() == true
@@ -51,25 +57,14 @@ class MainService : Service() {
             executorServices.execute(OpenReadQuestionsWork())
         }
 
-        if (getAppThoughtSingleData()?.isEmpty() == true) {
-            executorServices.execute(OpenReadQuestionThoughtWork())
-        }
+        executeIfEmpty(getAppThoughtSingleData(),OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppProgramSingleData(),OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppSecondEnglishQuestionData(),OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppThirdDatabaseData(),OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppThirdSoftwareData(),OpenReadQuestionThoughtWork())
 
-        if (getAppProgramSingleData()?.isEmpty() == true) {
-            executorServices.execute(OpenReadQuestionProgramDesignWork())
-        }
 
-        if (getAppSecondEnglishQuestionData()?.isEmpty() == true) {
-            executorServices.execute(OpenReadEnglishQuestionWork())
-        }
-
-        if (getAppThirdDatabaseData()?.isEmpty() == true) {
-            executorServices.execute(OpenReadDatabaseWork())
-        }
-
-        if (getAppThirdSoftwareData()?.isEmpty() == true) {
-            executorServices.execute(OpenReadSoftwareWork())
-        }
+        executorServices.execute(OpenReadThirdEnglishWork())
 
     }
 
@@ -87,8 +82,8 @@ class MainService : Service() {
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
+        executorServices.shutdown()
     }
 
 

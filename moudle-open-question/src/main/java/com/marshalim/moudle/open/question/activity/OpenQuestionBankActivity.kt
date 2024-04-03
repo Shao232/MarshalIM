@@ -14,6 +14,7 @@ import com.marshalim.moudle.open.question.fragment.first.OpenThoughtFragment
 import com.marshalim.moudle.open.question.fragment.second.OpenSecondEnglishFragment
 import com.marshalim.moudle.open.question.fragment.third.OpenDatabaseFragment
 import com.marshalim.moudle.open.question.fragment.third.OpenSoftwareFragment
+import com.marshalim.moudle.open.question.fragment.third.OpenThirdEnglishFragment
 import com.marshalim.moudle.open.question.utils.OpenFirstContent
 import com.marshalim.moudle.open.question.utils.OpenFourthContent
 import com.marshalim.moudle.open.question.utils.OpenQuestionRouter
@@ -118,6 +119,7 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         adapter.itemList.add(OpenThirdContent)
         adapter.itemList.add(OpenFourthContent)
 
+
         adapter.setAdapterItemOnClickListener(object : AdapterItemOnClickListener<String> {
             override fun onClick(view: View, bean: String) {
                 super.onClick(view, bean)
@@ -132,7 +134,7 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                     }
 
                     OpenThirdContent -> {
-                        questionList = arrayListOf("软件工程复习题", "数据库及原理")
+                        questionList = arrayListOf("软件工程复习题", "数据库及原理","大学学位英语")
                     }
 
                     OpenFourthContent -> {
@@ -189,6 +191,12 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
                                 OpenFragmentActivity.startFragment(
                                     this@OpenQuestionBankActivity,
                                     OpenDatabaseFragment::class.java.simpleName
+                                )
+                            }
+                            "大学学位英语"->{
+                                OpenFragmentActivity.startFragment(
+                                    this@OpenQuestionBankActivity,
+                                    OpenThirdEnglishFragment::class.java.simpleName
                                 )
                             }
                         }

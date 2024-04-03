@@ -48,6 +48,19 @@ object FileUtils {
     }
 
     /**
+     * @param saveName 保存的文件名和文件格式
+     * @param saveDataJson 保存的数据源-json格式
+     * 将json数据保存到本地缓存目录下
+     */
+    fun saveJsonDataToFile(saveName:String,saveDataJson:String){
+        try {
+            File(app_cacheDir_path + saveName).bufferedWriter().use { writer->writer.write(saveDataJson) }
+        }catch (e:IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
      * 在应用cache中生成录音文件夹
      */
     fun getTempPath():String{
