@@ -13,6 +13,16 @@ import getAppFunctionSingleData
 import getAppProgramSingleData
 import getAppSecondEnglishQuestionData
 import getAppThirdDatabaseData
+import getAppThirdEnglishEighthData
+import getAppThirdEnglishFifthData
+import getAppThirdEnglishFirstData
+import getAppThirdEnglishFourthData
+import getAppThirdEnglishNinthData
+import getAppThirdEnglishSecondData
+import getAppThirdEnglishSeventhData
+import getAppThirdEnglishSixthData
+import getAppThirdEnglishTenthData
+import getAppThirdEnglishThirdData
 import getAppThirdSoftwareData
 import getAppThoughtSingleData
 import java.util.concurrent.ExecutorService
@@ -35,7 +45,7 @@ import java.util.concurrent.Executors
 
 class MainService : Service() {
 
-    private var executorServices: ExecutorService= Executors.newSingleThreadExecutor()
+    private var executorServices: ExecutorService = Executors.newSingleThreadExecutor()
 
 
     // 简化条件判断并封装成一个方法
@@ -57,14 +67,25 @@ class MainService : Service() {
             executorServices.execute(OpenReadQuestionsWork())
         }
 
-        executeIfEmpty(getAppThoughtSingleData(),OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppProgramSingleData(),OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppSecondEnglishQuestionData(),OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppThirdDatabaseData(),OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppThirdSoftwareData(),OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppThoughtSingleData(), OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppProgramSingleData(), OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppSecondEnglishQuestionData(), OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppThirdDatabaseData(), OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppThirdSoftwareData(), OpenReadQuestionThoughtWork())
 
-
-        executorServices.execute(OpenReadThirdEnglishWork())
+        if (getAppThirdEnglishFirstData()?.isEmpty() == true
+            || getAppThirdEnglishSecondData()?.isEmpty() == true
+            || getAppThirdEnglishThirdData()?.isEmpty() == true
+            || getAppThirdEnglishFourthData()?.isEmpty() == true
+            || getAppThirdEnglishFifthData()?.isEmpty() == true
+            || getAppThirdEnglishSixthData()?.isEmpty() == true
+            || getAppThirdEnglishSeventhData()?.isEmpty() == true
+            || getAppThirdEnglishEighthData()?.isEmpty() == true
+            || getAppThirdEnglishNinthData()?.isEmpty() == true
+            || getAppThirdEnglishTenthData()?.isEmpty() == true
+        ) {
+            executorServices.execute(OpenReadThirdEnglishWork())
+        }
 
     }
 

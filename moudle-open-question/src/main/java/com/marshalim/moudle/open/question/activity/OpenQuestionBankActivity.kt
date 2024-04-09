@@ -73,39 +73,18 @@ class OpenQuestionBankActivity : BaseViewActivity<ActivityOpenQuestionBankBindin
         if (hasIncludeToolbar) {
             setTitle("开大题库")
             clnTitleLayout?.setOnClickListener {
-                val dialogFragment = OpenQuestionSelectDialog(
-                    arrayListOf(
-                        "第一", "第二"
-                    )
-                )
-                dialogFragment.setOnDialogClickListener(object :
-                    OpenQuestionSelectDialog.QuestionDialogClickListener {
-                    override fun onClickTitleContent(title: String) {
-//                        setTitle(title)
-//                        when (title) {
-//                            firstTitle -> {
-//                                currentCourse = appFunction
-//                                showAndSwitchFragment(appFunctionFragment, firstTitle)
-//                            }
+//                val dialogFragment = OpenQuestionSelectDialog(
+//                    arrayListOf(
+//                        "第一", "第二"
+//                    )
+//                )
+//                dialogFragment.setOnDialogClickListener(object :
+//                    OpenQuestionSelectDialog.QuestionDialogClickListener {
+//                    override fun onClickTitleContent(title: String) {
 //
-//                            secondTitle -> {
-//                                currentCourse = thought
-//                                showAndSwitchFragment(thoughtFragment, secondTitle)
-//                            }
-//
-//                            thirdTitle -> {
-//                                currentCourse = programDesign
-//                                showAndSwitchFragment(programDesignFragment, thirdTitle)
-//                            }
-//
-//                            fourTitle -> {
-//                                currentCourse = appSecondEnglish
-//                                showAndSwitchFragment(appSecondEnglishFragment, fourTitle)
-//                            }
-//                        }
-                    }
-                })
-                dialogFragment.show(supportFragmentManager, "dialog_title")
+//                    }
+//                })
+//                dialogFragment.show(supportFragmentManager, "dialog_title")
             }
         }
 
