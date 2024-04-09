@@ -25,7 +25,6 @@ class OpenThirdEnglishAdapter : BaseRecyclerAdapter<OpenThirdEnglishViewHolder, 
             1 -> {
                 holder.lvnAnswerSelectGroup?.visibility = View.VISIBLE
                 holder.tvEnglishToChinese?.visibility = View.GONE
-
             }
 
             5 -> {
@@ -106,7 +105,7 @@ class OpenThirdEnglishAdapter : BaseRecyclerAdapter<OpenThirdEnglishViewHolder, 
             val selectAnswerBean = bean.answerList?.find { it.hasSelectSelf==true }
             holder.tvAnswerParseThird?.visibility = if(selectAnswerBean!=null) View.VISIBLE else View.GONE
 
-            val answerStr = selectAnswerBean?.answerContent?.substring(0,1)
+            val answerStr = selectAnswerBean?.answerContent?.trim()?.substring(0,1)
 
             if(answerStr?.trim()?.contentEquals(bean.rightAnswer?.trim()) == true) {
                 holder.tvAnswerParseThird?.setTextColor(mContext?.getColor(R.color.right_answers_color)?:0)
@@ -116,6 +115,8 @@ class OpenThirdEnglishAdapter : BaseRecyclerAdapter<OpenThirdEnglishViewHolder, 
             holder.tvAnswerParseThird?.text = "正确答案:${bean.rightAnswer},答案解析:${bean.parseAnswer}"
 
             Log.d("TAG","holder.tvAnswerParseThird 是否可见:${holder.tvAnswerParseThird?.visibility == View.VISIBLE}")
+        }else{
+            holder.tvAnswerParseThird?.visibility = View.GONE
         }
 
 

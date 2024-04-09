@@ -1,7 +1,9 @@
 package com.marshalim.moudle.open.question.fragment.third
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
+import androidx.viewpager2.widget.ViewPager2
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.marshal.base_common.baseview.BaseViewFragment
@@ -34,6 +36,20 @@ class OpenThirdEnglishFragment : BaseViewFragment<FragmentOpenThirdEnglishBindin
     private var appThirdEnglishEightList = ArrayList<OpenAnswersBean>()
     private var appThirdEnglishNinthList = ArrayList<OpenAnswersBean>()
     private var appThirdEnglishTenthList = ArrayList<OpenAnswersBean>()
+    private var titleList = arrayListOf(
+        "实训1",
+        "实训2",
+        "实训3",
+        "实训4",
+        "实训5",
+        "实训6",
+        "实训7",
+        "实训8",
+        "实训9",
+        "实训10"
+    )
+
+    private var questionIndex = 1;
 
     override fun hasToolbar(): Boolean = true
     override fun getResLayoutId(): Int? = R.layout.fragment_open_third_english
@@ -43,6 +59,7 @@ class OpenThirdEnglishFragment : BaseViewFragment<FragmentOpenThirdEnglishBindin
         return binding?.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
 
         if (hasIncludeToolbar) {
@@ -50,20 +67,23 @@ class OpenThirdEnglishFragment : BaseViewFragment<FragmentOpenThirdEnglishBindin
         }
         ivMenu?.visibility = View.VISIBLE
 
-        /*
-          if (appThirdSoftwareData?.isNotEmpty() == true) {
-            val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
-            appThirdSoftwareList = Gson().fromJson(appThirdSoftwareData, type)
-        }
-         */
-
         parseJsonData()
-
         englishAdapter.itemList.addAll(appThirdEnglishFirstList)
-
+        binding?.tvQuestionNumTitleThird?.text = titleList[0]
         Log.d("TAG", "数据源 :${englishAdapter.itemList?.size}")
-
+        binding?.tvQuestionCountThird?.text = "${questionIndex}/${englishAdapter?.itemCount}"
         binding?.viewPager?.adapter = englishAdapter
+
+        binding?.viewPager?.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                questionIndex = position +1
+                binding?.tvQuestionCountThird?.text = "${questionIndex}/${englishAdapter?.itemCount}"
+            }
+        })
+
+
     }
 
     private fun parseJsonData() {
@@ -91,7 +111,7 @@ class OpenThirdEnglishFragment : BaseViewFragment<FragmentOpenThirdEnglishBindin
 
     }
 
-    private fun parseToArrayList(json:String?):ArrayList<OpenAnswersBean>{
+    private fun parseToArrayList(json: String?): ArrayList<OpenAnswersBean> {
         var arraylist = ArrayList<OpenAnswersBean>()
         if (json?.isNotEmpty() == true) {
             val type = object : TypeToken<ArrayList<OpenAnswersBean>>() {}.type
@@ -102,25 +122,12 @@ class OpenThirdEnglishFragment : BaseViewFragment<FragmentOpenThirdEnglishBindin
 
     override fun onClickMenu(view: View) {
         super.onClickMenu(view)
-        val dialogFragment = OpenQuestionSelectDialog(
-            arrayListOf(
-                "实训1",
-                "实训2",
-                "实训3",
-                "实训4",
-                "实训5",
-                "实训6",
-                "实训7",
-                "实训8",
-                "实训9",
-                "实训10"
-            )
-        )
+        val dialogFragment = OpenQuestionSelectDialog(titleList)
         dialogFragment.setOnDialogClickListener(object :
             OpenQuestionSelectDialog.QuestionDialogClickListener {
             override fun onClickTitleContent(title: String) {
                 englishAdapter.itemList.clear()
-
+                binding?.tvQuestionNumTitleThird?.text = title
                 when (title) {
                     "实训1" -> {
                         englishAdapter.addListAll(appThirdEnglishFirstList)
@@ -165,6 +172,8 @@ class OpenThirdEnglishFragment : BaseViewFragment<FragmentOpenThirdEnglishBindin
 
                 //重新从第一页开始
                 binding?.viewPager?.currentItem = 0
+                questionIndex = 1
+                binding?.tvQuestionCountThird?.text = "${questionIndex}/${englishAdapter?.itemCount}"
             }
         })
         dialogFragment.show(childFragmentManager, "third_english")
