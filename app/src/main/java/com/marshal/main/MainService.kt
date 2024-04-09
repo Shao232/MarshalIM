@@ -4,8 +4,12 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.marshalim.moudle.open.question.works.first.OpenReadQuestionProgramDesignWork
 import com.marshalim.moudle.open.question.works.first.OpenReadQuestionThoughtWork
 import com.marshalim.moudle.open.question.works.first.OpenReadQuestionsWork
+import com.marshalim.moudle.open.question.works.second.OpenReadEnglishQuestionWork
+import com.marshalim.moudle.open.question.works.third.OpenReadDatabaseWork
+import com.marshalim.moudle.open.question.works.third.OpenReadSoftwareWork
 import com.marshalim.moudle.open.question.works.third.OpenReadThirdEnglishWork
 import getAppFunctionEstimateData
 import getAppFunctionMultipleData
@@ -68,10 +72,10 @@ class MainService : Service() {
         }
 
         executeIfEmpty(getAppThoughtSingleData(), OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppProgramSingleData(), OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppSecondEnglishQuestionData(), OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppThirdDatabaseData(), OpenReadQuestionThoughtWork())
-        executeIfEmpty(getAppThirdSoftwareData(), OpenReadQuestionThoughtWork())
+        executeIfEmpty(getAppProgramSingleData(), OpenReadQuestionProgramDesignWork())
+        executeIfEmpty(getAppSecondEnglishQuestionData(), OpenReadEnglishQuestionWork())
+        executeIfEmpty(getAppThirdDatabaseData(), OpenReadDatabaseWork())
+        executeIfEmpty(getAppThirdSoftwareData(), OpenReadSoftwareWork())
 
         if (getAppThirdEnglishFirstData()?.isEmpty() == true
             || getAppThirdEnglishSecondData()?.isEmpty() == true
