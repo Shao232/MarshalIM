@@ -9,7 +9,6 @@ import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.moudle.calendar.schedule.R
 import com.marshal.moudle.calendar.schedule.databinding.FragmentCalendarWeekBinding
 import com.marshal.moudle.calendar.schedule.pojo.CalendarScheduleBean
-import com.marshal.moudle.calendar.schedule.pojo.DayScheduleBean
 import com.marshal.moudle.calendar.schedule.ui.viewmodel.CalendarViewModel
 import com.necer.enumeration.CalendarState
 
@@ -99,10 +98,8 @@ class CalendarWeekFragment : BaseViewFragment<FragmentCalendarWeekBinding>() {
         switchAndShowView()
     }
 
-    private fun getScheduleModels(scheduleList: ArrayList<DayScheduleBean>) {
-
-
-    }
+//    private fun getScheduleModels(scheduleList: ArrayList<DayScheduleBean>) {
+//    }
 
 
     /**

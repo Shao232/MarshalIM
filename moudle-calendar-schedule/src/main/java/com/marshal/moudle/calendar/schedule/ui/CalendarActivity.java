@@ -24,8 +24,6 @@ import com.marshal.moudle.calendar.schedule.utils.DateSelectUtils;
 import com.marshal.moudle.calendar.schedule.R;
 import com.marshal.moudle.calendar.schedule.databinding.ActivityAddCalendarBinding;
 
-
-
 @Route(path = CalendarRouterPath.APP_ADD_EVENT_CALENDAR)
 public class CalendarActivity extends BaseViewActivity<ActivityAddCalendarBinding> {
 

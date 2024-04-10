@@ -10,7 +10,6 @@ import com.marshal.AppRouterPath.APP_FUNCTION_PAGE
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.databinding.ActivityFunctionBinding
-import com.marshal.moudle.calendar.schedule.getAppInfoToken
 import com.marshal.moudle.calendar.schedule.utils.CalendarRouterPath
 import com.marshal.pojo.FunctionBean
 import com.marshalim.moudle.open.question.utils.OpenQuestionRouter
@@ -43,11 +42,6 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
 
         adapter?.setAdapterItemOnClickListener(object : AdapterItemOnClickListener<FunctionBean> {
             override fun onClick(view: View, bean: FunctionBean) {
-                if(bean.functionPath == CalendarRouterPath.APP_ADD_EVENT_CALENDAR
-                    && getAppInfoToken().isNullOrEmpty()) {
-                    ARouter.getInstance().build(AppRouterPath.APP_LOGIN_PAGE).navigation(this@FunctionActivity)
-                    return
-                }
 
                 ARouter.getInstance().build(bean.functionPath).navigation(this@FunctionActivity)
             }

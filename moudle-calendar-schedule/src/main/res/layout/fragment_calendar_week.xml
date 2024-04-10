@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <com.necer.calendar.Miui10Calendar
+    <com.necer.calendar.EmuiCalendar
         android:id="@+id/custom_calendar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -23,10 +22,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:background="@color/read"/>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -34,14 +29,15 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </com.necer.calendar.Miui10Calendar>
+    </com.necer.calendar.EmuiCalendar>
 
-    <com.necer.calendar.WeekCalendar
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+<!--    <com.necer.calendar.WeekCalendar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:visibility="gone"-->
+<!--        tools:visibility="gone"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"/>-->
 
 
 
