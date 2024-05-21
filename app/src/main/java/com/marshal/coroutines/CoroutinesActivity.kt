@@ -1,5 +1,6 @@
 package com.marshal.coroutines
 
+import PlayListDialog2
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.marshal.AppRouterPath.HOME_COROUTINES
@@ -22,6 +23,9 @@ class CoroutinesActivity : BaseViewActivity<ActivityCoroutinesBinding>() {
         if (hasIncludeToolbar) {
             setTitle("学习协程")
         }
+
+        val playListDialog = PlayListDialog2(this)
+        playListDialog.show()
 
 
         //GlobalScope.launch(Dispatchers.Main) {//开始协程：主线程

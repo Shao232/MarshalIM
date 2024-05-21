@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface IMService {
+    //"https://www.marshalim.club/web/index"
 
     @GET("/web/index")
     fun getData(): Observable<TestData>
