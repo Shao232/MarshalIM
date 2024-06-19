@@ -14,7 +14,7 @@ import com.marshalim.moudle.open.question.utils.OpenQuestionRouter
 @Route(path = OpenQuestionRouter.OPEN_QUESTION_WEB_BANK)
 class OpenQuestionWebActivity : BaseViewActivity<ActivityOpenQuestionWebBinding>() {
 
-    private val openURL = "http://39.98.74.62:7080/#/?ss=saldjkflajsldfasdf"
+    private val openURL = "http://39.98.74.62:7080/#/"
 
     override fun hasToolbar(): Boolean = true
 
