@@ -7,14 +7,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.base_common.baseview.BaseViewActivity
 import com.marshal.base_common.https.HttpSubscribe
@@ -35,12 +36,7 @@ ImmersionBar.with(this)
 
 全局广播 使用registerReceiver 进行注册
 registerReceiver(mainBroadcastReceiver, intentFilter)
-本地广播 使用localBroadcastReceiver 进行注册
-localBroadcastReceiver = LocalBroadcastManager.getInstance(this)
-mainBroadcastReceiver = MainBroadcastReceiver()
-val intentFilter = IntentFilter()
-intentFilter.addAction("com.marshal.login.user")
-localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver?:return,intentFilter)
+
 
 
  *
@@ -68,7 +64,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     )
 
     private var mainBroadcastReceiver: MainBroadcastReceiver? = null
-    private var localBroadcastReceiver: LocalBroadcastManager? = null
     private val mainViewModel: MainViewModel by viewModels()
 
 
@@ -77,6 +72,7 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
         return binding?.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun initView() {
         initFragment()
 
@@ -119,12 +115,14 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
         initChat()
 
-        localBroadcastReceiver = LocalBroadcastManager.getInstance(this)
         mainBroadcastReceiver = MainBroadcastReceiver(this)
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.marshal.login.user")
-        registerReceiver(mainBroadcastReceiver, intentFilter)
-        localBroadcastReceiver?.registerReceiver(mainBroadcastReceiver ?: return, intentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mainBroadcastReceiver, intentFilter,Context.RECEIVER_NOT_EXPORTED)
+        }else {
+            registerReceiver(mainBroadcastReceiver, intentFilter)
+        }
     }
 
     private fun initChat() {
@@ -194,7 +192,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
             //刷新ui
             if (intent?.action == "com.marshal.login.user") {
                 Log.d("TAG", "登录成功发送的广播")
-
             }
         }
     }
@@ -202,7 +199,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        localBroadcastReceiver?.unregisterReceiver(mainBroadcastReceiver ?: return)
         if (intentStartMainService != null) {
             stopService(intentStartMainService)
         }
