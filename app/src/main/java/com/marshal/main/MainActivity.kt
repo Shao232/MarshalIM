@@ -18,14 +18,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.base_common.baseview.BaseViewActivity
-import com.marshal.base_common.https.HttpSubscribe
 import com.marshal.databinding.ActivityMainBinding
-import com.marshal.https.MainApi
 import com.marshal.main.mainadapter.MainFragmentAdapter
 import com.marshal.mine.MineFragment
-import com.marshal.pojo.TestData
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  *
@@ -142,17 +137,17 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     private fun initHttp() {
-        MainApi.getData()?.subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe(object : HttpSubscribe<TestData>() {
-                override fun onSuccess(response: TestData?) {
-                    Log.d("TAG", "response: $response")
-                }
-
-                override fun onThrowable(e: Throwable?) {
-                    Log.e("TAG", "throwable: ${e?.message}")
-                }
-            })
+//        MainApi.getData()?.subscribeOn(Schedulers.io())
+//            ?.observeOn(AndroidSchedulers.mainThread())
+//            ?.subscribe(object : HttpSubscribe<TestData>() {
+//                override fun onSuccess(response: TestData?) {
+//                    Log.d("TAG", "response: $response")
+//                }
+//
+//                override fun onThrowable(e: Throwable?) {
+//                    Log.e("TAG", "throwable: ${e?.message}")
+//                }
+//            })
     }
 
 

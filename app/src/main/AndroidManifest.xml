@@ -85,15 +85,18 @@
 
         <service
             android:name=".main.MainService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="location"/>
         <service
             android:name=".music.BgMusicService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="location"/>
         <service
             android:name=".main.PushIntentService"
             android:enabled="true"
             android:exported="false"
-            android:process=":pushcore">
+            android:process=":pushcore"
+            android:foregroundServiceType="location">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTER" />
                 <action android:name="cn.jpush.android.intent.REPORT" />

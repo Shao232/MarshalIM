@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.marshal.android.WanAndroidActivity"
+            android:name="com.marshal.android.main.WanAndroidActivity"
             android:exported="false" />
 
     </application>

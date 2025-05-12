@@ -73,8 +73,8 @@ ext {
                     //mmkv
                     "mmkv"                      : "com.tencent:mmkv:1.2.14",
                     //leakcanary
-                    "leakcanary_android"        : "com.squareup.leakcanary:leakcanary-android:2.7",
-                    "leakcanary_android_no_op"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.6.3",
+                    "leakcanary_android"        : "com.squareup.leakcanary:leakcanary-android:2.14",
+                    //"leakcanary_android_no_op"  : "com.squareup.leakcanary:leakcanary-android-no-op:1.6.3",
                     //statusBar 基础依赖包，必须要依赖
                     "immersionbar"              : "com.geyifeng.immersionbar:immersionbar:3.2.2",
                     //statusBar  kotlin扩展（可选）
