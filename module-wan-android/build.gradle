@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'io.github.youth5201314:banner:2.2.3'
     implementation project(':base-common')
     kapt deps.support.arouter_compiler
 }

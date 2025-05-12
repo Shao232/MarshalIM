@@ -14,11 +14,12 @@ class WanAndroidActivity : BaseViewActivity<ActivityWanAndroidBinding>() {
         return binding?.root
     }
 
-    override fun hasToolbar(): Boolean = true
+
 
     override fun initView() {
-        if(hasIncludeToolbar) {
-            setTitle("WanAndroid")
-        }
+
+
+
+
     }
 }
