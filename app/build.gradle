@@ -56,13 +56,13 @@ android {
         debug {
             keyAlias 'marshalIM'
             keyPassword 'Wasd@150136'
-            storeFile file(".\\..\\doc\\key\\marshalIM.jks")
+            storeFile file("E:\\work\\MarshalProject\\MarshalIM\\doc\\key\\marshalIM.jks")
             storePassword 'Wasd@150136'
         }
         release {
             keyAlias 'marshalIM'
             keyPassword 'Wasd@150136'
-            storeFile file(".\\..\\doc\\key\\marshalIM.jks")
+            storeFile file("E:\\work\\MarshalProject\\MarshalIM\\doc\\key\\marshalIM.jks")
             storePassword 'Wasd@150136'
         }
     }
@@ -113,6 +113,7 @@ dependencies {
     implementation project(':driving-school')
     implementation project(":moudle-calendar-schedule")
     implementation project(":moudle-open-question")
+    implementation project(':module-wan-android')
 
     kapt deps.support.arouter_compiler
 

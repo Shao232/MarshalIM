@@ -5,8 +5,8 @@ import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
 import com.marshal.AppRouterPath
 import com.marshal.R
+import com.marshal.android.WanAndroidRouterPath
 import com.marshal.base_common.baseview.BaseViewFragment
-import com.marshal.base_common.store.getAppAppLoginUserAccount
 import com.marshal.databinding.FragmentHomeBinding
 
 
@@ -25,15 +25,9 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
              setTitle("首页")
          }
 
-        binding?.tvChat?.setOnClickListener {
+        binding?.tvToWanAndroid?.setOnClickListener {
             if(NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
-
-            if(getAppAppLoginUserAccount().isNullOrEmpty()) {
-                ARouter.getInstance().build(AppRouterPath.APP_LOGIN_PAGE).navigation()
-                return@setOnClickListener
-            }
-
-            ARouter.getInstance().build(AppRouterPath.CHAT_PATH).navigation()
+            ARouter.getInstance().build(WanAndroidRouterPath.WAN_ANDROID_Home).navigation()
         }
 
         binding?.tvToFunction?.setOnClickListener {

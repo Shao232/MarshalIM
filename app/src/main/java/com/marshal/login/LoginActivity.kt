@@ -37,7 +37,7 @@ class LoginActivity : BaseViewActivity<ActivityLoginBinding>() {
 
             if (checkTextEmpty(loginAccount, loginPassword)) return@setOnClickListener
 
-            login(loginAccount, loginPassword)
+            login()
 
         }
 
@@ -53,7 +53,6 @@ class LoginActivity : BaseViewActivity<ActivityLoginBinding>() {
                 Log.e("TAG","loginActivity , it=${it}")
             }
         }
-
     }
 
     private fun checkTextEmpty(loginAccount: String, loginPassword: String): Boolean {
@@ -68,9 +67,7 @@ class LoginActivity : BaseViewActivity<ActivityLoginBinding>() {
         return false
     }
 
-    private fun login(loginAccount: String, loginPassword: String) {
-        loginViewModel.login(loginAccount,loginPassword)
-
-
+    private fun login() {
+        loginViewModel.login()
     }
 }

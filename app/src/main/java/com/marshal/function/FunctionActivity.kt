@@ -42,7 +42,6 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
 
         adapter?.setAdapterItemOnClickListener(object : AdapterItemOnClickListener<FunctionBean> {
             override fun onClick(view: View, bean: FunctionBean) {
-
                 ARouter.getInstance().build(bean.functionPath).navigation(this@FunctionActivity)
             }
         })
@@ -61,6 +60,7 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
         adapter?.itemList?.add(FunctionBean("驾校模拟", DrivingRouterPath.Driving_HOME_PATH))
         adapter?.itemList?.add(FunctionBean("添加日程", CalendarRouterPath.APP_ADD_EVENT_CALENDAR))
         adapter?.itemList?.add(FunctionBean("短信列表", AppRouterPath.APP_SMS_LIST_PAGE))
+        adapter?.itemList?.add(FunctionBean("聊天入口", AppRouterPath.CHAT_PATH))
 
     }
 }

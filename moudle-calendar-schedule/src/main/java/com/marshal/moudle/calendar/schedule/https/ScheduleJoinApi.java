@@ -22,45 +22,23 @@ public class ScheduleJoinApi {
             Objects.requireNonNull(ScheduleHttpRequestFactory.INSTANCE.getScheduleRequest()).create(ScheduleService.class);
 
     public static Observable<ResponseResultBean<UserInfoBean>> postLogin(String loginAccount, String loginPassword) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("username", "仲维昌");
-        params.put("mobile", loginAccount);
-        params.put("password", loginPassword);
-        String json = GsonUtils.INSTANCE.objToJson(params);
+        String json = GsonUtils.INSTANCE.objToJson(EmptyBean.class);
         RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
-
-        if (httpsService != null) {
-            return httpsService.postScheduleLogin(body);
-        } else {
-            return null;
-        }
+        return httpsService.postScheduleLogin(body);
     }
 
     public static Observable<ResponseResultBean<ArrayList<DayScheduleBean>>> getScheduleDailyList(String theDay) {
-        if (httpsService != null) {
-            return httpsService.getScheduleDailyList(theDay);
-        } else {
-            return null;
-        }
+        return httpsService.getScheduleDailyList(theDay);
     }
 
     public static  Observable<ResponseResultBean<ArrayList<PlanBean>>> getPlanList(){
-        if (httpsService != null) {
-            return httpsService.getPlanList();
-        } else {
-            return null;
-        }
+        return httpsService.getPlanList();
     }
 
     public static Observable<ResponseResultBean<Boolean>> postScheduleAdd(HashMap<String, Object> params){
-
         String json = GsonUtils.INSTANCE.objToJson(params);
         RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
-        if (httpsService != null) {
-            return httpsService.postScheduleAdd(body);
-        } else {
-            return null;
-        }
+        return httpsService.postScheduleAdd(body);
     }
 
 }

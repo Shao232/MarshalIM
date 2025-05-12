@@ -19,10 +19,6 @@ object ScheduleHttpRequestFactory {
     private const val scheduleUrl: String = "https://mouce.xyz/api/"
     private var okHttpClient: OkHttpClient? = null
 
-    init {
-
-    }
-
     fun getScheduleRequest(): Retrofit? {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
@@ -45,7 +41,7 @@ object ScheduleHttpRequestFactory {
             .build()
 
         retrofit = Retrofit.Builder()
-            .client(okHttpClient)
+            .client(okHttpClient?:OkHttpClient())
             .baseUrl(scheduleUrl)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
