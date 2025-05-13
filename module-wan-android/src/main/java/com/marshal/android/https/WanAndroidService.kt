@@ -9,4 +9,6 @@ interface WanAndroidService {
     @GET("/banner/json")
     suspend fun getBanner(): Response<WanAndroidBaseBean<MutableList<BannerBean>>>
 
+
+
 }
