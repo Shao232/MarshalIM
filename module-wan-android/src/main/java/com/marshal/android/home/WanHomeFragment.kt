@@ -1,10 +1,12 @@
-package com.marshal.android
+package com.marshal.android.home
 
 import android.view.View
 import android.widget.ImageView
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.marshal.android.pojo.BannerBean
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.module.wan.android.R
 import com.marshal.module.wan.android.databinding.FragmentWanHomeBinding
@@ -23,22 +25,28 @@ class WanHomeFragment : BaseViewFragment<FragmentWanHomeBinding>() {
 
     override fun hasToolbar(): Boolean = true
 
+    private val wanHomeViewModel: WanHomeViewModel by viewModels()
+    private var bannerList:MutableList<BannerBean>? = mutableListOf()
+
     override fun initView() {
         if (hasIncludeToolbar) {
             setTitle("首页")
         }
 
-        val mData = listOf<String>(
-            "https://www.wanandroid.com/blogimgs/42da12d8-de56-4439-b40c-eab66c227a4b.png",
-            "https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png",
-            "https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png"
-        )
-        binding?.bannerHomeWan?.setAdapter(object : BannerImageAdapter<String>(mData) {
+
+        wanHomeViewModel.loadBanners()
+        wanHomeViewModel.bannersMutableLiveData.observe(this) {
+            bannerList = it as ArrayList<BannerBean>
+            binding?.bannerHomeWan?.setDatas(bannerList)
+        }
+
+
+        binding?.bannerHomeWan?.setAdapter(object : BannerImageAdapter<BannerBean>(bannerList) {
             override fun onBindView(
-                holder: BannerImageHolder?, data: String?, position: Int, size: Int
+                holder: BannerImageHolder?, data: BannerBean?, position: Int, size: Int
             ) {
                 if (holder != null) {
-                    Glide.with(holder.itemView).load(data)
+                    Glide.with(holder.itemView).load(data?.imagePath)
                         .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                         .into((holder.imageView ?: this@WanHomeFragment) as ImageView)
                 }

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.tabs.TabLayoutMediator
 import com.marshal.android.WanAndroidRouterPath.WAN_ANDROID_Home
-import com.marshal.android.WanHomeFragment
+import com.marshal.android.home.WanHomeFragment
 import com.marshal.android.WanKnowledgeFragment
 import com.marshal.android.WanMineFragment
 import com.marshal.android.WanNavFragment

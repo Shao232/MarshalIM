@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_mode_white"
-    tools:context="com.marshal.android.WanHomeFragment">
+    tools:context="com.marshal.android.home.WanHomeFragment">
 
     <include layout="@layout/include_toolbar" />
 
