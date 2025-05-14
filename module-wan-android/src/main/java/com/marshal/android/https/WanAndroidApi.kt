@@ -2,6 +2,7 @@ package com.marshal.android.https
 
 import android.util.Log
 import com.marshal.android.pojo.BannerBean
+import com.marshal.android.pojo.WenDaBean
 
 object WanAndroidApi {
 
@@ -23,6 +24,20 @@ object WanAndroidApi {
         }
     }
 
+    suspend fun fetchWenda(): MutableList<WenDaBean>? {
+        return try {
+            val response = service?.getWenda()
+            if (response?.isSuccessful == true) {
+                Log.d("WanAndroidApi", "fetchBanners: ${response.body()}")
+                response.body()?.data
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("WanAndroidApi", "error: ${e.message}")
+            null
+        }
+    }
 
 
 
