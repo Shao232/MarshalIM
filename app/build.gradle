@@ -56,13 +56,14 @@ android {
         debug {
             keyAlias 'marshalIM'
             keyPassword 'Wasd@150136'
-            storeFile file("E:\\work\\MarshalProject\\MarshalIM\\doc\\key\\marshalIM.jks")
+            storeFile file("../../MarshalIM/doc/key/marshalIM.jks")
             storePassword 'Wasd@150136'
         }
         release {
             keyAlias 'marshalIM'
             keyPassword 'Wasd@150136'
-            storeFile file("E:\\work\\MarshalProject\\MarshalIM\\doc\\key\\marshalIM.jks")
+//            storeFile file("E:\\work\\MarshalProject\\MarshalIM\\doc\\key\\marshalIM.jks")
+            storeFile file("../../MarshalIM/doc/key/marshalIM.jks")
             storePassword 'Wasd@150136'
         }
     }
