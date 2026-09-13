@@ -27,24 +27,26 @@ class MApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        JPushInterface.setDebugMode(isDebugARouter)
-        // 调整点一：初始化代码前增加setAuth调用
-        // var isPrivacyReady = false // app根据是否已弹窗获取隐私授权来赋值
-        // if (!isPrivacyReady) {
-        //     JCollectionAuth.setAuth(this, true) // 后续初始化过程将被拦截
-        // }
-        JCollectionAuth.setAuth(this, true)
-        JPushInterface.init(this)
+        // 必须主线程且要快：MMKV 先初始化（首屏可能用到）
+        MMKV.initialize(this)
 
+        // 必须主线程但可延后：ARouter（首屏不用路由跳转）
         if (isDebugARouter) {
             ARouter.openLog()
             ARouter.openDebug()
         }
         ARouter.init(this)
-        MMKV.initialize(this)
 
-        CrashReport.initCrashReport(this, "ed4bbbd59c", true)
+        // 移出主线程：以下 SDK 不影响首屏渲染
+        Thread {
+            // 极光推送 — 消息延迟几秒收到完全可接受
+            JPushInterface.setDebugMode(isDebugARouter)
+            JCollectionAuth.setAuth(this@MApplication, true)
+            JPushInterface.init(this@MApplication)
 
+            // Bugly 崩溃上报 — 启动后几秒上报不影响体验
+            CrashReport.initCrashReport(this@MApplication, "ed4bbbd59c", true)
+        }.start()
     }
 
 }

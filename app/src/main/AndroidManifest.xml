@@ -142,7 +142,8 @@
             tools:node="remove" />
         <activity android:name=".sms.ReadSmsActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".customview.CustomViewActivity"
             android:exported="false"

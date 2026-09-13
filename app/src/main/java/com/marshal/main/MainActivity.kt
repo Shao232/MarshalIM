@@ -1,7 +1,6 @@
 package com.marshal.main
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -106,8 +105,6 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
 
         initHttp()
 
-        initServer()
-
         initChat()
 
         mainBroadcastReceiver = MainBroadcastReceiver(this)
@@ -125,29 +122,9 @@ class MainActivity : BaseViewActivity<ActivityMainBinding>() {
     }
 
     private fun initServer() {
-        val aManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val appRunningService = aManager.getRunningServices(Integer.MAX_VALUE);
-        if (appRunningService != null) {
-            Log.println(Log.DEBUG, "TAG", "appRunningService: " + appRunningService.size)
-            for (aProcess: ActivityManager.RunningServiceInfo in appRunningService) {
-                Log.d("TAG", "package Name:" + aProcess.service.packageName);
-                Log.d("TAG", "process:" + aProcess.process);
-            }
-        }
     }
 
     private fun initHttp() {
-//        MainApi.getData()?.subscribeOn(Schedulers.io())
-//            ?.observeOn(AndroidSchedulers.mainThread())
-//            ?.subscribe(object : HttpSubscribe<TestData>() {
-//                override fun onSuccess(response: TestData?) {
-//                    Log.d("TAG", "response: $response")
-//                }
-//
-//                override fun onThrowable(e: Throwable?) {
-//                    Log.e("TAG", "throwable: ${e?.message}")
-//                }
-//            })
     }
 
 
