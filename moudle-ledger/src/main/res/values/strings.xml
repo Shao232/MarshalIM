@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ledger_home_title">记账</string>
+    <string name="ledger_add_title">记一笔</string>
+
+    <string name="ledger_month_expense_label">本月支出</string>
+    <string name="ledger_month_income">本月收入 ¥ %1$s</string>
+    <string name="ledger_month_balance">本月结余 ¥ %1$s</string>
+    <string name="ledger_budget_tip">预算 ¥ %1$s · 已用 %2$d%%</string>
+
+    <string name="ledger_money_symbol">¥</string>
+    <string name="ledger_amount_zero">0.00</string>
+    <string name="ledger_amount_error">请输入正确的金额</string>
+
+    <string name="ledger_category_label">分类</string>
+    <string name="ledger_remark_label">备注</string>
+    <string name="ledger_remark_hint">选填</string>
+    <string name="ledger_remark_empty">无备注</string>
+    <string name="ledger_date_today">今天</string>
+
+    <string name="ledger_type_expense">支出</string>
+    <string name="ledger_type_income">收入</string>
+    <string name="ledger_save">保存</string>
+
+    <string name="ledger_day_summary">%1$d 笔 · ¥ %2$s</string>
+    <string name="ledger_empty_tip">本月还没有记录，点右下角记一笔</string>
+
+</resources>

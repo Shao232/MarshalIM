@@ -10,7 +10,7 @@
         android:id="@+id/view_pager_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/bg_mode_white"
+        android:background="@color/home_bg_page"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tab_layout"/>
 
@@ -19,6 +19,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white_mode"
+        app:tabIndicatorColor="@color/home_brand"
+        app:tabIndicatorFullWidth="false"
+        app:tabRippleColor="@color/home_c_ledger_bg"
+        app:tabSelectedTextColor="@color/home_brand"
+        app:tabTextColor="@color/home_text_sub"
         app:layout_constraintTop_toBottomOf="@id/view_pager_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

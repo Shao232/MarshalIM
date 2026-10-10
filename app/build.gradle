@@ -114,6 +114,7 @@ dependencies {
     implementation project(":moudle-calendar-schedule")
     implementation project(":moudle-open-question")
     implementation project(':module-wan-android')
+    implementation project(':moudle-ledger')
 
     kapt deps.support.arouter_compiler
 

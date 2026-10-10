@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 间距 -->
+    <dimen name="ls_space_4">4dp</dimen>
+    <dimen name="ls_space_8">8dp</dimen>
+    <dimen name="ls_space_12">12dp</dimen>
+    <dimen name="ls_space_16">16dp</dimen>
+    <dimen name="ls_space_20">20dp</dimen>
+    <dimen name="ls_space_24">24dp</dimen>
+
+    <!-- 圆角 -->
+    <dimen name="ls_radius_s">8dp</dimen>
+    <dimen name="ls_radius_m">12dp</dimen>
+    <dimen name="ls_radius_l">16dp</dimen>
+    <dimen name="ls_radius_block">10dp</dimen>
+
+    <!-- 字号 -->
+    <dimen name="ls_text_caption">11sp</dimen>
+    <dimen name="ls_text_small">12sp</dimen>
+    <dimen name="ls_text_body">14sp</dimen>
+    <dimen name="ls_text_title">15sp</dimen>
+    <dimen name="ls_text_amount">18sp</dimen>
+    <dimen name="ls_text_big">26sp</dimen>
+    <dimen name="ls_text_money">32sp</dimen>
+
+    <!-- 控件尺寸 -->
+    <dimen name="ls_icon_block">36dp</dimen>
+    <dimen name="ls_fab_size">52dp</dimen>
+
+</resources>

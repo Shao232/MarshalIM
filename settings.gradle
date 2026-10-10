@@ -24,7 +24,7 @@ dependencyResolutionManagement {
 
     }
 }
-rootProject.name = "MarshalIM"
+rootProject.name = "Everything"
 include ':app'
 include ':zz-excel-creator'
 include ':driving-school'
@@ -33,3 +33,4 @@ include ':moudle-calendar-schedule'
 include ':ncalendar'
 include ':moudle-open-question'
 include ':module-wan-android'
+include ':moudle-ledger'

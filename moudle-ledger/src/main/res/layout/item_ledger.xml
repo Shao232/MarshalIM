@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/ls_space_16"
+        android:paddingEnd="@dimen/ls_space_16"
+        android:paddingTop="@dimen/ls_space_12"
+        android:paddingBottom="@dimen/ls_space_12">
+
+        <TextView
+            android:id="@+id/tv_ledger_icon"
+            android:layout_width="@dimen/ls_icon_block"
+            android:layout_height="@dimen/ls_icon_block"
+            android:background="@drawable/shape_ledger_icon_block"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textColor="@color/ledger_c_other_text"
+            android:textSize="@dimen/ls_text_small"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ls_space_12"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_ledger_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Ledger.Body"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_ledger_remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Ledger.Sub" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_ledger_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Ledger.Amount" />
+
+            <TextView
+                android:id="@+id/tv_ledger_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Ledger.Caption" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="@dimen/ls_space_16"
+        android:background="@color/ledger_line" />
+
+</LinearLayout>

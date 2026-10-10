@@ -10,9 +10,11 @@ class FunctionViewHolder(context: Context?, resId: Int, parent: ViewGroup) :
     BaseRecyclerViewHolder(resId, parent) {
 
     var tvFunction: TextView? = null
+    var tvFunctionIcon: TextView? = null
 
     init {
         with(itemView) {
+            tvFunctionIcon = findViewById(R.id.tv_function_icon)
             tvFunction = findViewById(R.id.tv_function_item)
         }
     }

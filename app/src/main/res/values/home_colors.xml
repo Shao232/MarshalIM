@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 首页 token：墨黑品牌系（与 moudle-ledger 保持一致） -->
+    <color name="home_brand">#2C2C2A</color>
+    <color name="home_text_main">#1F2421</color>
+    <color name="home_text_sub">#6B7280</color>
+    <color name="home_text_hint">#9CA3AF</color>
+    <color name="home_bg_page">#F7F8F7</color>
+    <color name="home_card_bg">#FFFFFF</color>
+    <color name="home_line">#EDEEEC</color>
+
+    <!-- 概览卡图标块：浅底深字（沿用记账九类的色板，保证全局一致） -->
+    <color name="home_c_hot_bg">#EEEDFE</color>
+    <color name="home_c_hot_text">#534AB7</color>
+    <color name="home_c_expense_bg">#FCEBEB</color>
+    <color name="home_c_expense_text">#A32D2D</color>
+    <color name="home_c_schedule_bg">#FAEEDA</color>
+    <color name="home_c_schedule_text">#854F0B</color>
+    <color name="home_c_question_bg">#E6F1FB</color>
+    <color name="home_c_question_text">#185FA5</color>
+
+    <color name="home_c_ledger_bg">#EFEFED</color>
+    <color name="home_c_ledger_text">#2C2C2A</color>
+    <color name="home_c_driving_bg">#E6F1FB</color>
+    <color name="home_c_driving_text">#185FA5</color>
+    <color name="home_c_wan_bg">#EEEDFE</color>
+    <color name="home_c_wan_text">#534AB7</color>
+    <color name="home_c_calendar_bg">#FAEEDA</color>
+    <color name="home_c_calendar_text">#854F0B</color>
+
+    <!-- 按压水波纹（墨黑 12%） -->
+    <color name="home_ripple">#1F2C2C2A</color>
+
+    <!-- 我的页：墨黑品牌卡上的字块底 + 危险操作色 -->
+    <color name="home_brand_block">#3D3D3B</color>
+    <color name="home_danger">#D0453B</color>
+
+</resources>

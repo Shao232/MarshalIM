@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 主色：墨黑 -->
+    <color name="ledger_brand">#2C2C2A</color>
+    <color name="ledger_brand_dark">#1A1A19</color>
+    <color name="ledger_brand_soft">#EFEFED</color>
+    <color name="ledger_brand_line">#C9C9C5</color>
+
+    <!-- 语义色 -->
+    <color name="ledger_expense">#D0453B</color>
+    <color name="ledger_income">#2E9E6B</color>
+
+    <!-- 灰阶：文字 -->
+    <color name="ledger_text_main">#1F2421</color>
+    <color name="ledger_text_sub">#6B7280</color>
+    <color name="ledger_text_hint">#9CA3AF</color>
+
+    <!-- 灰阶：背景与分割 -->
+    <color name="ledger_bg_page">#F7F8F7</color>
+    <color name="ledger_bg_block">#F1F2F1</color>
+    <color name="ledger_line">#EDEEEC</color>
+    <color name="ledger_white">#FFFFFF</color>
+
+    <!-- 九类配色：浅底 + 深字 -->
+    <color name="ledger_c_food_bg">#E1F5EE</color>
+    <color name="ledger_c_food_text">#0F6E56</color>
+    <color name="ledger_c_house_bg">#E6F1FB</color>
+    <color name="ledger_c_house_text">#185FA5</color>
+    <color name="ledger_c_phone_bg">#EEEDFE</color>
+    <color name="ledger_c_phone_text">#534AB7</color>
+    <color name="ledger_c_traffic_bg">#FAEEDA</color>
+    <color name="ledger_c_traffic_text">#854F0B</color>
+    <color name="ledger_c_daily_bg">#F1EFE8</color>
+    <color name="ledger_c_daily_text">#5F5E5A</color>
+    <color name="ledger_c_medical_bg">#FCEBEB</color>
+    <color name="ledger_c_medical_text">#A32D2D</color>
+    <color name="ledger_c_social_bg">#FBEAF0</color>
+    <color name="ledger_c_social_text">#993556</color>
+    <color name="ledger_c_tool_bg">#EAF3DE</color>
+    <color name="ledger_c_tool_text">#3B6D11</color>
+    <color name="ledger_c_other_bg">#EEEFF1</color>
+    <color name="ledger_c_other_text">#5F5E5A</color>
+
+</resources>

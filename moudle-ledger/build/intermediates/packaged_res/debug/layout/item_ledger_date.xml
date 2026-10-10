@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/ls_space_16"
+    android:paddingTop="@dimen/ls_space_12"
+    android:paddingEnd="@dimen/ls_space_16"
+    android:paddingBottom="@dimen/ls_space_8">
+
+    <TextView
+        android:id="@+id/tv_date_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="@style/TextAppearance.Ledger.Section" />
+
+    <TextView
+        android:id="@+id/tv_date_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Ledger.Caption" />
+
+</LinearLayout>

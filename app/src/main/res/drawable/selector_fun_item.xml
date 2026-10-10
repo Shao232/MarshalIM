@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 不用 ?attr/selectableItemBackground：BaseRecyclerViewHolder 是拿 Application Context 去
+     inflate 的，那套 LayoutInflater 解析不了主题 attr，会直接 InflateException。
+     这里写成纯颜色的 ripple，任何 Context 都能 inflate。 -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/home_ripple">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+</ripple>

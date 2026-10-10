@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:background="@color/white_mode">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_fun_item"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp">
+
+    <TextView
+        android:id="@+id/tv_function_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/shape_fun_icon"
+        android:gravity="center"
+        android:textColor="@color/home_brand"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        tools:text="记" />
 
     <TextView
         android:id="@+id/tv_function_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="@color/black_mode"
-        android:textSize="16dp"
-        tools:text="蓝牙连接" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:textColor="@color/home_text_main"
+        android:textSize="13sp"
+        tools:text="记账" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</LinearLayout>

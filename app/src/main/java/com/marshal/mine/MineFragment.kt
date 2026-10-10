@@ -4,8 +4,10 @@ import NoShakeBtnUtil
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.alibaba.android.arouter.launcher.ARouter
+import com.driving_school.DrivingRouterPath
 import com.marshal.AppRouterPath
 import com.marshal.R
+import com.marshal.android.WanAndroidRouterPath
 import com.marshal.base_common.baseview.BaseViewFragment
 import com.marshal.base_common.store.getAppAppLoginUserAccount
 import com.marshal.base_common.store.putAppLoginUserAccount
@@ -26,8 +28,7 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
     }
 
     override fun initView() {
-
-        binding?.tvNickNameMine?.text = getAppAppLoginUserAccount()
+        fillUserInfo()
 
         binding?.ivSettingMine?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
@@ -39,12 +40,32 @@ class MineFragment : BaseViewFragment<FragmentMineBinding>() {
             ARouter.getInstance().build(AppRouterPath.ABOUT_APP_PAGE).navigation(mContext)
         }
 
+        binding?.rowDrivingError?.setOnClickListener {
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(DrivingRouterPath.Driving_Collection_Error_Path).navigation(mContext)
+        }
+
+        binding?.rowWanAndroid?.setOnClickListener {
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(WanAndroidRouterPath.WAN_ANDROID_Home).navigation(mContext)
+        }
+
         binding?.btnToLogout?.setOnClickListener {
             putAppLoginUserAccount("")
             putAppLoginUserPwd("")
             putAppInfoToken("")
+            fillUserInfo()
             showToast("退出登录成功")
         }
 
+    }
+
+    /**
+     * 品牌卡用户名：没登录 / 账号为空时给个兜底，不留空白
+     */
+    private fun fillUserInfo() {
+        val account = getAppAppLoginUserAccount()
+        binding?.tvNickNameMine?.text =
+            if (account.isNullOrEmpty()) "未登录" else account
     }
 }

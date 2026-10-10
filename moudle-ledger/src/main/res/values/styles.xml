@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 大金额 -->
+    <style name="TextAppearance.Ledger.Money" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_money</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 汇总大数字 -->
+    <style name="TextAppearance.Ledger.Big" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_big</item>
+        <item name="android:textColor">@color/ledger_white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 标题 -->
+    <style name="TextAppearance.Ledger.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_title</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 正文 -->
+    <style name="TextAppearance.Ledger.Body" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_body</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+    </style>
+
+    <!-- 辅助说明 -->
+    <style name="TextAppearance.Ledger.Sub" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_small</item>
+        <item name="android:textColor">@color/ledger_text_sub</item>
+    </style>
+
+    <!-- 更弱提示 -->
+    <style name="TextAppearance.Ledger.Caption" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_caption</item>
+        <item name="android:textColor">@color/ledger_text_hint</item>
+    </style>
+
+    <!-- 汇总卡内的浅色文字 -->
+    <style name="TextAppearance.Ledger.OnBrand" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_small</item>
+        <item name="android:textColor">#CCFFFFFF</item>
+    </style>
+
+    <!-- 列表金额 -->
+    <style name="TextAppearance.Ledger.Amount" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_amount</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 日期分组标题 -->
+    <style name="TextAppearance.Ledger.Section" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_small</item>
+        <item name="android:textColor">@color/ledger_text_sub</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

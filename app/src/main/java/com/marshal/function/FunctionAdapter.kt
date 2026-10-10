@@ -1,6 +1,5 @@
 package com.marshal.function
 
-import SizeUtils
 import android.view.ViewGroup
 import com.marshal.R
 import com.marshal.base_common.baseadapter.AdapterItemOnClickListener
@@ -18,19 +17,7 @@ class FunctionAdapter : BaseRecyclerAdapter<FunctionViewHolder, FunctionBean>() 
 
     override fun bindViewHolderData(holder: FunctionViewHolder, position: Int) {
         val bean = itemList[position]
-        //设置条目的外间距
-        val layoutParams = holder.tvFunction?.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.width = SizeUtils.dip2px(mContext,100f)
-        layoutParams.height = SizeUtils.dip2px(mContext,100f)
-        val positionIndex = position +1
-        //如果是第三个条目设置下右间距，不是的话就不设置
-        if(position!=0 && positionIndex % 3 == 0) {
-            layoutParams.setMargins(SizeUtils.dip2px(mContext,8f),SizeUtils.dip2px(mContext,8f),SizeUtils.dip2px(mContext,8f),0)
-        }else {
-            layoutParams.setMargins(SizeUtils.dip2px(mContext,8f),SizeUtils.dip2px(mContext,8f),0,0)
-        }
-        holder.tvFunction?.layoutParams = layoutParams
         holder.tvFunction?.text = bean.functionName
-
+        holder.tvFunctionIcon?.text = bean.functionName.firstOrNull()?.toString() ?: ""
     }
 }
