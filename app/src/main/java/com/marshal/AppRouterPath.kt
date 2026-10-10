@@ -32,6 +32,8 @@ object AppRouterPath {
     const val APP_CUSTOM_VIEW_PAGE = "/custom/view/page"
     //短信列表
     const val APP_SMS_LIST_PAGE = "/sms/list/page"
+    //音乐（学习 Service）
+    const val APP_MUSIC_PAGE = "/music/page"
 
 
 }

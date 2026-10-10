@@ -4,7 +4,7 @@ import FileUtils
 import android.util.Log
 import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
+import jxl.Workbook
 import putAppThoughtSingleData
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -38,11 +38,8 @@ class OpenReadQuestionThoughtWork : Runnable {
             "计算思维导论_2.xls"
         )
 
-        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
-        //读取单元格内容
-        //读取单元格内容
-        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        val writableSheet = zzExcelCreator1.writableSheet
+        val workbook = Workbook.getWorkbook(file)
+        val writableSheet = workbook.getSheet(0)
         Log.d("TAG", "计算思维导论 columns: 有${writableSheet.columns}列")
         Log.d("TAG", "计算思维导论 rows: 有${writableSheet.rows}行")
 
@@ -72,6 +69,6 @@ class OpenReadQuestionThoughtWork : Runnable {
         val json = Gson().toJson(data)
         putAppThoughtSingleData(json)
 
-        zzExcelCreator1.close()
+        workbook.close()
     }
 }

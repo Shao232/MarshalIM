@@ -5,8 +5,8 @@ import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswerBean
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import jxl.Cell
-import jxl.write.WritableSheet
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
+import jxl.Sheet
+import jxl.Workbook
 import putAppThirdEnglishEighthData
 import putAppThirdEnglishFifthData
 import putAppThirdEnglishFirstData
@@ -49,61 +49,33 @@ class OpenReadThirdEnglishWork : Runnable {
             "english_third_test.xls"
         )
 
-        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
-        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        var writableSheet = zzExcelCreator1.writableSheet
-
+        val workbook = Workbook.getWorkbook(file)
 
         //实训1
-        readFirstTrainTest(writableSheet)
+        readFirstTrainTest(workbook.getSheet(0))
         //实训2
-        zzExcelCreator1 = zzExcelCreator1.openSheet(1)
-        writableSheet = zzExcelCreator1.writableSheet
-        readSecondTrainTest(writableSheet)
-
+        readSecondTrainTest(workbook.getSheet(1))
         //实训3
-        zzExcelCreator1 = zzExcelCreator1.openSheet(2)
-        writableSheet = zzExcelCreator1.writableSheet
-        readThirdTrainTest(writableSheet)
-
+        readThirdTrainTest(workbook.getSheet(2))
         //实训4
-        zzExcelCreator1 = zzExcelCreator1.openSheet(3)
-        writableSheet = zzExcelCreator1.writableSheet
-        readFourthTrainTest(writableSheet)
-
+        readFourthTrainTest(workbook.getSheet(3))
         //实训5
-        zzExcelCreator1 = zzExcelCreator1.openSheet(4)
-        writableSheet = zzExcelCreator1.writableSheet
-        readFifthTrainTest(writableSheet)
-
+        readFifthTrainTest(workbook.getSheet(4))
         //实训6
-        zzExcelCreator1 = zzExcelCreator1.openSheet(5)
-        writableSheet = zzExcelCreator1.writableSheet
-        readSixthTrainTest(writableSheet)
-
+        readSixthTrainTest(workbook.getSheet(5))
         //实训7
-        zzExcelCreator1 = zzExcelCreator1.openSheet(6)
-        writableSheet = zzExcelCreator1.writableSheet
-        readSeventhTrainTest(writableSheet)
-
+        readSeventhTrainTest(workbook.getSheet(6))
         //实训8
-        zzExcelCreator1 = zzExcelCreator1.openSheet(7)
-        writableSheet = zzExcelCreator1.writableSheet
-        readEighthTrainTest(writableSheet)
-
+        readEighthTrainTest(workbook.getSheet(7))
         //实训9
-        zzExcelCreator1 = zzExcelCreator1.openSheet(8)
-        writableSheet = zzExcelCreator1.writableSheet
-        readNinthTrainTest(writableSheet)
-
+        readNinthTrainTest(workbook.getSheet(8))
         //实训10
-        zzExcelCreator1 = zzExcelCreator1.openSheet(9)
-        writableSheet = zzExcelCreator1.writableSheet
-        readTenthTrainTest(writableSheet)
+        readTenthTrainTest(workbook.getSheet(9))
 
+        workbook.close()
     }
 
-    private fun readTenthTrainTest(writableSheet: WritableSheet) {
+    private fun readTenthTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -127,7 +99,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readNinthTrainTest(writableSheet: WritableSheet) {
+    private fun readNinthTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -151,7 +123,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readEighthTrainTest(writableSheet: WritableSheet) {
+    private fun readEighthTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -175,7 +147,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readSeventhTrainTest(writableSheet: WritableSheet) {
+    private fun readSeventhTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -199,7 +171,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readSixthTrainTest(writableSheet: WritableSheet) {
+    private fun readSixthTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -223,7 +195,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readFifthTrainTest(writableSheet: WritableSheet) {
+    private fun readFifthTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -248,7 +220,7 @@ class OpenReadThirdEnglishWork : Runnable {
     }
 
 
-    private fun readFourthTrainTest(writableSheet: WritableSheet) {
+    private fun readFourthTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -272,7 +244,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readThirdTrainTest(writableSheet: WritableSheet) {
+    private fun readThirdTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -296,7 +268,7 @@ class OpenReadThirdEnglishWork : Runnable {
 
     }
 
-    private fun readSecondTrainTest(writableSheet: WritableSheet) {
+    private fun readSecondTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)
@@ -321,7 +293,7 @@ class OpenReadThirdEnglishWork : Runnable {
     }
 
     //实训1
-    private fun readFirstTrainTest(writableSheet: WritableSheet) {
+    private fun readFirstTrainTest(writableSheet: Sheet) {
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
         val arraySecond = writableSheet.getColumn(2)

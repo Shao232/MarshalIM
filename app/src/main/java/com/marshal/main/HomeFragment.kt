@@ -52,7 +52,7 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
             ARouter.getInstance().build(DrivingRouterPath.Driving_HOME_PATH).navigation(mContext)
         }
 
-        // 常用功能四格
+        // 常用功能：记账 / 驾校 / 玩安卓 / 音乐 / 日程
         binding?.fnLedger?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(LedgerRouterPath.LEDGER_HOME).navigation(mContext)
@@ -64,6 +64,10 @@ class HomeFragment : BaseViewFragment<FragmentHomeBinding>() {
         binding?.fnWan?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
             ARouter.getInstance().build(WanAndroidRouterPath.WAN_ANDROID_Home).navigation(mContext)
+        }
+        binding?.fnMusic?.setOnClickListener {
+            if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener
+            ARouter.getInstance().build(AppRouterPath.APP_MUSIC_PAGE).navigation(mContext)
         }
         binding?.fnSchedule?.setOnClickListener {
             if (NoShakeBtnUtil.isFastDoubleClick(it)) return@setOnClickListener

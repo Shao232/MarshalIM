@@ -46,7 +46,6 @@ android {
 }
 
 dependencies {
-    implementation project(':zz-excel-creator')
     implementation project(":base-common")
     kapt deps.support.arouter_compiler
 }

@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswerBean
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import jxl.Cell
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
+import jxl.Workbook
 import putAppThirdDatabaseData
 
 /**
@@ -30,10 +30,8 @@ class OpenReadDatabaseWork : Runnable {
             "数据库2.xls"
         )
 
-        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
-
-        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        val writableSheet = zzExcelCreator1.writableSheet
+        val workbook = Workbook.getWorkbook(file)
+        val writableSheet = workbook.getSheet(0)
 
         val arrayZero = writableSheet.getColumn(0)
         val arrayFirst = writableSheet.getColumn(1)
@@ -61,6 +59,7 @@ class OpenReadDatabaseWork : Runnable {
         val json = Gson().toJson(arrayList)
         putAppThirdDatabaseData(json)
 
+        workbook.close()
     }
 
     private fun readFirstArray(

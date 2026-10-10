@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswerBean
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import jxl.Cell
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
+import jxl.Workbook
 import putAppProgramSingleData
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -41,11 +41,8 @@ class OpenReadQuestionProgramDesignWork : Runnable {
             "程序设计复习资料_2.xls"
         )
 
-        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
-        //读取单元格内容
-        //读取单元格内容
-        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        val writableSheet = zzExcelCreator1.writableSheet
+        val workbook = Workbook.getWorkbook(file)
+        val writableSheet = workbook.getSheet(0)
         Log.d("TAG", "程序设计 columns: 有${writableSheet.columns}列")
         Log.d("TAG", "程序设计 rows: 有${writableSheet.rows}行")
 
@@ -100,7 +97,7 @@ class OpenReadQuestionProgramDesignWork : Runnable {
         val json = Gson().toJson(data)
         putAppProgramSingleData(json)
 
-        zzExcelCreator1.close()
+        workbook.close()
     }
 
     /**

@@ -28,6 +28,8 @@
     <color name="home_c_wan_text">#534AB7</color>
     <color name="home_c_calendar_bg">#FAEEDA</color>
     <color name="home_c_calendar_text">#854F0B</color>
+    <color name="home_c_music_bg">#E1F5EE</color>
+    <color name="home_c_music_text">#0F6B4C</color>
 
     <!-- 按压水波纹（墨黑 12%） -->
     <color name="home_ripple">#1F2C2C2A</color>

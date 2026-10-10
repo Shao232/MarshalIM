@@ -6,8 +6,8 @@ import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswerBean
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import jxl.Cell
-import jxl.write.WritableSheet
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
+import jxl.Sheet
+import jxl.Workbook
 import putAppFunctionEstimateData
 import putAppFunctionMultipleData
 import putAppFunctionSingleData
@@ -42,25 +42,21 @@ class OpenReadQuestionsWork : Runnable {
             "计算机应用基础.xls"
         )
 
-        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
-        //读取单元格内容
-        //读取单元格内容
-        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        val writableSheet = zzExcelCreator1.writableSheet
+        val workbook = Workbook.getWorkbook(file)
+        val writableSheet = workbook.getSheet(0)
 
         Log.d("TAG", "计算机应用基础 columns: 有${writableSheet.columns}列")
         Log.d("TAG", "计算机应用基础 rows: 有${writableSheet.rows}行")
 
         singleChoiceAnswer(writableSheet)
 
-        //别忘了close
-        zzExcelCreator1.close()
+        workbook.close()
     }
 
     /**
      * 单选题
      */
-    private fun singleChoiceAnswer(writableSheet: WritableSheet) {
+    private fun singleChoiceAnswer(writableSheet: Sheet) {
          //读取应用基础的第一部分 单选题 从第3行到169行 程序中从0计数
 
         val dataSingle = ArrayList<OpenAnswersBean>()

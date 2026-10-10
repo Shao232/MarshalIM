@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.marshalim.moudle.open.question.pojo.OpenAnswerBean
 import com.marshalim.moudle.open.question.pojo.OpenAnswersBean
 import jxl.Cell
-import me.zhouzhuo.zzexcelcreator.ZzExcelCreator
+import jxl.Workbook
 import putAppSecondEnglishQuestionData
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -39,10 +39,8 @@ class OpenReadEnglishQuestionWork : Runnable {
             "english_question.xls"
         )
 
-        var zzExcelCreator1 = ZzExcelCreator.getInstance().openExcel(file)
-
-        zzExcelCreator1 = zzExcelCreator1.openSheet(0)
-        val writableSheet = zzExcelCreator1.writableSheet
+        val workbook = Workbook.getWorkbook(file)
+        val writableSheet = workbook.getSheet(0)
         Log.d("TAG", "english columns: 有${writableSheet.columns}列")
         Log.d("TAG", "english rows: 有${writableSheet.rows}行")
 
@@ -70,7 +68,7 @@ class OpenReadEnglishQuestionWork : Runnable {
         val json = Gson().toJson(data)
         putAppSecondEnglishQuestionData(json)
 
-        zzExcelCreator1.close()
+        workbook.close()
     }
 
     private fun printContent(arrayCell: Array<Cell>, type: Int) {

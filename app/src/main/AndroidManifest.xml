@@ -92,6 +92,10 @@
             android:name=".music.BgMusicService"
             android:exported="false"
             android:foregroundServiceType="location"/>
+        <!-- 音乐学习页用的普通 Service：不导出，也不走前台通知 -->
+        <service
+            android:name=".music.MusicService"
+            android:exported="false" />
         <service
             android:name=".main.PushIntentService"
             android:enabled="true"
@@ -155,6 +159,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".function.FunctionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.MusicActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

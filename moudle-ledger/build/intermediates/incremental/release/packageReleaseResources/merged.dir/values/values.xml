@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ledger_bg_block">#F1F2F1</color>
+    <color name="ledger_bg_page">#F7F8F7</color>
+    <color name="ledger_brand">#2C2C2A</color>
+    <color name="ledger_brand_dark">#1A1A19</color>
+    <color name="ledger_brand_line">#C9C9C5</color>
+    <color name="ledger_brand_soft">#EFEFED</color>
+    <color name="ledger_c_daily_bg">#F1EFE8</color>
+    <color name="ledger_c_daily_text">#5F5E5A</color>
+    <color name="ledger_c_food_bg">#E1F5EE</color>
+    <color name="ledger_c_food_text">#0F6E56</color>
+    <color name="ledger_c_house_bg">#E6F1FB</color>
+    <color name="ledger_c_house_text">#185FA5</color>
+    <color name="ledger_c_medical_bg">#FCEBEB</color>
+    <color name="ledger_c_medical_text">#A32D2D</color>
+    <color name="ledger_c_other_bg">#EEEFF1</color>
+    <color name="ledger_c_other_text">#5F5E5A</color>
+    <color name="ledger_c_phone_bg">#EEEDFE</color>
+    <color name="ledger_c_phone_text">#534AB7</color>
+    <color name="ledger_c_social_bg">#FBEAF0</color>
+    <color name="ledger_c_social_text">#993556</color>
+    <color name="ledger_c_tool_bg">#EAF3DE</color>
+    <color name="ledger_c_tool_text">#3B6D11</color>
+    <color name="ledger_c_traffic_bg">#FAEEDA</color>
+    <color name="ledger_c_traffic_text">#854F0B</color>
+    <color name="ledger_expense">#D0453B</color>
+    <color name="ledger_income">#2E9E6B</color>
+    <color name="ledger_line">#EDEEEC</color>
+    <color name="ledger_text_hint">#9CA3AF</color>
+    <color name="ledger_text_main">#1F2421</color>
+    <color name="ledger_text_sub">#6B7280</color>
+    <color name="ledger_white">#FFFFFF</color>
+    <dimen name="ls_fab_size">52dp</dimen>
+    <dimen name="ls_icon_block">36dp</dimen>
+    <dimen name="ls_radius_block">10dp</dimen>
+    <dimen name="ls_radius_l">16dp</dimen>
+    <dimen name="ls_radius_m">12dp</dimen>
+    <dimen name="ls_radius_s">8dp</dimen>
+    <dimen name="ls_space_12">12dp</dimen>
+    <dimen name="ls_space_16">16dp</dimen>
+    <dimen name="ls_space_20">20dp</dimen>
+    <dimen name="ls_space_24">24dp</dimen>
+    <dimen name="ls_space_4">4dp</dimen>
+    <dimen name="ls_space_8">8dp</dimen>
+    <dimen name="ls_text_amount">18sp</dimen>
+    <dimen name="ls_text_big">26sp</dimen>
+    <dimen name="ls_text_body">14sp</dimen>
+    <dimen name="ls_text_caption">11sp</dimen>
+    <dimen name="ls_text_money">32sp</dimen>
+    <dimen name="ls_text_small">12sp</dimen>
+    <dimen name="ls_text_title">15sp</dimen>
+    <string name="ledger_add_title">记一笔</string>
+    <string name="ledger_amount_error">请输入正确的金额</string>
+    <string name="ledger_amount_zero">0.00</string>
+    <string name="ledger_budget_tip">预算 ¥ %1$s · 已用 %2$d%%</string>
+    <string name="ledger_category_label">分类</string>
+    <string name="ledger_date_today">今天</string>
+    <string name="ledger_day_summary">%1$d 笔 · ¥ %2$s</string>
+    <string name="ledger_empty_tip">本月还没有记录，点右下角记一笔</string>
+    <string name="ledger_home_title">记账</string>
+    <string name="ledger_money_symbol">¥</string>
+    <string name="ledger_month_balance">本月结余 ¥ %1$s</string>
+    <string name="ledger_month_expense_label">本月支出</string>
+    <string name="ledger_month_income">本月收入 ¥ %1$s</string>
+    <string name="ledger_remark_empty">无备注</string>
+    <string name="ledger_remark_hint">选填</string>
+    <string name="ledger_remark_label">备注</string>
+    <string name="ledger_save">保存</string>
+    <string name="ledger_type_expense">支出</string>
+    <string name="ledger_type_income">收入</string>
+    <style name="TextAppearance.Ledger.Amount" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_amount</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.Ledger.Big" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_big</item>
+        <item name="android:textColor">@color/ledger_white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.Ledger.Body" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_body</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+    </style>
+    <style name="TextAppearance.Ledger.Caption" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_caption</item>
+        <item name="android:textColor">@color/ledger_text_hint</item>
+    </style>
+    <style name="TextAppearance.Ledger.Money" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_money</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.Ledger.OnBrand" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_small</item>
+        <item name="android:textColor">#CCFFFFFF</item>
+    </style>
+    <style name="TextAppearance.Ledger.Section" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_small</item>
+        <item name="android:textColor">@color/ledger_text_sub</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.Ledger.Sub" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_small</item>
+        <item name="android:textColor">@color/ledger_text_sub</item>
+    </style>
+    <style name="TextAppearance.Ledger.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/ls_text_title</item>
+        <item name="android:textColor">@color/ledger_text_main</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

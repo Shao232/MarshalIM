@@ -293,125 +293,183 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_home_card"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp">
 
-                <!-- 记账 -->
                 <LinearLayout
-                    android:id="@+id/fn_ledger"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@color/home_c_ledger_bg"
-                        android:gravity="center"
-                        android:text="记"
-                        android:textColor="@color/home_c_ledger_text"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- 记账 -->
+                    <LinearLayout
+                        android:id="@+id/fn_ledger"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="记账"
-                        android:textColor="@color/home_text_main"
-                        android:textSize="13sp" />
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@color/home_c_ledger_bg"
+                            android:gravity="center"
+                            android:text="记"
+                            android:textColor="@color/home_c_ledger_text"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="记账"
+                            android:textColor="@color/home_text_main"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- 驾校 -->
+                    <LinearLayout
+                        android:id="@+id/fn_driving"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@color/home_c_driving_bg"
+                            android:gravity="center"
+                            android:text="驾"
+                            android:textColor="@color/home_c_driving_text"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="驾校"
+                            android:textColor="@color/home_text_main"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- 玩安卓 -->
+                    <LinearLayout
+                        android:id="@+id/fn_wan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@color/home_c_wan_bg"
+                            android:gravity="center"
+                            android:text="玩"
+                            android:textColor="@color/home_c_wan_text"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="玩安卓"
+                            android:textColor="@color/home_text_main"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- 音乐 -->
+                    <LinearLayout
+                        android:id="@+id/fn_music"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@color/home_c_music_bg"
+                            android:gravity="center"
+                            android:text="音"
+                            android:textColor="@color/home_c_music_text"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="音乐"
+                            android:textColor="@color/home_text_main"
+                            android:textSize="13sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <!-- 驾校 -->
                 <LinearLayout
-                    android:id="@+id/fn_driving"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@color/home_c_driving_bg"
-                        android:gravity="center"
-                        android:text="驾"
-                        android:textColor="@color/home_c_driving_text"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- 日程 -->
+                    <LinearLayout
+                        android:id="@+id/fn_schedule"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="驾校"
-                        android:textColor="@color/home_text_main"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-                <!-- 玩安卓 -->
-                <LinearLayout
-                    android:id="@+id/fn_wan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="@color/home_c_calendar_bg"
+                            android:gravity="center"
+                            android:text="日"
+                            android:textColor="@color/home_c_calendar_text"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@color/home_c_wan_bg"
-                        android:gravity="center"
-                        android:text="玩"
-                        android:textColor="@color/home_c_wan_text"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="日程"
+                            android:textColor="@color/home_text_main"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="玩安卓"
-                        android:textColor="@color/home_text_main"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
 
-                <!-- 日程 -->
-                <LinearLayout
-                    android:id="@+id/fn_schedule"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@color/home_c_calendar_bg"
-                        android:gravity="center"
-                        android:text="日"
-                        android:textColor="@color/home_c_calendar_text"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="日程"
-                        android:textColor="@color/home_text_main"
-                        android:textSize="13sp" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
                 </LinearLayout>
             </LinearLayout>
 

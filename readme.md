@@ -1,9 +1,9 @@
-## MarshalIm
+## 样样有
 >项目用于练手开发，主要想做IM通讯聊天，音视频直播
 >app模块目前包含了主要的业务功能
 >base-common包含activity,fragment,dialog,adapter等的基类封装，属于公共lib模块
 >driving-school是驾校模拟的业务组件模块
->zz-excel-creator是读取excel文件的lib模块
+>题库模块直接用 jxl 读取 excel，不再依赖独立的 excel 模块
 
 
 ## 主要业务功能

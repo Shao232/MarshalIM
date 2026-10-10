@@ -78,6 +78,7 @@ class FunctionActivity : BaseViewActivity<ActivityFunctionBinding>() {
         mainAdapter?.itemList?.add(FunctionBean("添加日程", CalendarRouterPath.APP_ADD_EVENT_CALENDAR))
         mainAdapter?.itemList?.add(FunctionBean("聊天入口", AppRouterPath.CHAT_PATH))
         mainAdapter?.itemList?.add(FunctionBean("玩安卓", WanAndroidRouterPath.WAN_ANDROID_Home))
+        mainAdapter?.itemList?.add(FunctionBean("音乐", AppRouterPath.APP_MUSIC_PAGE))
 
         // ---- 实验室：默认收起 ----
         labAdapter?.itemList?.add(FunctionBean("蓝牙连接", AppRouterPath.MINE_TO_BLUE_TOOTH))
